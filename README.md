@@ -24,6 +24,7 @@ The workspace is comprised of the following modules:
 * **headless-schema-generator**: The Generator Application for creating a schema definition from the CoreMedia Doctype Model
 * **headless-pd**: Parent module for different processing descriptions (schema/queries etc.)
 * **headless-performance-test**: Simple local performance test using a list of URLs
+* **test-data**: Test content for sample client applications. Must be manually imported into the CoreMedia repository. 
 
 
 ## Building an running the server
