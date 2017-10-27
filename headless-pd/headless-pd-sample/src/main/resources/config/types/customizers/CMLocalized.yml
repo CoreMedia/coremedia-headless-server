@@ -1,0 +1,11 @@
+name: CMLocalized
+excludedProperties:
+  - locale
+  - master
+  - masterVersion
+customFields:
+  - !CustomField
+    name: languageId
+    sourceName: (locale)
+    targetType: String
+    dataFetcher: Property

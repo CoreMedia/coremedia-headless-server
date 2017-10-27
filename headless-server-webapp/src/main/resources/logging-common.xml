@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!--
+     Common logback configuration that dispatches to different profiles depending on environment variable "log.profile"
+-->
+<included>
+
+  <if condition='!isDefined("log.pattern")'>
+    <then>
+      <property name="log.pattern" value="%d{yyyy-MM-dd HH:mm:ss} %-7([%level]) %logger - %message \\(%thread\\)%n" />
+    </then>
+  </if>
+
+  <if condition='!isDefined("log.file")'>
+    <then>
+      <property name="log.file" value="${log.dir}/${application.name}.log" />
+    </then>
+  </if>
+
+  <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${log.file}</file>
+    <encoder>
+      <pattern>${log.pattern}</pattern>
+    </encoder>
+    <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+      <maxIndex>10</maxIndex>
+      <FileNamePattern>${log.file}.%i</FileNamePattern>
+    </rollingPolicy>
+    <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+      <MaxFileSize>4MB</MaxFileSize>
+    </triggeringPolicy>
+  </appender>
+
+  <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>${log.pattern}</pattern>
+    </encoder>
+  </appender>
+
+
+</included>

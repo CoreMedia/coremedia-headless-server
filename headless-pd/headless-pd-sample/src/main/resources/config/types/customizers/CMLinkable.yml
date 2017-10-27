@@ -1,0 +1,34 @@
+name: CMLinkable
+excludedProperties:
+  - htmlDescription
+  - htmlTitle
+  - keywords
+  - linkedSettings
+  - localSettings
+  - locationTaxonomy
+  - resourceBundles2
+  - subjectTaxonomy
+  - validFrom
+  - validTo
+customFields:
+  - !CustomField
+    name: link
+    sourceName: this
+    targetType: String
+    dataFetcher: Uri
+  - !CustomField
+    name: settings
+    dataFetcher: Settings
+  - !CustomField
+    name: viewtype
+    sourceName: (viewtype)[0].(layout)
+    targetType: String
+    dataFetcher: Builtin
+  - !CustomField
+    name: context
+    targetType: CMNavigation
+    dataFetcher: Context
+  - !CustomField
+    name: navigationPath
+    targetType: List:CMNavigation
+    dataFetcher: NavigationPath

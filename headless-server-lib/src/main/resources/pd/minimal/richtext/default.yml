@@ -1,0 +1,23 @@
+name: default
+
+writerFactory: !StringWriterFactory {}
+
+elements:
+  - &p !QName [ "http://www.coremedia.com/2003/richtext-1.0" , "p" ]
+
+contexts:
+  - !Context
+    name: plaintext
+    defaultHandler:
+      !Handler
+      outputHandler: !ElementWriter {writeCharacters: true}
+
+  - &root !RootContext
+    name: root
+    handlers:
+      - - !Handler
+          eventMatcher:   !Matcher {qname: *p}
+          contextHandler: !Push {contextName: plaintext}
+          outputHandler:  !ElementWriter {writeCharacters: true}
+
+initialContext: *root

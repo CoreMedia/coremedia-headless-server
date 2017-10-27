@@ -1,0 +1,15 @@
+import "templates/field.stg"
+
+
+interface(type) ::= <<
+!InterfaceType
+name: <type.name>
+<if(type.parent)>
+parents:
+  - <type.parent.name>
+<endif>
+<if(!(type.fieldDefinitions.empty))>
+fields:
+<type.fieldDefinitions:field()>
+<endif>
+>>

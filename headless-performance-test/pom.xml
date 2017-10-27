@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <parent>
+    <groupId>com.coremedia.labs</groupId>
+    <artifactId>headless-server</artifactId>
+    <version>1-SNAPSHOT</version>
+  </parent>
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <artifactId>headless-performance-test</artifactId>
+  <packaging>war</packaging>
+
+  <description>
+    A performance test example for the Headless API.
+    Invoke the test via "mvn install -Pperformance-test" and find the result files below target/ afterwards.
+  </description>
+
+
+  <properties>
+    <!--
+      settings that point to the "cae-preview-webapp" if run from within the workspace.
+
+      This is just an example to show how the plugins work together.
+
+      Performance tests typically run against CAE Live Webapps on appropriate (live) hardware from a remote machine
+    -->
+    <!--
+    <webapp.protocol>http</webapp.protocol>
+    <webapp.host>localhost</webapp.host>
+    <webapp.port>8080</webapp.port>
+-->
+<!--
+    <webapp.protocol>http</webapp.protocol>
+    <webapp.host>localhost</webapp.host>
+    <webapp.port>52080</webapp.port>-->
+    <!--webapp.uris>${project.basedir}/src/test/jmeter/urilist.txt</webapp.uris-->
+
+    <gatling.version>2.2.2</gatling.version>
+    <gatling-plugin.version>2.2.0</gatling-plugin.version>
+    <scala-maven-plugin.version>3.2.2</scala-maven-plugin.version>
+  </properties>
+
+
+  <dependencies>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>headless-server-webapp</artifactId>
+      <version>${project.version}</version>
+      <type>war</type>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>io.gatling.highcharts</groupId>
+      <artifactId>gatling-charts-highcharts</artifactId>
+      <version>${gatling.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+
+    <dependency>
+      <groupId>io.gatling</groupId>
+      <artifactId>gatling-core</artifactId>
+      <version>2.2.2</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.gatling</groupId>
+      <artifactId>gatling-http</artifactId>
+      <version>2.2.2</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.gatling</groupId>
+      <artifactId>gatling-commons</artifactId>
+      <version>2.2.2</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.scala-lang</groupId>
+      <artifactId>scala-library</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.gatling</groupId>
+      <artifactId>gatling-app</artifactId>
+      <version>2.2.2</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.gatling</groupId>
+      <artifactId>gatling-recorder</artifactId>
+      <version>2.2.2</version>
+      <scope>test</scope>
+    </dependency>
+
+    </dependencies>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.scala-lang</groupId>
+        <artifactId>scala-library</artifactId>
+        <version>2.11.8</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.scala-lang</groupId>
+        <artifactId>scala-reflect</artifactId>
+        <version>2.11.8</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.typesafe.akka</groupId>
+        <artifactId>akka-actor_2.11</artifactId>
+        <version>2.4.10</version>
+      </dependency>
+
+      <dependency>
+        <groupId>io.netty</groupId>
+        <artifactId>netty-handler</artifactId>
+        <version>4.0.37.Final</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.scala-lang.modules</groupId>
+        <artifactId>scala-java8-compat_2.11</artifactId>
+        <version>0.8.0-RC1</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <configuration>
+          <failOnMissingWebXml>false</failOnMissingWebXml>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+
+  <profiles>
+
+    <profile>
+
+      <!--
+        plugin executions in separate profile so that a simple "mvn package / install" does not execute a performance test.
+      -->
+
+      <id>performance-test</id>
+
+      <build>
+        <plugins>
+
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>build-helper-maven-plugin</artifactId>
+            <version>1.7</version>
+            <executions>
+              <execution>
+                <id>reserve-ports</id>
+                <phase>test</phase>
+                <goals>
+                  <goal>reserve-network-port</goal>
+                </goals>
+                <configuration>
+                  <portNames>
+                    <portName>tomcatHTTPPort</portName>
+                    <portName>tomcatAJPPort</portName>
+                  </portNames>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+
+
+
+          <plugin>
+            <groupId>org.apache.tomcat.maven</groupId>
+            <artifactId>tomcat7-maven-plugin</artifactId>
+            <version>2.2</version>
+
+            <configuration>
+              <!--
+              <ignorePackaging>true</ignorePackaging>
+              <path>/${targetWebappName}</path>
+    -->
+              <port>${tomcatHTTPPort}</port>
+              <ajpPort>${tomcatAJPPort}</ajpPort>
+
+              <systemProperties>
+                <content-server.host>${installation.server.host}</content-server.host>
+                <content-server.port>${installation.server.port}</content-server.port>
+                <log.dir>${project.build.directory}/logs</log.dir>
+              </systemProperties>
+
+              <!--warDirectory>${project.build.directory}/${targetWebappName}</warDirectory-->
+              <!--warFile>${project.build.directory}/itom/ccr-server-1.0-SNAPSHOT.war</warFile-->
+              <!--staticContextPath>${project.build.directory}/itom/${targetWebappName}</staticContextPath-->
+
+              <!--
+              <warSourceDirectory>${project.build.directory}/itom/${targetWebappName}</warSourceDirectory>
+              <warDirectory>${project.build.directory}/itom/ccr-server-1.0-SNAPSHOT.war</warDirectory>
+              <staticContextPath>${project.build.directory}/itom/${targetWebappName}</staticContextPath>
+    -->
+              <fork>true</fork>
+
+              <webapps>
+                <webapp>
+                  <contextPath>/</contextPath>
+                  <groupId>${project.groupId}</groupId>
+                  <artifactId>headless-server-webapp</artifactId>
+                  <version>${project.version}</version>
+                  <type>war</type>
+                  <asWebapp>true</asWebapp>
+                </webapp>
+              </webapps>
+
+            </configuration>
+
+            <executions>
+              <execution>
+                <id>start-tomcat</id>
+                <phase>pre-integration-test</phase>
+                <goals>
+                  <goal>run-war</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>stop-tomcat</id>
+                <phase>post-integration-test</phase>
+                <goals>
+                  <goal>shutdown</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+
+
+
+          <plugin>
+            <groupId>net.alchim31.maven</groupId>
+            <artifactId>scala-maven-plugin</artifactId>
+            <version>${scala-maven-plugin.version}</version>
+          </plugin>
+
+
+          <plugin>
+            <groupId>io.gatling</groupId>
+            <artifactId>gatling-maven-plugin</artifactId>
+            <version>${gatling-plugin.version}</version>
+            <executions>
+              <execution>
+                <id>loadtest</id>
+                <phase>integration-test</phase>
+                <goals>
+                  <goal>execute</goal>
+                </goals>
+                <configuration>
+                  <runDescription>warmup</runDescription>
+                  <simulationsFolder>${project.basedir}/src/test/scala</simulationsFolder>
+                  <simulationClass>Loadtest</simulationClass>
+                  <jvmArgs>
+                    <jvmArg>-Dloadtest.scenario=Sample Loadtest</jvmArg>
+                    <jvmArg>-Dloadtest.duration=600</jvmArg>
+                    <jvmArg>-Dloadtest.concurrency=50</jvmArg>
+                    <jvmArg>-Dloadtest.rampup=60</jvmArg>
+                    <jvmArg>-Dloadtest.baseUrl=http://localhost:${tomcatHTTPPort}</jvmArg>
+                    <jvmArg>-Dloadtest.urlFile=${project.basedir}/src/test/resources/data/urls.csv</jvmArg>
+                  </jvmArgs>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+
+
+        </plugins>
+
+      </build>
+    </profile>
+
+  </profiles>
+</project>

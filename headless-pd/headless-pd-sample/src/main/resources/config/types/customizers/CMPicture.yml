@@ -1,0 +1,5 @@
+name: CMPicture
+excludedProperties:
+  - asset
+  - data
+  - dataUrl

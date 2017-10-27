@@ -1,0 +1,22 @@
+name: CMNavigation
+excludedProperties:
+  - css
+  - favicon
+  - javaScript
+  - placement
+  - theme
+customFields:
+  - !CustomField
+    name: grid
+    sourceName: (placement)
+    dataFetcher: PageGrid
+  - !CustomField
+    name: hidden
+    sourceName: (hidden)
+    targetType: Boolean
+    dataFetcher: Property
+  - !CustomField
+    name: hiddenInSitemap
+    sourceName: (hiddenInSitemap)
+    targetType: Boolean
+    dataFetcher: Property

@@ -1,0 +1,181 @@
+#!import file=include/elements.yml
+#!import file=include/classes.yml
+#!import file=include/attributes.yml
+
+name: detail
+
+writerFactory: !StringWriterFactory {}
+
+handlerSets:
+  text: &text_handlers
+    - !Handler
+      eventMatcher: !Matcher {qname: *span, classes: *inline_styles}
+      outputHandler:
+        !ElementWriter
+        writeElement: true
+        writeCharacters: true
+        elementTransformer:
+          !ElementFromClass
+          mapping:
+            *strike_style: s
+            *underline_style: u
+    - !Handler
+      eventMatcher:  !Matcher {qname: *sub}
+      outputHandler: !ElementWriter {writeElement: true, writeCharacters: true}
+    - !Handler
+      eventMatcher:  !Matcher {qname: *sub}
+      outputHandler: !ElementWriter {writeElement: true, writeCharacters: true}
+    - !Handler
+      eventMatcher:  !Matcher {qname: *em}
+      outputHandler: !ElementWriter {writeElement: true, writeCharacters: true}
+    - !Handler
+      eventMatcher:  !Matcher {qname: *strong}
+      outputHandler: !ElementWriter {writeElement: true, writeCharacters: true}
+
+  inline: &inline_handlers
+    - !Handler
+      eventMatcher:  !Matcher {qname: *br}
+      outputHandler: !EmptyElementWriter {}
+    - !Handler
+      eventMatcher:  !Matcher {qname: *a}
+      outputHandler: !LinkWriter {}
+    - !Handler
+      eventMatcher:  !Matcher {qname: *img}
+      outputHandler:
+        !ImgWriter
+        attributeTransformers:
+          - !PassStyles {styles: *float_styles}
+
+  headline: &headline_handlers
+    - !Handler
+      eventMatcher:   !Matcher {qname: *p, classes: *headline_styles}
+      contextHandler: !Push {contextName: headline}
+      outputHandler:
+        !ElementWriter
+        writeElement: true
+        writeCharacters: true
+        elementTransformer:
+          !ElementFromClass
+          mapping:
+            *headline_1_style: h1
+            *headline_2_style: h2
+            *headline_3_style: h3
+            *headline_4_style: h4
+            *headline_5_style: h5
+            *headline_6_style: h6
+        attributeTransformers:
+          - !PassStyles {styles: *align_styles}
+
+  block: &block_handlers
+    - !Handler
+      eventMatcher:   !Matcher {qname: *p}
+      contextHandler: !Push {contextName: paragraph}
+      outputHandler:
+        !ElementWriter
+        writeElement: true
+        writeCharacters: true
+        attributeTransformers:
+          - !PassStyles {styles: *align_styles}
+    - !Handler
+      eventMatcher:   !Matcher {qname: *ol}
+      contextHandler: !Push {contextName: list}
+      outputHandler:  !ElementWriter {writeElement: true}
+    - !Handler
+      eventMatcher:   !Matcher {qname: *ul}
+      contextHandler: !Push {contextName: list}
+      outputHandler:  !ElementWriter {writeElement: true}
+    - !Handler
+      eventMatcher:   !Matcher {qname: *table}
+      contextHandler: !Push {contextName: table}
+      outputHandler:  !ElementWriter {writeElement: true}
+
+  blockquote: &blockquote_handlers
+    - !Handler
+      eventMatcher:   !Matcher {qname: *blockquote}
+      contextHandler: !Push {contextName: blockquote}
+      outputHandler:  !ElementWriter {writeElement: true}
+
+contexts:
+  - !Context
+    name: headline
+    defaultHandler:
+      !Handler
+      outputHandler: !ElementWriter {writeCharacters: true}
+    handlers:
+      - *text_handlers
+
+  - !Context
+    name: paragraph
+    defaultHandler:
+      !Handler
+      outputHandler: !ElementWriter {writeCharacters: true}
+    handlers:
+      - *text_handlers
+      - *inline_handlers
+
+  - !Context
+    name: listitem
+    defaultHandler:
+      !Handler
+      outputHandler: !ElementWriter {writeCharacters: true}
+    handlers:
+      - *text_handlers
+      - *inline_handlers
+      - *block_handlers
+
+  - !Context
+    name: list
+    handlers:
+      - - !Handler
+          eventMatcher:   !Matcher {qname: *li}
+          contextHandler: !Push {contextName: listitem}
+          outputHandler:  !ElementWriter {writeElement: true, writeCharacters: true}
+
+  - !Context
+    name: tablecell
+    defaultHandler:
+      !Handler
+      outputHandler: !ElementWriter {writeCharacters: true}
+    handlers:
+      - *text_handlers
+      - *inline_handlers
+      - *block_handlers
+
+  - !Context
+    name: tablerow
+    handlers:
+      - - !Handler
+          eventMatcher:   !Matcher {qname: *td}
+          contextHandler: !Push {contextName: tablecell}
+          outputHandler:  !ElementWriter {writeElement: true, writeCharacters: true}
+
+  - !Context
+    name: tablebody
+    handlers:
+      - - !Handler
+          eventMatcher:   !Matcher {qname: *tr}
+          contextHandler: !Push {contextName: tablerow}
+          outputHandler:  !ElementWriter {writeElement: true}
+
+  - !Context
+    name: table
+    handlers:
+      - - !Handler
+          eventMatcher:   !Matcher {qname: *tbody}
+          contextHandler: !Push {contextName: tablebody}
+          outputHandler:  !ElementWriter {writeElement: true}
+
+  - !Context
+    name: blockquote
+    handlers:
+      - *headline_handlers
+      - *block_handlers
+
+  - &root !RootContext
+    name: root
+    handlers:
+      - *headline_handlers
+      - *block_handlers
+      - *blockquote_handlers
+
+initialContext: *root

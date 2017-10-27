@@ -1,0 +1,9 @@
+name: CMImage
+excludedProperties:
+  - data
+customFields:
+  - !CustomField
+    name: link
+    sourceName: this
+    targetType: String
+    dataFetcher: Uri

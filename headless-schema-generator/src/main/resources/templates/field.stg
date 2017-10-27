@@ -1,0 +1,150 @@
+field(fieldDefinition) ::= <<
+<fieldDefinition:(fieldDefinition.typeName)()>
+>>
+
+
+property(fieldDefinition) ::= <<
+  - !Property
+    name: <fieldDefinition.name>
+    sourceName: <fieldDefinition.sourceName>
+    typeName: <fieldDefinition.targetType>
+    <if(fieldDefinition.nonNull)>nonNull: true<endif>
+
+>>
+
+string(fieldDefinition) ::= <<
+<fieldDefinition:property()>
+>>
+
+integer(fieldDefinition) ::= <<
+<fieldDefinition:property()>
+>>
+
+date(fieldDefinition) ::= <<
+  - !Property
+    name: <fieldDefinition.name>
+    sourceName: <fieldDefinition.sourceName>
+    typeName: String
+    <if(fieldDefinition.nonNull)>nonNull: true<endif>
+
+>>
+
+link(fieldDefinition) ::= <<
+  - !Link
+    name: <fieldDefinition.name>
+    sourceName: <fieldDefinition.sourceName>
+    typeName: <fieldDefinition.targetType>
+    <if(fieldDefinition.nonNull)>nonNull: true<endif>
+
+>>
+
+linklist(fieldDefinition) ::= <<
+  - !Linklist
+    name: <fieldDefinition.name>
+    sourceName: <fieldDefinition.sourceName>
+    typeName: List:<fieldDefinition.targetType>
+    <if(fieldDefinition.nonNull)>nonNull: true<endif>
+
+>>
+
+struct(fieldDefinition) ::= <<
+  - !Struct
+    name: <fieldDefinition.name>
+    sourceName: <fieldDefinition.sourceName>
+    <if(fieldDefinition.nonNull)>nonNull: true<endif>
+
+>>
+
+richtext(fieldDefinition) ::= <<
+  - !Richtext
+    name: <fieldDefinition.name>
+    sourceName: <fieldDefinition.sourceName>
+    typeName: String
+    <if(fieldDefinition.nonNull)>nonNull: true<endif>
+
+>>
+
+markup(fieldDefinition) ::= <<
+  - !Markup
+    name: <fieldDefinition.name>
+    sourceName: <fieldDefinition.sourceName>
+    typeName: String
+    <if(fieldDefinition.nonNull)>nonNull: true<endif>
+
+>>
+
+blob(fieldDefinition) ::= <<
+  - !Blob
+    name: <fieldDefinition.name>
+    sourceName: <fieldDefinition.sourceName>
+    <if(fieldDefinition.nonNull)>nonNull: true<endif>
+
+>>
+
+builtin(fieldDefinition) ::= <<
+  - !<fieldDefinition.dataFetcher>
+    name: <fieldDefinition.name>
+    <if(fieldDefinition.sourceName)>
+    sourceName: <fieldDefinition.sourceName>
+    <endif>
+    typeName: <fieldDefinition.targetType>
+    <if(fieldDefinition.nonNull)>nonNull: true<endif>
+
+>>
+
+settings(fieldDefinition) ::= <<
+  - !<fieldDefinition.dataFetcher>
+    name: <fieldDefinition.name>
+    <if(fieldDefinition.nonNull)>nonNull: true<endif>
+
+>>
+
+pagegrid(fieldDefinition) ::= <<
+  - !<fieldDefinition.dataFetcher>
+    name: <fieldDefinition.name>
+    sourceName: <fieldDefinition.sourceName>
+    <if(fieldDefinition.nonNull)>nonNull: true<endif>
+
+>>
+
+uri(fieldDefinition) ::= <<
+  - !<fieldDefinition.dataFetcher>
+    name: <fieldDefinition.name>
+    sourceName: <fieldDefinition.sourceName>
+    typeName: String
+    <if(fieldDefinition.nonNull)>nonNull: true<endif>
+
+>>
+
+meta(fieldDefinition) ::= <<
+  - !<fieldDefinition.dataFetcher>
+    name: <fieldDefinition.name>
+    typeName: <fieldDefinition.targetType>
+    <if(fieldDefinition.nonNull)>nonNull: true<endif>
+
+>>
+
+constant(fieldDefinition) ::= <<
+  - !Constant
+    name: <fieldDefinition.name>
+    value: <fieldDefinition.value>
+    typeName: <fieldDefinition.targetType>
+    <if(fieldDefinition.nonNull)>nonNull: true<endif>
+
+>>
+
+context(fieldDefinition) ::= <<
+  - !<fieldDefinition.dataFetcher>
+    name: <fieldDefinition.name>
+    typeName: <fieldDefinition.targetType>
+    <if(fieldDefinition.nonNull)>nonNull: true<endif>
+
+>>
+
+navigationpath(fieldDefinition) ::= <<
+  - !<fieldDefinition.dataFetcher>
+    name: <fieldDefinition.name>
+    typeName: <fieldDefinition.targetType>
+    <if(fieldDefinition.nonNull)>nonNull: true<endif>
+
+>>

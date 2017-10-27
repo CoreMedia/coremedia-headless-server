@@ -1,0 +1,38 @@
+#!query name=teasables view=default type=CMTeasableImpl
+
+query TeasableQuery {
+
+  ... ContentInfo
+
+  teaserTitle
+  teaserText(view: "teaser")
+  teaserTarget {
+    ... Reference
+  }
+  picture {
+    ... ContentInfo
+
+    title
+    alt
+    link
+  }
+
+}
+
+
+fragment ContentInfo on Content_ {
+  __typename
+  __baseinterface
+  _id
+  _name
+  _type
+}
+
+
+fragment Reference on CMLinkable {
+  ... ContentInfo
+
+  title
+  segment
+  link
+}

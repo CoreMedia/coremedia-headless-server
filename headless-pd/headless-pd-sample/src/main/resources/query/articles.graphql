@@ -1,0 +1,33 @@
+#!query name=articles view=default type=CMArticleImpl
+
+query ArticleQuery {
+
+  ... ContentInfo
+
+  title
+  detailText(view: "detail")
+  teaserTitle
+  teaserText(view: "teaser")
+  pictures {
+    ... ContentInfo
+
+    title
+    alt
+    link
+  }
+  context {
+    ... ContentInfo
+  }
+  navigationPath {
+    ... ContentInfo
+  }
+}
+
+
+fragment ContentInfo on Content_ {
+  __typename
+  __baseinterface
+  _id
+  _name
+  _type
+}

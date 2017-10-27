@@ -1,0 +1,69 @@
+#!query name=sites view=navigation type=CMSiteImpl
+
+query NavigationQuery {
+
+  ... ContentInfo
+
+  id
+  name
+  languageId
+  root {
+    ... NavigationEntry
+    ... on CMNavigation {
+      hidden
+      hiddenInSitemap
+      children {
+        ... NavigationEntry
+        ... on CMNavigation {
+          hidden
+          hiddenInSitemap
+          children {
+            ... NavigationEntry
+            ... on CMNavigation {
+              hidden
+              hiddenInSitemap
+              children {
+                ... NavigationEntry
+                ... on CMNavigation {
+                  hidden
+                  hiddenInSitemap
+                  children {
+                    ... NavigationEntry
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+
+fragment NavigationEntry on CMLinkable {
+  ... ContentInfo
+
+  title
+  ref: this {
+    ... Reference
+  }
+}
+
+
+fragment Reference on CMLinkable {
+  ... ContentInfo
+
+  title
+  segment
+  link
+}
+
+
+fragment ContentInfo on Content_ {
+  __typename
+  __baseinterface
+  _id
+  _name
+  _type
+}

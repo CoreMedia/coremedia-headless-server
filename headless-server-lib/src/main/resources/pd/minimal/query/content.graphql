@@ -1,0 +1,11 @@
+#!query name=content view=default type=Content_Impl
+
+query ContentQuery {
+
+  __typename
+  __baseinterface
+
+  _id
+  _name
+  _type
+}

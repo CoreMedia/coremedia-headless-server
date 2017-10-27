@@ -1,0 +1,27 @@
+#!import file=include/elements.yml
+#!import file=include/classes.yml
+#!import file=include/attributes.yml
+
+name: teaser
+
+writerFactory: !StringWriterFactory {}
+
+contexts:
+  - !RootContext
+    name: ignoreall
+
+  - !Context
+    name: plaintext
+    defaultHandler:
+      !Handler
+      outputHandler: !ElementWriter {writeCharacters: true}
+
+  - &root !RootContext
+    name: root
+    handlers:
+      - - !Handler
+          eventMatcher:   !Matcher {qname: *p}
+          contextHandler: !ReplacePush {contextName: plaintext, replacementName: ignoreall}
+          outputHandler:  !ElementWriter {writeCharacters: true}
+
+initialContext: *root

@@ -1,0 +1,7 @@
+name: CMTeaserImpl
+customFields:
+  - !CustomField
+    name: teaserTarget
+    sourceName: (target)
+    targetType: CMLinkable
+    dataFetcher: Link

@@ -1,0 +1,23 @@
+classes:
+  - &headline_styles !!java.util.ArrayList
+    - &headline_1_style p--heading-1
+    - &headline_2_style p--heading-2
+    - &headline_3_style p--heading-3
+    - &headline_4_style p--heading-4
+    - &headline_5_style p--heading-5
+    - &headline_6_style p--heading-6
+
+  - &inline_styles !!java.util.ArrayList
+    - &strike_style    strike
+    - &underline_style underline
+
+  - &align_styles !!java.util.ArrayList
+    - &align_left_style    align--left
+    - &align_right_style   align--right
+    - &align_enter_style   align--center
+    - &align_justify_style align--justify
+
+  - &float_styles !!java.util.ArrayList
+    - &float_left_style  float--left
+    - &float_right_style float--right
+    - &float_none_style  float--none

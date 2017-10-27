@@ -1,0 +1,19 @@
+#!query name=sites view=default type=CMSiteImpl
+
+query SiteQuery {
+
+  ... ContentInfo
+
+  id
+  name
+  languageId
+}
+
+
+fragment ContentInfo on Content_ {
+  __typename
+  __baseinterface
+  _id
+  _name
+  _type
+}

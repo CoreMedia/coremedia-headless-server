@@ -1,0 +1,31 @@
+!InterfaceType
+name: Content_
+fields:
+  - !Meta
+    name: __baseinterface
+    typeName: String
+    nonNull: true
+  - !Meta
+    name: __interfaces
+    typeName: List:String
+    nonNull: true
+  - !Builtin
+    name: _id
+    sourceName: id
+    typeName: String
+    nonNull: true
+  - !Builtin
+    name: _name
+    sourceName: name
+    typeName: String
+    nonNull: true
+  - !Builtin
+    name: _type
+    sourceName: type.name
+    typeName: String
+    nonNull: true
+  - !Builtin
+    name: this
+    typeName: Content_
+    nonNull: true
+

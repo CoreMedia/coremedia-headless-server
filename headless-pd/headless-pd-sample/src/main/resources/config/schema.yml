@@ -1,0 +1,14 @@
+includedTypes:
+  - Content_
+  - CMArticle
+  - CMCollection
+  - CMImage
+  - CMLinkable
+  - CMLocalized
+  - CMMedia
+  - CMNavigation
+  - CMObject
+  - CMPicture
+  - CMSite
+  - CMTeasable
+  - CMTeaser
