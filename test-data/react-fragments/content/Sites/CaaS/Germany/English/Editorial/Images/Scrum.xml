@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CMPicture folder="/Sites/CaaS/Germany/English/Editorial/Images" name="Scrum" xmlns:cmexport="http://www.coremedia.com/2012/cmexport">
+<locale>en-DE</locale>
+<master/>
+<viewtype/>
+<localSettings><Struct xmlns="http://www.coremedia.com/2008/struct" xmlns:xlink="http://www.w3.org/1999/xlink">
+<StructProperty Name="transforms">
+<Struct>
+<StringProperty Name="portrait_ratio1x1">b;a=0;c=1/crop;x=395;y=0;width=1333;height=1333</StringProperty>
+<StringProperty Name="landscape_ratio16x9">b;a=0;c=1/crop;x=0;y=76;width=2000;height=1125</StringProperty>
+<StringProperty Name="landscape_ratio3x2">b;a=0;c=1/crop;x=0;y=0;width=1999;height=1333</StringProperty>
+<StringProperty Name="landscape_ratio4x1">b;a=0;c=1/crop;x=0;y=257;width=2000;height=500</StringProperty>
+</Struct>
+</StructProperty>
+<StructProperty Name="isDefault">
+<Struct>
+<StringProperty Name="portrait_ratio1x1">false</StringProperty>
+<StringProperty Name="landscape_ratio16x9">false</StringProperty>
+<StringProperty Name="landscape_ratio4x1">false</StringProperty>
+</Struct>
+</StructProperty>
+<StructProperty Name="relative">
+<Struct>
+<StringProperty Name="portrait_ratio1x1">position;x1=0.19747899159663865;y1=0;x2=0.8639789915966386;y2=1</StringProperty>
+<StringProperty Name="landscape_ratio16x9">position;x1=0;y1=0.056782334384858045;x2=1;y2=0.9007433246324201</StringProperty>
+<StringProperty Name="landscape_ratio4x1">position;x1=0;y1=0.19242902208201892;x2=1;y2=0.5675227955253798</StringProperty>
+</Struct>
+</StructProperty>
+</Struct></localSettings>
+<linkedSettings/>
+<resourceBundles2/>
+<segment></segment>
+<title>Scrum</title>
+<htmlTitle></htmlTitle>
+<keywords></keywords>
+<htmlDescription></htmlDescription>
+<subjectTaxonomy/>
+<locationTaxonomy/>
+<contexts/>
+<teaserTitle></teaserTitle>
+<pictures/>
+<related/>
+<alt>Scrum</alt>
+<copyright></copyright>
+<dataUrl></dataUrl>
+<width>2000</width>
+<height>1333</height>
+<data href="Scrum.data.jpeg" mimetype="image/jpeg"/>
+<asset/>
+</CMPicture>

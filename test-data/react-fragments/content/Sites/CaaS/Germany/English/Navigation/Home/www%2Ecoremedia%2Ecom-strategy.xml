@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CMExternalLink folder="/Sites/CaaS/Germany/English/Navigation/Home" name="www.coremedia.com-strategy" xmlns:cmexport="http://www.coremedia.com/2012/cmexport">
+<locale>en-DE</locale>
+<master/>
+<viewtype/>
+<linkedSettings/>
+<resourceBundles2/>
+<segment></segment>
+<title></title>
+<htmlTitle></htmlTitle>
+<keywords></keywords>
+<htmlDescription></htmlDescription>
+<subjectTaxonomy/>
+<locationTaxonomy/>
+<contexts/>
+<teaserTitle>Strategy</teaserTitle>
+<teaserText grammarName="coremedia-richtext-1.0"><div xmlns="http://www.coremedia.com/2003/richtext-1.0" xmlns:xlink="http://www.w3.org/1999/xlink"><p>We bring years of expertise to connect our technology to your business objectives and vision.</p></div></teaserText>
+<pictures><link href="../../Editorial/Images/Scrum.xml" path="/Sites/CaaS/Germany/English/Editorial/Images/Scrum"/></pictures>
+<related/>
+<url>https://www.coremedia.com/en/services/professional-services</url>
+</CMExternalLink>

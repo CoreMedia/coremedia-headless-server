@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CMExternalLink folder="/Sites/CaaS/Germany/English/Navigation/Home" name="www.coremedia.com-platform" xmlns:cmexport="http://www.coremedia.com/2012/cmexport">
+<locale>en-DE</locale>
+<master/>
+<viewtype/>
+<linkedSettings/>
+<resourceBundles2/>
+<segment></segment>
+<title></title>
+<htmlTitle></htmlTitle>
+<keywords></keywords>
+<htmlDescription></htmlDescription>
+<subjectTaxonomy/>
+<locationTaxonomy/>
+<contexts/>
+<teaserTitle>The CoreMedia Content Experience Platform</teaserTitle>
+<teaserText grammarName="coremedia-richtext-1.0"><div xmlns="http://www.coremedia.com/2003/richtext-1.0" xmlns:xlink="http://www.w3.org/1999/xlink"><p>Manage content, master digital media &amp; handle eCommerce integrations with ease.</p></div></teaserText>
+<pictures><link href="../../Editorial/Images/Lego.xml" path="/Sites/CaaS/Germany/English/Editorial/Images/Lego"/></pictures>
+<related/>
+<url>https://www.coremedia.com/en/platform</url>
+</CMExternalLink>

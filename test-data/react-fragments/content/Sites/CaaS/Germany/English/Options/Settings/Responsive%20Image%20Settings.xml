@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CMSettings folder="/Sites/CaaS/Germany/English/Options/Settings" name="Responsive Image Settings" xmlns:cmexport="http://www.coremedia.com/2012/cmexport">
+<locale></locale>
+<master/>
+<settings><Struct xmlns="http://www.coremedia.com/2008/struct" xmlns:xlink="http://www.w3.org/1999/xlink">
+<StringProperty Name="responsiveImageSettingsDescription">Default CaaS Responsive Image Ratios/Resolutions</StringProperty>
+<BooleanProperty Name="enableRetinaImages">false</BooleanProperty>
+<StructProperty Name="responsiveImageSettings">
+<Struct>
+<StructProperty Name="portrait_ratio1x1">
+<Struct>
+<IntProperty Name="widthRatio">1</IntProperty>
+<IntProperty Name="heightRatio">1</IntProperty>
+<IntProperty Name="minWidth">320</IntProperty>
+<IntProperty Name="minHeight">320</IntProperty>
+<IntProperty Name="previewWidth">320</IntProperty>
+<StructProperty Name="0">
+<Struct>
+<IntProperty Name="width">320</IntProperty>
+<IntProperty Name="height">320</IntProperty>
+</Struct>
+</StructProperty>
+<StructProperty Name="1">
+<Struct>
+<IntProperty Name="width">480</IntProperty>
+<IntProperty Name="height">480</IntProperty>
+</Struct>
+</StructProperty>
+<StructProperty Name="2">
+<Struct>
+<IntProperty Name="width">768</IntProperty>
+<IntProperty Name="height">768</IntProperty>
+</Struct>
+</StructProperty>
+<StructProperty Name="3">
+<Struct>
+<IntProperty Name="width">992</IntProperty>
+<IntProperty Name="height">992</IntProperty>
+</Struct>
+</StructProperty>
+<StructProperty Name="4">
+<Struct>
+<IntProperty Name="width">1200</IntProperty>
+<IntProperty Name="height">1200</IntProperty>
+</Struct>
+</StructProperty>
+</Struct>
+</StructProperty>
+<StructProperty Name="landscape_ratio16x9">
+<Struct>
+<IntProperty Name="widthRatio">16</IntProperty>
+<IntProperty Name="heightRatio">9</IntProperty>
+<IntProperty Name="minWidth">320</IntProperty>
+<IntProperty Name="minHeight">180</IntProperty>
+<IntProperty Name="previewWidth">320</IntProperty>
+<StructProperty Name="0">
+<Struct>
+<IntProperty Name="width">320</IntProperty>
+<IntProperty Name="height">180</IntProperty>
+</Struct>
+</StructProperty>
+<StructProperty Name="1">
+<Struct>
+<IntProperty Name="width">480</IntProperty>
+<IntProperty Name="height">270</IntProperty>
+</Struct>
+</StructProperty>
+<StructProperty Name="2">
+<Struct>
+<IntProperty Name="width">768</IntProperty>
+<IntProperty Name="height">432</IntProperty>
+</Struct>
+</StructProperty>
+<StructProperty Name="3">
+<Struct>
+<IntProperty Name="width">992</IntProperty>
+<IntProperty Name="height">558</IntProperty>
+</Struct>
+</StructProperty>
+<StructProperty Name="4">
+<Struct>
+<IntProperty Name="width">1200</IntProperty>
+<IntProperty Name="height">675</IntProperty>
+</Struct>
+</StructProperty>
+</Struct>
+</StructProperty>
+<StructProperty Name="landscape_ratio3x2">
+<Struct>
+<IntProperty Name="widthRatio">3</IntProperty>
+<IntProperty Name="heightRatio">2</IntProperty>
+<IntProperty Name="minWidth">320</IntProperty>
+<IntProperty Name="minHeight">240</IntProperty>
+<IntProperty Name="previewWidth">320</IntProperty>
+<StructProperty Name="0">
+<Struct>
+<IntProperty Name="width">320</IntProperty>
+<IntProperty Name="height">240</IntProperty>
+</Struct>
+</StructProperty>
+<StructProperty Name="1">
+<Struct>
+<IntProperty Name="width">480</IntProperty>
+<IntProperty Name="height">320</IntProperty>
+</Struct>
+</StructProperty>
+<StructProperty Name="2">
+<Struct>
+<IntProperty Name="width">768</IntProperty>
+<IntProperty Name="height">512</IntProperty>
+</Struct>
+</StructProperty>
+<StructProperty Name="3">
+<Struct>
+<IntProperty Name="width">992</IntProperty>
+<IntProperty Name="height">661</IntProperty>
+</Struct>
+</StructProperty>
+<StructProperty Name="4">
+<Struct>
+<IntProperty Name="width">1200</IntProperty>
+<IntProperty Name="height">800</IntProperty>
+</Struct>
+</StructProperty>
+</Struct>
+</StructProperty>
+<StructProperty Name="landscape_ratio4x1">
+<Struct>
+<IntProperty Name="widthRatio">4</IntProperty>
+<IntProperty Name="heightRatio">1</IntProperty>
+<IntProperty Name="minWidth">320</IntProperty>
+<IntProperty Name="minHeight">80</IntProperty>
+<IntProperty Name="previewWidth">320</IntProperty>
+<StructProperty Name="0">
+<Struct>
+<IntProperty Name="width">320</IntProperty>
+<IntProperty Name="height">80</IntProperty>
+</Struct>
+</StructProperty>
+<StructProperty Name="1">
+<Struct>
+<IntProperty Name="width">480</IntProperty>
+<IntProperty Name="height">120</IntProperty>
+</Struct>
+</StructProperty>
+<StructProperty Name="2">
+<Struct>
+<IntProperty Name="width">768</IntProperty>
+<IntProperty Name="height">192</IntProperty>
+</Struct>
+</StructProperty>
+<StructProperty Name="3">
+<Struct>
+<IntProperty Name="width">992</IntProperty>
+<IntProperty Name="height">248</IntProperty>
+</Struct>
+</StructProperty>
+<StructProperty Name="4">
+<Struct>
+<IntProperty Name="width">1200</IntProperty>
+<IntProperty Name="height">300</IntProperty>
+</Struct>
+</StructProperty>
+</Struct>
+</StructProperty>
+</Struct>
+</StructProperty>
+</Struct></settings>
+<identifier></identifier>
+</CMSettings>

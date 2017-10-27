@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CMFolderProperties folder="/Sites/CaaS/Germany/English" name="_folderProperties" xmlns:cmexport="http://www.coremedia.com/2012/cmexport">
+<locale>en-DE</locale>
+<master/>
+<contexts><link href="Navigation/CaaS%20Start%20Page.xml" path="/Sites/CaaS/Germany/English/Navigation/CaaS%20Start%20Page"/></contexts>
+</CMFolderProperties>
