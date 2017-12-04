@@ -16,11 +16,20 @@ query ArticleQuery {
     link
   }
   context {
-    ... ContentInfo
+    ... Reference
   }
   navigationPath {
-    ... ContentInfo
+    ... Reference
   }
+}
+
+
+fragment Reference on CMLinkable {
+  ... ContentInfo
+
+  title
+  segment
+  link
 }
 
 

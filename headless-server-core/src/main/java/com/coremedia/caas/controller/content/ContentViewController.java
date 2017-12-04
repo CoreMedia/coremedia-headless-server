@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @RestController
-@CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.OPTIONS}, allowedHeaders = {"authorization", "content-type"})
+@CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.OPTIONS}, allowedHeaders = {"authorization", "content-type", "x-requested-with"})
 @RequestMapping("/caas/v1/{tenantId}/sites/{siteId}")
 public class ContentViewController extends AbstractController {
 

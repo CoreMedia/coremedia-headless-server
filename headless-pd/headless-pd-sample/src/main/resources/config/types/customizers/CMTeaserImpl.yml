@@ -1,6 +1,16 @@
 name: CMTeaserImpl
 customFields:
   - !CustomField
+    name: link
+    sourceName: (target)
+    targetType: String
+    dataFetcher: Uri
+  - !CustomField
+    name: segment
+    sourceName: (target).(segment)
+    targetType: String
+    dataFetcher: Property
+  - !CustomField
     name: teaserTarget
     sourceName: (target)
     targetType: CMLinkable

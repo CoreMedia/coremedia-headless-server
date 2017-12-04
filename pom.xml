@@ -2,6 +2,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>1.5.4.RELEASE</version>
+  </parent>
+
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.coremedia.labs</groupId>
@@ -18,22 +25,33 @@
     <compile.source.jdk>1.8</compile.source.jdk>
     <compile.target.jdk>1.8</compile.target.jdk>
 
-    <coremedia.version>1707.1</coremedia.version>
-    <spring.boot.version>1.3.6.RELEASE</spring.boot.version>
+    <coremedia.version>1707.3</coremedia.version>
+    <spring.boot.version>1.5.4.RELEASE</spring.boot.version>
     <stringtemplate.version>4.0.8</stringtemplate.version>
     <graphql.java.version>4.2</graphql.java.version>
     <snakeyaml.version>1.18</snakeyaml.version>
-    <swagger.version>2.4.0</swagger.version>
-    <tomcat.version>8.0.36</tomcat.version>
+    <swagger.version>2.7.0</swagger.version>
     <validation.api.version>2.0.0.Final</validation.api.version>
+    <spring.cloud.spectator.version>1.3.5.RELEASE</spring.cloud.spectator.version>
+    <netflix.spectator.version>0.58.2</netflix.spectator.version>
+    <metrics.version>3.2.3</metrics.version>
 
     <maven.dependency.plugin.version>3.0.0</maven.dependency.plugin.version>
     <maven.surefire.plugin.version>2.19.1</maven.surefire.plugin.version>
     <maven.compiler.plugin.version>3.6.0</maven.compiler.plugin.version>
     <maven.properties.plugin.version>1.0.0</maven.properties.plugin.version>
-    <maven.tomcat7.plugin.version>2.2</maven.tomcat7.plugin.version>
     <maven.war.plugin.version>3.0.0</maven.war.plugin.version>
     <maven.resources.plugin.version>3.0.2</maven.resources.plugin.version>
+    <maven.cargo.plugin.version>1.6.5</maven.cargo.plugin.version>
+
+    <!-- run with CoreMedia default Tomcat version -->
+    <tomcat.id>tomcat7x</tomcat.id>
+    <tomcat.version>7.0.79</tomcat.version>
+    <!-- run with Spring Boot default Tomcat version, also remove the dependency on tomcat-juli from the headless-server-app module -->
+    <!--
+    <tomcat.id>tomcat8x</tomcat.id>
+    <tomcat.version>8.5.15</tomcat.version>
+    -->
   </properties>
 
   <prerequisites>
@@ -44,6 +62,7 @@
     <module>headless-schema-generator</module>
     <module>headless-pd</module>
     <module>headless-server-lib</module>
+    <module>headless-server-core</module>
     <module>headless-server-app</module>
     <module>headless-server-webapp</module>
     <module>headless-performance-test</module>
@@ -59,39 +78,39 @@
         <scope>import</scope>
       </dependency>
       <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot</artifactId>
-        <version>${spring.boot.version}</version>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-starter-spectator</artifactId>
+        <version>${spring.cloud.spectator.version}</version>
       </dependency>
       <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-autoconfigure</artifactId>
-        <version>${spring.boot.version}</version>
+        <groupId>com.netflix.spectator</groupId>
+        <artifactId>spectator-api</artifactId>
+        <version>${netflix.spectator.version}</version>
       </dependency>
       <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter</artifactId>
-        <version>${spring.boot.version}</version>
+        <groupId>com.netflix.spectator</groupId>
+        <artifactId>spectator-reg-servo</artifactId>
+        <version>${netflix.spectator.version}</version>
       </dependency>
       <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-tomcat</artifactId>
-        <version>${spring.boot.version}</version>
+        <groupId>com.netflix.spectator</groupId>
+        <artifactId>spectator-reg-metrics3</artifactId>
+        <version>${netflix.spectator.version}</version>
       </dependency>
       <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-web</artifactId>
-        <version>${spring.boot.version}</version>
+        <groupId>io.dropwizard.metrics</groupId>
+        <artifactId>metrics-core</artifactId>
+        <version>${metrics.version}</version>
       </dependency>
       <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-test</artifactId>
-        <version>${spring.boot.version}</version>
+        <groupId>io.springfox</groupId>
+        <artifactId>springfox-swagger2</artifactId>
+        <version>${swagger.version}</version>
       </dependency>
       <dependency>
-        <groupId>org.apache.tomcat.embed</groupId>
-        <artifactId>tomcat-embed-core</artifactId>
-        <version>${tomcat.version}</version>
+        <groupId>io.springfox</groupId>
+        <artifactId>springfox-swagger-ui</artifactId>
+        <version>${swagger.version}</version>
       </dependency>
       <dependency>
         <groupId>com.graphql-java</groupId>
@@ -131,16 +150,6 @@
         </configuration>
       </plugin>
       <plugin>
-        <groupId>org.apache.tomcat.maven</groupId>
-        <artifactId>tomcat7-maven-plugin</artifactId>
-        <version>${maven.tomcat7.plugin.version}</version>
-      </plugin>
-      <plugin>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-maven-plugin</artifactId>
-        <version>${spring.boot.version}</version>
-      </plugin>
-      <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>properties-maven-plugin</artifactId>
         <version>${maven.properties.plugin.version}</version>
@@ -163,6 +172,11 @@
             </configuration>
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.cargo</groupId>
+        <artifactId>cargo-maven2-plugin</artifactId>
+        <version>${maven.cargo.plugin.version}</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
