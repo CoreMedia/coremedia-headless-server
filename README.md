@@ -1,6 +1,6 @@
 ![Status: Active](https://documentation.coremedia.com/badges/badge_status_active.png "Status: Active")
 ![For CoreMedia CMS](https://documentation.coremedia.com/badges/badge_coremedia_cms.png "For CoreMedia CMS")
-![Tested: 9.1707.1](https://documentation.coremedia.com/badges/badge_tested_coremedia_9-1707-1.png "Tested: 9.1707.1")
+![Tested: 9.1707.3](https://documentation.coremedia.com/badges/badge_tested_coremedia_9-1707-3.png "Tested: 9.1707.3")
 
 ![CoreMedia Labs Logo](https://documentation.coremedia.com/badges/banner_coremedia_labs_wide.png "CoreMedia Labs Logo Title Text")
 
@@ -18,13 +18,24 @@ Integrate ready-to-go content fragments and new dynamic client-side modules into
 ## Workspace Structure
 
 The workspace is comprised of the following modules:
-* **headless-server-lib**: The core library module
-* **headless-server-app**: The Spring Boot Application
-* **headless-server-webapp**: The Spring Boot Application repacked as WAR
+* **headless-server-lib**: The library module
+* **headless-server-core**: The core application module
+* **headless-server-app**: The Spring Boot Application packaged as executable JAR
+* **headless-server-webapp**: The Spring Boot Application packaged as WAR
 * **headless-schema-generator**: The Generator Application for creating a schema definition from the CoreMedia Doctype Model
 * **headless-pd**: Parent module for different processing descriptions (schema/queries etc.)
 * **headless-performance-test**: Simple local performance test using a list of URLs
 * **test-data**: Test content for sample client applications. Must be manually imported into the CoreMedia repository. 
+
+
+## Configuration
+
+### Tomcat
+
+The default configuration runs the Spring Boot application and web application with Tomcat 7, which is the default for the used CMS release.
+
+Tomcat 8 can be configured by changing the properties `tomcat.id` and `tomcat.version` in the main `pom.xml` and removing the dependency
+on `tomcat-juli` in module `headless-server-app`.
 
 
 ## Building an running the server
@@ -47,7 +58,13 @@ Run the server with
 
 or start the Tomcat Webapp
 
-    mvn tomcat7:run -pl headless-server-webapp -Dinstallation.server.host=<CMS-SERVER-HOSTNAME> -Dinstallation.server.port=<CMS-SERVER-PORT>
+    mvn cargo:run -pl headless-server-webapp -Dinstallation.server.host=<CMS-SERVER-HOSTNAME> -Dinstallation.server.port=<CMS-SERVER-PORT>
+
+
+## Testing the API
+
+Test the API with your browser by calling the embedded Swagger UI, i.e. `http://localhost:8080/swagger-ui.html` if running the app locally. 
+Check out the Wiki for more details on the different API calls.
 
 
 *******
