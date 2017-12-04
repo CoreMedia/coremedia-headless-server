@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<CMSettings folder="/Sites/CaaS/Germany/English/Options/Settings/Pagegrid/Layouts" name="PagegridSingleColumn" xmlns:cmexport="http://www.coremedia.com/2012/cmexport">
+<CMSettings folder="/Sites/CaaSsiopeia/Germany/English/Options/Settings/Pagegrid/Layouts" name="Default Layout" xmlns:cmexport="http://www.coremedia.com/2012/cmexport">
 <locale>en-DE</locale>
 <master/>
 <settings><Struct xmlns="http://www.coremedia.com/2008/struct" xmlns:xlink="http://www.w3.org/1999/xlink">
 <IntProperty Name="colCount">12</IntProperty>
 <IntProperty Name="rowCount">3</IntProperty>
-<StringProperty Name="cssClass">caas-single-column</StringProperty>
+<StringProperty Name="cssClass">grid-default</StringProperty>
 <StructListProperty Name="items">
 <Struct>
 <BooleanProperty Name="editable">true</BooleanProperty>
-<LinkProperty Name="section" LinkType="coremedia:///cap/contenttype/CMSymbol" xlink:href="coremedia:///cap/resources/../Placements/header.xml" cmexport:path="/Sites/CaaS/Germany/English/Options/Settings/Pagegrid/Placements/header"/>
+<LinkProperty Name="section" LinkType="coremedia:///cap/contenttype/CMSymbol" xlink:href="coremedia:///cap/resources/../Placements/header.xml" cmexport:path="/Sites/CaaSsiopeia/Germany/English/Options/Settings/Pagegrid/Placements/header"/>
 <IntProperty Name="row">1</IntProperty>
 <IntProperty Name="col">1</IntProperty>
 <IntProperty Name="height">20</IntProperty>
@@ -17,7 +17,8 @@
 <IntProperty Name="colspan">12</IntProperty>
 </Struct>
 <Struct>
-<LinkProperty Name="section" LinkType="coremedia:///cap/contenttype/CMSymbol" xlink:href="coremedia:///cap/resources/../Placements/main.xml" cmexport:path="/Sites/CaaS/Germany/English/Options/Settings/Pagegrid/Placements/main"/>
+<BooleanProperty Name="editable">true</BooleanProperty>
+<LinkProperty Name="section" LinkType="coremedia:///cap/contenttype/CMSymbol" xlink:href="coremedia:///cap/resources/../Placements/main.xml" cmexport:path="/Sites/CaaSsiopeia/Germany/English/Options/Settings/Pagegrid/Placements/main"/>
 <IntProperty Name="row">2</IntProperty>
 <IntProperty Name="col">1</IntProperty>
 <IntProperty Name="height">60</IntProperty>
@@ -26,7 +27,7 @@
 </Struct>
 <Struct>
 <BooleanProperty Name="editable">true</BooleanProperty>
-<LinkProperty Name="section" LinkType="coremedia:///cap/contenttype/CMSymbol" xlink:href="coremedia:///cap/resources/../Placements/footer.xml" cmexport:path="/Sites/CaaS/Germany/English/Options/Settings/Pagegrid/Placements/footer"/>
+<LinkProperty Name="section" LinkType="coremedia:///cap/contenttype/CMSymbol" xlink:href="coremedia:///cap/resources/../Placements/footer.xml" cmexport:path="/Sites/CaaSsiopeia/Germany/English/Options/Settings/Pagegrid/Placements/footer"/>
 <IntProperty Name="row">3</IntProperty>
 <IntProperty Name="col">1</IntProperty>
 <IntProperty Name="height">20</IntProperty>
@@ -34,8 +35,8 @@
 <IntProperty Name="colspan">12</IntProperty>
 </Struct>
 </StructListProperty>
-<StringProperty Name="name">CaaS Single Column Layout</StringProperty>
-<StringProperty Name="description">A single column layout with "main", "header" and "footer" placements.</StringProperty>
+<StringProperty Name="name">Default Layout</StringProperty>
+<StringProperty Name="description">Default page layout that can only be extended with a header and footer banner.</StringProperty>
 </Struct></settings>
 <identifier></identifier>
 </CMSettings>

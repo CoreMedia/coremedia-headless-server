@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CMChannel folder="/Sites/CaaSsiopeia/Germany/English/Navigation" name="CaaS Start Page" xmlns:cmexport="http://www.coremedia.com/2012/cmexport">
+<locale>en-DE</locale>
+<master/>
+<viewtype/>
+<linkedSettings><link href="../Options/Settings/Responsive%20Image%20Settings.xml" path="/Sites/CaaSsiopeia/Germany/English/Options/Settings/Responsive%20Image%20Settings"/></linkedSettings>
+<resourceBundles2/>
+<segment>home</segment>
+<title>CoreMedia CaaS</title>
+<htmlTitle></htmlTitle>
+<keywords></keywords>
+<htmlDescription></htmlDescription>
+<subjectTaxonomy/>
+<locationTaxonomy/>
+<contexts/>
+<teaserTitle></teaserTitle>
+<pictures/>
+<related/>
+<children/>
+<javaScript/>
+<css/>
+<theme/>
+<placement><Struct xmlns="http://www.coremedia.com/2008/struct" xmlns:xlink="http://www.w3.org/1999/xlink">
+<StructProperty Name="placements_2">
+<Struct>
+<LinkProperty Name="layout" LinkType="coremedia:///cap/contenttype/Document_" xlink:href="coremedia:///cap/resources/../Options/Settings/Pagegrid/Layouts/Default%20Layout.xml" cmexport:path="/Sites/CaaSsiopeia/Germany/English/Options/Settings/Pagegrid/Layouts/Default%20Layout"/>
+<StructProperty Name="placements">
+<Struct>
+</Struct>
+</StructProperty>
+</Struct>
+</StructProperty>
+<StructListProperty Name="placements">
+<Struct>
+<LinkListProperty Name="items" LinkType="coremedia:///cap/contenttype/CMTeasable">
+</LinkListProperty>
+<LinkProperty Name="section" LinkType="coremedia:///cap/contenttype/CMSymbol" xlink:href="coremedia:///cap/resources/../Options/Settings/Pagegrid/Placements/header.xml" cmexport:path="/Sites/CaaSsiopeia/Germany/English/Options/Settings/Pagegrid/Placements/header"/>
+</Struct>
+<Struct>
+<LinkListProperty Name="items" LinkType="coremedia:///cap/contenttype/CMTeasable">
+<Link xlink:href="coremedia:///cap/resources/Home/www%2Ecoremedia%2Ecom.xml" cmexport:path="/Sites/CaaSsiopeia/Germany/English/Navigation/Home/www%2Ecoremedia%2Ecom"/>
+<Link xlink:href="coremedia:///cap/resources/Home/www%2Ecoremedia%2Ecom-strategy.xml" cmexport:path="/Sites/CaaSsiopeia/Germany/English/Navigation/Home/www%2Ecoremedia%2Ecom-strategy"/>
+<Link xlink:href="coremedia:///cap/resources/Home/www%2Ecoremedia%2Ecom-implementation.xml" cmexport:path="/Sites/CaaSsiopeia/Germany/English/Navigation/Home/www%2Ecoremedia%2Ecom-implementation"/>
+<Link xlink:href="coremedia:///cap/resources/Home/www%2Ecoremedia%2Ecom-platform.xml" cmexport:path="/Sites/CaaSsiopeia/Germany/English/Navigation/Home/www%2Ecoremedia%2Ecom-platform"/>
+</LinkListProperty>
+<LinkProperty Name="section" LinkType="coremedia:///cap/contenttype/CMSymbol" xlink:href="coremedia:///cap/resources/../Options/Settings/Pagegrid/Placements/main.xml" cmexport:path="/Sites/CaaSsiopeia/Germany/English/Options/Settings/Pagegrid/Placements/main"/>
+</Struct>
+<Struct>
+<LinkListProperty Name="items" LinkType="coremedia:///cap/contenttype/CMTeasable">
+</LinkListProperty>
+<LinkProperty Name="section" LinkType="coremedia:///cap/contenttype/CMSymbol" xlink:href="coremedia:///cap/resources/../Options/Settings/Pagegrid/Placements/footer.xml" cmexport:path="/Sites/CaaSsiopeia/Germany/English/Options/Settings/Pagegrid/Placements/footer"/>
+</Struct>
+</StructListProperty>
+</Struct></placement>
+<header/>
+<footer/>
+</CMChannel>

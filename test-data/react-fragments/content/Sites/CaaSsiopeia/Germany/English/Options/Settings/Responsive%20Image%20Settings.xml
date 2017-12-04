@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<CMSettings folder="/Sites/CaaS/Germany/English/Options/Settings" name="Responsive Image Settings" xmlns:cmexport="http://www.coremedia.com/2012/cmexport">
+<CMSettings folder="/Sites/CaaSsiopeia/Germany/English/Options/Settings" name="Responsive Image Settings" xmlns:cmexport="http://www.coremedia.com/2012/cmexport">
 <locale></locale>
 <master/>
 <settings><Struct xmlns="http://www.coremedia.com/2008/struct" xmlns:xlink="http://www.w3.org/1999/xlink">
-<StringProperty Name="responsiveImageSettingsDescription">Default CaaS Responsive Image Ratios/Resolutions</StringProperty>
-<BooleanProperty Name="enableRetinaImages">false</BooleanProperty>
 <StructProperty Name="responsiveImageSettings">
 <Struct>
 <StructProperty Name="portrait_ratio1x1">

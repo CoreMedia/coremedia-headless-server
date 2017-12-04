@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<CMExternalLink folder="/Sites/CaaS/Germany/English/Navigation/Home" name="www.coremedia.com" xmlns:cmexport="http://www.coremedia.com/2012/cmexport">
+<CMExternalLink folder="/Sites/CaaSsiopeia/Germany/English/Navigation/Home" name="www.coremedia.com" xmlns:cmexport="http://www.coremedia.com/2012/cmexport">
 <locale>en-DE</locale>
 <master/>
 <viewtype/>
@@ -15,7 +15,7 @@
 <contexts/>
 <teaserTitle>Content Management at a new Scale with CoreMedia CaaS</teaserTitle>
 <teaserText grammarName="coremedia-richtext-1.0"><div xmlns="http://www.coremedia.com/2003/richtext-1.0" xmlns:xlink="http://www.w3.org/1999/xlink"><p>Discover the new CoreMedia Headless Services.</p></div></teaserText>
-<pictures><link href="../../Editorial/Images/Globe.xml" path="/Sites/CaaS/Germany/English/Editorial/Images/Globe"/></pictures>
+<pictures><link href="../../Editorial/Images/Globe.xml" path="/Sites/CaaSsiopeia/Germany/English/Editorial/Images/Globe"/></pictures>
 <related/>
 <url>https://www.coremedia.com/</url>
 </CMExternalLink>
