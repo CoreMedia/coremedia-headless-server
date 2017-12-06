@@ -7,7 +7,7 @@ customFields:
     dataFetcher: Uri
   - !CustomField
     name: segment
-    sourceName: (target).(segment)
+    sourceName: (target)[0].(segment)
     targetType: String
     dataFetcher: Property
   - !CustomField
