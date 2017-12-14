@@ -14,6 +14,8 @@ This open-source workspace is the backend side of the CoreMedia Content as a Ser
 CoreMedia CaaS builds on the proven CoreMedia Unified API and leverages modern technologies (Spring Boot, REST, JSON, GraphQL) to deliver CoreMedia content and services to a broad range of applications.
 Integrate ready-to-go content fragments and new dynamic client-side modules into your (non CMS) webpages, build Single-page applications using your favorite framework and seamlessly integrate and reuse content from your CoreMedia CMS or syndicate/publish content using the headless API.
 
+This README contains an overview of the code and how to start the server. For more detailed documentation, see the [wiki](https://github.com/CoreMedia/coremedia-headless-server/wiki). 
+
 
 ## Workspace Structure
 
