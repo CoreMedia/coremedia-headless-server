@@ -14,7 +14,7 @@ public class PageGridDataFetcher extends AbstractPropertyDataFetcher {
 
 
   public PageGridDataFetcher(String sourceName) {
-    super(sourceName);
+    super(sourceName, null);
   }
 
 

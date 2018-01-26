@@ -20,7 +20,7 @@ public class RichtextPropertyField extends AbstractField {
             .name(getName())
             .type(Types.getType(getTypeName(), isNonNull()))
             .argument(new GraphQLArgument("view", Scalars.GraphQLString))
-            .dataFetcher(new RichtextPropertyDataFetcher(getSourceName()))
+            .dataFetcher(new RichtextPropertyDataFetcher(getSourceName(), getFallbackSourceNames()))
             .build());
   }
 }

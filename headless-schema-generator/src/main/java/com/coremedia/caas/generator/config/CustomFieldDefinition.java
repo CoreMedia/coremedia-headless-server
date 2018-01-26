@@ -1,5 +1,8 @@
 package com.coremedia.caas.generator.config;
 
+import java.util.Collections;
+import java.util.List;
+
 public class CustomFieldDefinition implements FieldDefinition {
 
   private boolean nonNull;
@@ -7,6 +10,7 @@ public class CustomFieldDefinition implements FieldDefinition {
   private String name;
   private String targetType;
   private String sourceName;
+  private List<String> fallbackSourceNames;
   private String dataFetcher;
 
 
@@ -44,6 +48,15 @@ public class CustomFieldDefinition implements FieldDefinition {
 
   public void setSourceName(String sourceName) {
     this.sourceName = sourceName;
+  }
+
+  @Override
+  public List<String> getFallbackSourceNames() {
+    return fallbackSourceNames != null ? fallbackSourceNames : Collections.emptyList();
+  }
+
+  public void setFallbackSourceNames(List<String> fallbackSourceNames) {
+    this.fallbackSourceNames = fallbackSourceNames;
   }
 
 

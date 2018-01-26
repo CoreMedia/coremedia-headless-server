@@ -1,5 +1,7 @@
 package com.coremedia.caas.schema;
 
+import java.util.List;
+
 public interface FieldDefinition {
 
   boolean isNonNull();
@@ -7,6 +9,8 @@ public interface FieldDefinition {
   String getName();
 
   String getSourceName();
+
+  List<String> getFallbackSourceNames();
 
   String getTypeName();
 }

@@ -3,10 +3,18 @@ field(fieldDefinition) ::= <<
 >>
 
 
+fallbackSources(fallbackSourceNames) ::= <<
+<if(!(fallbackSourceNames.empty))>
+fallbackSourceNames:
+  - <fallbackSourceNames;separator="\n  - "><endif>
+>>
+
+
 property(fieldDefinition) ::= <<
   - !Property
     name: <fieldDefinition.name>
     sourceName: <fieldDefinition.sourceName>
+    <fallbackSources(fieldDefinition.fallbackSourceNames)>
     typeName: <fieldDefinition.targetType>
     <if(fieldDefinition.nonNull)>nonNull: true<endif>
 
@@ -24,6 +32,7 @@ date(fieldDefinition) ::= <<
   - !Property
     name: <fieldDefinition.name>
     sourceName: <fieldDefinition.sourceName>
+    <fallbackSources(fieldDefinition.fallbackSourceNames)>
     typeName: String
     <if(fieldDefinition.nonNull)>nonNull: true<endif>
 
@@ -33,6 +42,7 @@ link(fieldDefinition) ::= <<
   - !Link
     name: <fieldDefinition.name>
     sourceName: <fieldDefinition.sourceName>
+    <fallbackSources(fieldDefinition.fallbackSourceNames)>
     typeName: <fieldDefinition.targetType>
     <if(fieldDefinition.nonNull)>nonNull: true<endif>
 
@@ -42,6 +52,7 @@ linklist(fieldDefinition) ::= <<
   - !Linklist
     name: <fieldDefinition.name>
     sourceName: <fieldDefinition.sourceName>
+    <fallbackSources(fieldDefinition.fallbackSourceNames)>
     typeName: List:<fieldDefinition.targetType>
     <if(fieldDefinition.nonNull)>nonNull: true<endif>
 
@@ -59,6 +70,7 @@ richtext(fieldDefinition) ::= <<
   - !Richtext
     name: <fieldDefinition.name>
     sourceName: <fieldDefinition.sourceName>
+    <fallbackSources(fieldDefinition.fallbackSourceNames)>
     typeName: String
     <if(fieldDefinition.nonNull)>nonNull: true<endif>
 

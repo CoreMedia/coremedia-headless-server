@@ -13,7 +13,7 @@ public class StructPropertyDataFetcher extends AbstractPropertyDataFetcher {
 
 
   public StructPropertyDataFetcher(String sourceName) {
-    super(sourceName);
+    super(sourceName, null);
   }
 
 

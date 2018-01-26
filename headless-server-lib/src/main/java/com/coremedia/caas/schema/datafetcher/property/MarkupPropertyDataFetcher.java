@@ -13,7 +13,7 @@ public class MarkupPropertyDataFetcher extends AbstractPropertyDataFetcher {
 
 
   public MarkupPropertyDataFetcher(String sourceName) {
-    super(sourceName);
+    super(sourceName, null);
   }
 
 

@@ -18,7 +18,7 @@ public class ContentPropertyField extends AbstractField {
     return ImmutableList.of(newFieldDefinition()
             .name(getName())
             .type(Types.getType(getTypeName(), isNonNull()))
-            .dataFetcher(new ConvertingDataFetcher(getTypeName(), new ContentPropertyDataFetcher(getSourceName())))
+            .dataFetcher(new ConvertingDataFetcher(getTypeName(), new ContentPropertyDataFetcher(getSourceName(), getFallbackSourceNames())))
             .build());
   }
 }

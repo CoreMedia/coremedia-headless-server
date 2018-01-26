@@ -1,14 +1,25 @@
 package com.coremedia.caas.schema.util;
 
 import com.coremedia.cap.content.Content;
+import com.coremedia.xml.Markup;
+import com.coremedia.xml.MarkupUtil;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.beanutils.expression.DefaultResolver;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
 public class PropertyUtil {
+
+  public static boolean isNullOrEmpty(Object value) {
+    return (value == null) ||
+           (value instanceof String && ((String) value).isEmpty()) ||
+           (value instanceof Collection && ((Collection) value).isEmpty()) ||
+           (value instanceof Markup && MarkupUtil.isEmptyRichtext((Markup) value, true));
+  }
+
 
   @SuppressWarnings("unchecked")
   public static <E> E get(Object source, String propertyPath) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {

@@ -17,7 +17,7 @@ public class LinklistPropertyField extends AbstractField {
     return ImmutableList.of(newFieldDefinition()
             .name(getName())
             .type(Types.getType(getTypeName(), isNonNull()))
-            .dataFetcher(new LinklistPropertyDataFetcher(getSourceName(), Types.getBaseTypeName(getTypeName())))
+            .dataFetcher(new LinklistPropertyDataFetcher(getSourceName(), getFallbackSourceNames(), Types.getBaseTypeName(getTypeName())))
             .build());
   }
 }

@@ -5,6 +5,9 @@ import com.coremedia.cap.common.XmlGrammar;
 import com.coremedia.cap.common.descriptors.LinkPropertyDescriptor;
 import com.coremedia.cap.common.descriptors.MarkupPropertyDescriptor;
 
+import java.util.Collections;
+import java.util.List;
+
 public class DocumentFieldDefinition implements FieldDefinition {
 
   private static final String COREMEDIA_RICHTEXT = "coremedia-richtext-1.0";
@@ -34,6 +37,11 @@ public class DocumentFieldDefinition implements FieldDefinition {
   @Override
   public String getSourceName() {
     return "(" + getName() + ")";
+  }
+
+  @Override
+  public List<String> getFallbackSourceNames() {
+    return Collections.emptyList();
   }
 
 

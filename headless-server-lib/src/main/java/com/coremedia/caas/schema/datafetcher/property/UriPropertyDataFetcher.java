@@ -13,7 +13,7 @@ public class UriPropertyDataFetcher extends AbstractPropertyDataFetcher {
 
 
   public UriPropertyDataFetcher(String sourceName) {
-    super(sourceName);
+    super(sourceName, null);
   }
 
 

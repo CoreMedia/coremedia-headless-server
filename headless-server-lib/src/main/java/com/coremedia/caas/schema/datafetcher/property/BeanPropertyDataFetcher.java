@@ -12,7 +12,7 @@ public class BeanPropertyDataFetcher extends AbstractPropertyDataFetcher {
 
 
   public BeanPropertyDataFetcher(String sourceName) {
-    super(sourceName);
+    super(sourceName, null);
   }
 
 

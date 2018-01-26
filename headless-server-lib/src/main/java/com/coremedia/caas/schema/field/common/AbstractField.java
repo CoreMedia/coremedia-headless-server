@@ -4,13 +4,16 @@ import com.coremedia.caas.schema.FieldBuilder;
 import com.coremedia.caas.schema.FieldDefinition;
 import com.google.common.base.MoreObjects;
 
+import java.util.List;
+
 public abstract class AbstractField implements FieldDefinition, FieldBuilder {
 
-  protected boolean nonNull;
+  private boolean nonNull;
 
-  protected String name;
-  protected String sourceName;
-  protected String typeName;
+  private String name;
+  private String sourceName;
+  private List<String> fallbackSourceNames;
+  private String typeName;
 
 
   @Override
@@ -41,6 +44,15 @@ public abstract class AbstractField implements FieldDefinition, FieldBuilder {
   }
 
   @Override
+  public List<String> getFallbackSourceNames() {
+    return fallbackSourceNames;
+  }
+
+  public void setFallbackSourceNames(List<String> fallbackSourceNames) {
+    this.fallbackSourceNames = fallbackSourceNames;
+  }
+
+  @Override
   public String getTypeName() {
     return typeName;
   }
@@ -55,6 +67,7 @@ public abstract class AbstractField implements FieldDefinition, FieldBuilder {
     return MoreObjects.toStringHelper(this)
             .add("name", name)
             .add("sourceName", sourceName)
+            .add("fallbackSourceNames", fallbackSourceNames)
             .add("typeName", typeName)
             .add("nonNull", nonNull)
             .toString();

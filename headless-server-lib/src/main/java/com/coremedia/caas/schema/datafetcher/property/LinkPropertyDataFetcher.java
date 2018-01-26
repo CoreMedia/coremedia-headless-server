@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
+import java.util.List;
 
 public class LinkPropertyDataFetcher extends AbstractPropertyDataFetcher {
 
@@ -16,8 +17,8 @@ public class LinkPropertyDataFetcher extends AbstractPropertyDataFetcher {
   private String baseTypeName;
 
 
-  public LinkPropertyDataFetcher(String sourceName, String baseTypeName) {
-    super(sourceName);
+  public LinkPropertyDataFetcher(String sourceName, List<String> fallbackSourceNames, String baseTypeName) {
+    super(sourceName, fallbackSourceNames);
     this.baseTypeName = baseTypeName;
   }
 

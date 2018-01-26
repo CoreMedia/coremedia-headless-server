@@ -9,14 +9,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 
 public class RichtextPropertyDataFetcher extends AbstractPropertyDataFetcher {
 
   private static final Logger LOG = LoggerFactory.getLogger(RichtextPropertyDataFetcher.class);
 
 
-  public RichtextPropertyDataFetcher(String sourceName) {
-    super(sourceName);
+  public RichtextPropertyDataFetcher(String sourceName, List<String> fallbackSourceNames) {
+    super(sourceName, fallbackSourceNames);
   }
 
 

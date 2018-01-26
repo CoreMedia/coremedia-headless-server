@@ -1,5 +1,7 @@
 package com.coremedia.caas.generator.config;
 
+import java.util.List;
+
 public class ConstantDefinition implements FieldDefinition {
 
   public static final String TYPE_NAME = "Constant";
@@ -46,6 +48,11 @@ public class ConstantDefinition implements FieldDefinition {
   @Override
   public String getSourceName() {
     throw new IllegalArgumentException("Constant value cannot have a source");
+  }
+
+  @Override
+  public List<String> getFallbackSourceNames() {
+    throw new IllegalArgumentException("Constant value cannot have fallback sources");
   }
 
   @Override
