@@ -7,10 +7,21 @@ public class ConstantDefinition implements FieldDefinition {
   public static final String TYPE_NAME = "Constant";
 
 
+  private boolean nonNull;
+
   private String name;
   private String targetType;
   private Object value;
 
+
+  @Override
+  public boolean isNonNull() {
+    return nonNull;
+  }
+
+  public void setNonNull(boolean nonNull) {
+    this.nonNull = nonNull;
+  }
 
   @Override
   public String getName() {
@@ -36,12 +47,6 @@ public class ConstantDefinition implements FieldDefinition {
 
   public void setValue(Object value) {
     this.value = value;
-  }
-
-
-  @Override
-  public boolean isNonNull() {
-    return true;
   }
 
 
