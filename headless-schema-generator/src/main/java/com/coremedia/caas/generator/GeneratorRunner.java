@@ -71,7 +71,7 @@ public class GeneratorRunner implements ApplicationRunner {
     }
 
     // copy static interfaces and objects
-    copyResources("file:" + configPath + "/types/static/*.yml");
+    copyResources("file:" + configPath + "/types/static/**/*.yml");
 
     System.exit(0);
   }

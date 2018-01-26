@@ -50,7 +50,7 @@ public class ConfigReader {
 
   private List<TypeCustomization> readTypeCustomizations() throws IOException {
     PathMatchingResourcePatternResolver loader = new PathMatchingResourcePatternResolver();
-    Resource[] resources = loader.getResources("file:" + configPath + "/types/customizers/*.yml");
+    Resource[] resources = loader.getResources("file:" + configPath + "/types/customizers/**/*.yml");
 
     Constructor constructor = new Constructor();
     constructor.addTypeDescription(new TypeDescription(ConstantDefinition.class, new Tag("!Constant")));
