@@ -23,3 +23,17 @@ customFields:
     sourceName: (pictures)
     targetType: CMPicture
     dataFetcher: Link
+  - !CustomField
+    name: teaserText
+    sourceName: (teaserText)
+    fallbackSourceNames:
+      - (detailText)
+    targetType: String
+    dataFetcher: Richtext
+  - !CustomField
+    name: teaserTitle
+    sourceName: (teaserTitle)
+    fallbackSourceNames:
+      - (title)
+    targetType: String
+    dataFetcher: Property

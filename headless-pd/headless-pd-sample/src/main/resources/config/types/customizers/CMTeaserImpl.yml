@@ -15,3 +15,19 @@ customFields:
     sourceName: (target)
     targetType: CMLinkable
     dataFetcher: Link
+  - !CustomField
+    name: teaserText
+    sourceName: (teaserText)
+    fallbackSourceNames:
+      - (target)[0].(teaserText)
+      - (target)[0].(detailText)
+    targetType: String
+    dataFetcher: Richtext
+  - !CustomField
+    name: teaserTitle
+    sourceName: (teaserTitle)
+    fallbackSourceNames:
+      - (target)[0].(teaserTitle)
+      - (target)[0].(title)
+    targetType: String
+    dataFetcher: Property
