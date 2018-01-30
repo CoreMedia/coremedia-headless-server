@@ -1,0 +1,5 @@
+name: CMMediaImpl
+customFields:
+  - !Constant
+    name: teaserTarget
+    targetType: CMLinkable
