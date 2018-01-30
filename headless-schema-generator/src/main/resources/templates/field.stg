@@ -62,6 +62,7 @@ struct(fieldDefinition) ::= <<
   - !Struct
     name: <fieldDefinition.name>
     sourceName: <fieldDefinition.sourceName>
+    <if(fieldDefinition.typeName)>typeName: <fieldDefinition.targetType><endif>
     <if(fieldDefinition.nonNull)>nonNull: true<endif>
 
 >>

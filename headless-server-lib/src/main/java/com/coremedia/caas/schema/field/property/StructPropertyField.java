@@ -17,7 +17,7 @@ public class StructPropertyField extends AbstractField {
   public Collection<GraphQLFieldDefinition> build() {
     return ImmutableList.of(newFieldDefinition()
             .name(getName())
-            .type(Types.getType(StructObjectType.TYPE_NAME, isNonNull()))
+            .type(Types.getType(getTypeName() != null ? getTypeName() : StructObjectType.TYPE_NAME, isNonNull()))
             .dataFetcher(new StructPropertyDataFetcher(getSourceName()))
             .build());
   }
