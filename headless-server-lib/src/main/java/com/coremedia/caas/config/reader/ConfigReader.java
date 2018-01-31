@@ -1,12 +1,10 @@
 package com.coremedia.caas.config.reader;
 
-import org.springframework.core.io.Resource;
-
-import java.io.IOException;
+import java.util.List;
 
 public interface ConfigReader {
 
-  Resource[] getResources(String pattern) throws IOException;
+  ConfigResource getResource(String pattern);
 
-  Resource getResource(String pattern);
+  List<ConfigResource> getResources(String pattern);
 }

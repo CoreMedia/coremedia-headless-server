@@ -1,77 +1,94 @@
 package com.coremedia.caas.query;
 
+import com.coremedia.caas.schema.InvalidQueryDefinition;
 import com.coremedia.caas.schema.SchemaService;
 import com.coremedia.caas.schema.Types;
-import com.coremedia.caas.schema.query.RootDataFetcher;
-import com.google.common.collect.ImmutableSet;
-import graphql.schema.GraphQLObjectType;
+import com.google.common.base.Ascii;
+import com.google.common.base.MoreObjects;
+import com.google.common.base.Strings;
 import graphql.schema.GraphQLSchema;
-
-import java.util.Map;
-
-import static graphql.schema.GraphQLFieldDefinition.newFieldDefinition;
-import static graphql.schema.GraphQLObjectType.newObject;
-import static graphql.schema.GraphQLSchema.newSchema;
 
 public class QueryDefinition {
 
   private String query;
-  private String name;
+  private String queryName;
   private String viewName;
   private String typeName;
 
-  private GraphQLSchema querySchema;
+  private SchemaService schema;
+
+  private QuerySchemaLoader querySchemaLoader;
 
 
-  public QueryDefinition(String queryString, Map<String, String> queryArgs, SchemaService schema) {
-    init(queryString, queryArgs, schema);
+  QueryDefinition(SchemaService schema) {
+    this.schema = schema;
   }
 
-
-  private void init(String queryString, Map<String, String> queryArgs, SchemaService schema) {
-    query = queryString;
-    name = queryArgs.get("name");
-    typeName = queryArgs.get("type");
-    viewName = queryArgs.get("view");
-
-    if (Types.isList(typeName)) {
-      GraphQLObjectType objectType = newObject()
-              .name(name + "QueryType")
-              .field(newFieldDefinition()
-                      .name("data")
-                      .type(Types.getType(typeName, true))
-                      .dataFetcher(new RootDataFetcher()))
-              .build();
-      this.querySchema = newSchema()
-              .query(objectType)
-              .build(ImmutableSet.copyOf(schema.getTypes()));
-    } else {
-      GraphQLObjectType objectType = schema.getObjectType(typeName);
-      this.querySchema = newSchema()
-              .query(objectType)
-              .build(ImmutableSet.copyOf(schema.getTypes()));
-    }
-  }
-
-
-  public String getName() {
-    return name;
-  }
-
-  public String getTypeName() {
-    return typeName;
-  }
-
-  public String getViewName() {
-    return viewName;
-  }
 
   public String getQuery() {
     return query;
   }
 
+  void setQuery(String query) {
+    this.query = query;
+  }
 
-  public GraphQLSchema getQuerySchema() {
-    return querySchema;
+  String getQueryName() {
+    return queryName;
+  }
+
+  void setQueryName(String queryName) {
+    this.queryName = queryName;
+  }
+
+  String getViewName() {
+    return viewName;
+  }
+
+  void setViewName(String viewName) {
+    this.viewName = viewName;
+  }
+
+  String getTypeName() {
+    return typeName;
+  }
+
+  void setTypeName(String typeName) {
+    this.typeName = typeName;
+  }
+
+
+  public GraphQLSchema getQuerySchema(Object target) {
+    return querySchemaLoader.load(target);
+  }
+
+
+  QueryDefinition resolve() throws InvalidQueryDefinition {
+    // validate
+    if (Strings.isNullOrEmpty(query) || Strings.isNullOrEmpty(queryName) || Strings.isNullOrEmpty(typeName) || Strings.isNullOrEmpty(viewName)) {
+      throw new InvalidQueryDefinition("Invalid query definition: " + this);
+    }
+    String baseTypeName = Types.getBaseTypeName(typeName);
+    if (!schema.hasType(baseTypeName)) {
+      throw new InvalidQueryDefinition("Unknown query root type: " + this);
+    }
+    // create schema loaders
+    if (Types.isList(typeName)) {
+      querySchemaLoader = new ListQueryLoader(queryName, typeName, schema);
+    } else {
+      querySchemaLoader = new ObjectQueryLoader(typeName, schema);
+    }
+    return this;
+  }
+
+
+  @Override
+  public String toString() {
+    return MoreObjects.toStringHelper(this)
+            .add("queryName", queryName)
+            .add("viewName", viewName)
+            .add("typeName", typeName)
+            .add("query", Ascii.truncate(Strings.nullToEmpty(query), 40, "..."))
+            .toString();
   }
 }

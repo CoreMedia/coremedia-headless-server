@@ -1,7 +1,7 @@
 package com.coremedia.caas.config;
 
 import com.coremedia.caas.config.loader.JarConfigResourceLoader;
-import com.coremedia.caas.schema.InvalidTypeDefinition;
+import com.coremedia.caas.schema.InvalidDefinition;
 import com.coremedia.cache.Cache;
 import com.coremedia.cache.CacheKey;
 import com.coremedia.cap.common.Blob;
@@ -58,7 +58,7 @@ public class CaasProcessingDefinitionCacheKey extends CacheKey<Map<String, CaasP
                 try (InputStream inputStream = data.getInputStream(); JarInputStream jarInputStream = new JarInputStream(inputStream)) {
                   JarConfigResourceLoader resourceLoader = new JarConfigResourceLoader(jarInputStream);
                   builder.put(name, new CaasProcessingDefinitionLoader(name, resourceLoader, contentRepository, applicationContext).load());
-                } catch (IOException | InvalidTypeDefinition e) {
+                } catch (InvalidDefinition | IOException e) {
                   LOG.error("Cannot load definition '{}'", name, e);
                 }
               }
@@ -87,6 +87,6 @@ public class CaasProcessingDefinitionCacheKey extends CacheKey<Map<String, CaasP
     }
     CaasProcessingDefinitionCacheKey definitionCacheKey = (CaasProcessingDefinitionCacheKey) o;
     return Objects.equal(siteId, definitionCacheKey.siteId) &&
-            Objects.equal(contentRepository, definitionCacheKey.contentRepository);
+           Objects.equal(contentRepository, definitionCacheKey.contentRepository);
   }
 }

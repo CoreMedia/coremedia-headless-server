@@ -16,7 +16,6 @@ query TeasableQuery {
     alt
     link
   }
-
 }
 
 

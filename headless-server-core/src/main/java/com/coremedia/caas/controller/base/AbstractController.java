@@ -104,7 +104,7 @@ public abstract class AbstractController {
             .context(context)
             .variables(queryArgs)
             .build();
-    ExecutionResult result = GraphQL.newGraphQL(processingDefinition.getQuerySchema(queryName, viewName))
+    ExecutionResult result = GraphQL.newGraphQL(processingDefinition.getQuerySchema(target, queryName, viewName))
             .preparsedDocumentProvider(processingDefinition.getQueryRegistry())
             .build()
             .execute(executionInput);
@@ -145,7 +145,7 @@ public abstract class AbstractController {
             .context(context)
             .variables(queryArgs)
             .build();
-    ExecutionResult result = GraphQL.newGraphQL(processingDefinition.getQuerySchema(queryName, viewName))
+    ExecutionResult result = GraphQL.newGraphQL(processingDefinition.getQuerySchema(target, queryName, viewName))
             .preparsedDocumentProvider(processingDefinition.getQueryRegistry())
             .build()
             .execute(executionInput);

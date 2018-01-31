@@ -7,7 +7,7 @@ import com.coremedia.caas.query.QueryReader;
 import com.coremedia.caas.query.QueryRegistry;
 import com.coremedia.caas.richtext.RichtextTransformerReader;
 import com.coremedia.caas.richtext.RichtextTransformerRegistry;
-import com.coremedia.caas.schema.InvalidTypeDefinition;
+import com.coremedia.caas.schema.InvalidDefinition;
 import com.coremedia.caas.schema.SchemaReader;
 import com.coremedia.caas.schema.SchemaService;
 import com.coremedia.cap.content.ContentRepository;
@@ -31,7 +31,7 @@ public class CaasProcessingDefinitionLoader {
   }
 
 
-  public CaasProcessingDefinition load() throws IOException, InvalidTypeDefinition {
+  public CaasProcessingDefinition load() throws InvalidDefinition, IOException {
     // GraphQL schema
     SchemaService schemaService = new SchemaReader(resourceLoader).read(contentRepository);
     // GraphQL queries

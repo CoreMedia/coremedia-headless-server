@@ -1,6 +1,7 @@
 package com.coremedia.caas.schema;
 
 import com.coremedia.caas.config.loader.ConfigResourceLoader;
+import com.coremedia.caas.config.reader.ConfigResource;
 import com.coremedia.caas.config.reader.YamlConfigReader;
 import com.coremedia.caas.schema.field.common.ConstantField;
 import com.coremedia.caas.schema.field.common.MetaPropertyField;
@@ -20,14 +21,12 @@ import com.coremedia.caas.schema.field.settings.SettingsField;
 import com.coremedia.caas.schema.type.StructObjectType;
 import com.coremedia.cap.content.ContentRepository;
 import com.google.common.collect.ImmutableList;
-import org.springframework.core.io.Resource;
 import org.yaml.snakeyaml.TypeDescription;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 import org.yaml.snakeyaml.nodes.Tag;
 
 import java.io.IOException;
-import java.io.InputStreamReader;
 
 public class SchemaReader extends YamlConfigReader {
 
@@ -37,8 +36,6 @@ public class SchemaReader extends YamlConfigReader {
 
 
   public SchemaService read(ContentRepository contentRepository) throws IOException, InvalidTypeDefinition {
-    Resource[] resources = getResources("schema/*.yml");
-
     Constructor constructor = new Constructor();
     constructor.addTypeDescription(new TypeDescription(InterfaceType.class, new Tag("!InterfaceType")));
     constructor.addTypeDescription(new TypeDescription(ObjectType.class, new Tag("!ObjectType")));
@@ -60,13 +57,12 @@ public class SchemaReader extends YamlConfigReader {
     Yaml yaml = new Yaml(constructor);
 
     ImmutableList.Builder<TypeDefinition> builder = ImmutableList.builder();
-    for (Resource resource : resources) {
-      builder.add((TypeDefinition) yaml.load(new InputStreamReader(resource.getInputStream())));
+    for (ConfigResource resource : getResources("schema/*.yml")) {
+      builder.add((TypeDefinition) yaml.load(resource.asString()));
     }
     // add fixed types
     builder.add(new StructObjectType());
     // create schema registry and service
-    TypeDefinitionRegistry registry = new TypeDefinitionRegistry(builder.build());
-    return registry.createSchemaService(contentRepository);
+    return new TypeDefinitionRegistry(builder.build()).createSchemaService(contentRepository);
   }
 }

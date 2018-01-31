@@ -59,10 +59,10 @@ public class CaasProcessingDefinition {
     return null;
   }
 
-  public GraphQLSchema getQuerySchema(String queryName, String viewName) {
+  public GraphQLSchema getQuerySchema(Object target, String queryName, String viewName) {
     QueryDefinition definition = queryRegistry.getDefinition(queryName, viewName);
     if (definition != null) {
-      return definition.getQuerySchema();
+      return definition.getQuerySchema(target);
     }
     return null;
   }

@@ -88,9 +88,10 @@ public class StaxTransformationConfig<E> {
   }
 
 
-  public void resolveReferences() {
+  public StaxTransformationConfig resolve() {
     for (ParseContext context : getContexts()) {
       context.resolveReferences(this);
     }
+    return this;
   }
 }

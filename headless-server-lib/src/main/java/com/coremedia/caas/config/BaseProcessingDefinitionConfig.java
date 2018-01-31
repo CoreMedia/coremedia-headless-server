@@ -1,7 +1,7 @@
 package com.coremedia.caas.config;
 
 import com.coremedia.caas.config.loader.ClasspathConfigResourceLoader;
-import com.coremedia.caas.schema.InvalidTypeDefinition;
+import com.coremedia.caas.schema.InvalidDefinition;
 import com.coremedia.cap.content.ContentRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +25,7 @@ public class BaseProcessingDefinitionConfig {
 
   @Bean
   @Qualifier("minimalProcessingDefinition")
-  public CaasProcessingDefinition createMinimalDefinition(ApplicationContext applicationContext) throws IOException, InvalidTypeDefinition {
+  public CaasProcessingDefinition createMinimalDefinition(ApplicationContext applicationContext) throws InvalidDefinition, IOException {
     LOG.info("creating minimal config...");
     return new CaasProcessingDefinitionLoader("minimal", new ClasspathConfigResourceLoader("pd/minimal/"), contentRepository, applicationContext).load();
   }

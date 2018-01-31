@@ -18,14 +18,17 @@ public class QueryRegistry implements PreparsedDocumentProvider {
   private static final Logger LOG = LoggerFactory.getLogger(QueryRegistry.class);
 
 
+  // mapping from query name and view name to query definition
   private Table<String, String, QueryDefinition> queryMapping = HashBasedTable.create();
+
+  // cache for parsed queries
   private Map<String, PreparsedDocumentEntry> preparsedQueries = new ConcurrentHashMap<>();
 
 
-  public QueryRegistry(@NotNull List<QueryDefinition> definitions) {
+  QueryRegistry(@NotNull List<QueryDefinition> definitions) {
     definitions.stream()
-            .peek(e -> LOG.debug("Registering query definition with name '{}' and view '{}'", e.getName(), e.getViewName()))
-            .forEach(item -> queryMapping.put(item.getName(), item.getViewName(), item));
+            .peek(e -> LOG.debug("Registering query definition with name '{}' and view '{}'", e.getQueryName(), e.getViewName()))
+            .forEach(item -> queryMapping.put(item.getQueryName(), item.getViewName(), item));
   }
 
 

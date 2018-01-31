@@ -3,7 +3,7 @@ package com.coremedia.caas;
 import com.coremedia.caas.config.CaasProcessingDefinition;
 import com.coremedia.caas.config.CaasProcessingDefinitionLoader;
 import com.coremedia.caas.config.loader.ClasspathConfigResourceLoader;
-import com.coremedia.caas.schema.InvalidTypeDefinition;
+import com.coremedia.caas.schema.InvalidDefinition;
 import com.coremedia.cap.content.ContentRepository;
 import com.google.common.collect.ImmutableMap;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ public class StaticProcessingDefinitionConfig {
 
   @Bean
   @Qualifier("staticProcessingDefinitions")
-  public Map<String, CaasProcessingDefinition> loadStaticDefinitions(ContentRepository contentRepository, ApplicationContext applicationContext) throws IOException, InvalidTypeDefinition {
+  public Map<String, CaasProcessingDefinition> loadStaticDefinitions(ContentRepository contentRepository, ApplicationContext applicationContext) throws InvalidDefinition, IOException {
     ClasspathConfigResourceLoader sampleResourceLoader = new ClasspathConfigResourceLoader("pd/sample/");
     return ImmutableMap.of(
             "default", new CaasProcessingDefinitionLoader("default", sampleResourceLoader, contentRepository, applicationContext).load(),
