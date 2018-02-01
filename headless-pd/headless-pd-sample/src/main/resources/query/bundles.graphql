@@ -1,0 +1,18 @@
+#!query name=bundles view=default type=CMResourceBundleImpl
+
+query ResourceBundleQuery {
+
+  ... ContentInfo
+
+  languageId
+  localizations
+}
+
+
+fragment ContentInfo on Content_ {
+  __typename
+  __baseinterface
+  _id
+  _name
+  _type
+}

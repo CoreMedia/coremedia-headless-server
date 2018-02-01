@@ -1,0 +1,7 @@
+name: CMResourceBundle
+customFields:
+  - !CustomField
+    name: localizations
+    sourceName: (localizations)
+    targetType: Map:String
+    dataFetcher: Struct
