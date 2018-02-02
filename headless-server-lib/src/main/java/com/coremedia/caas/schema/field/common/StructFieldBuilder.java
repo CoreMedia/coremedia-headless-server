@@ -48,6 +48,14 @@ public class StructFieldBuilder {
             .build());
 
     builder.add(GraphQLFieldDefinition.newFieldDefinition()
+            .name(getFieldName("float"))
+            .type(Scalars.GraphQLFloat)
+            .argument(new GraphQLArgument("key", Scalars.GraphQLString))
+            .argument(new GraphQLArgument("default", Scalars.GraphQLFloat))
+            .dataFetcher(new ConvertingDataFetcher("Float", dataFetcher))
+            .build());
+
+    builder.add(GraphQLFieldDefinition.newFieldDefinition()
             .name(getFieldName("link"))
             .type(new GraphQLTypeReference("Content_"))
             .argument(new GraphQLArgument("key", Scalars.GraphQLString))
