@@ -25,7 +25,7 @@
     <compile.source.jdk>1.8</compile.source.jdk>
     <compile.target.jdk>1.8</compile.target.jdk>
 
-    <coremedia.version>1707.3</coremedia.version>
+    <coremedia.version>1710.1</coremedia.version>
     <spring.boot.version>1.5.4.RELEASE</spring.boot.version>
     <stringtemplate.version>4.0.8</stringtemplate.version>
     <graphql.java.version>4.2</graphql.java.version>
