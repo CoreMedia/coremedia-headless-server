@@ -29,6 +29,7 @@ hs_err_pid*
 # Project global:
 /.idea/
 *.iml
+*.ipr
 
 # File-based project format:
 *.iws
@@ -49,6 +50,19 @@ com_crashlytics_export_strings.xml
 crashlytics.properties
 crashlytics-build.properties
 fabric.properties
+
+
+### Maven
+
+target/
+overlays/
+.m2/
+
+
+### OS X
+
+.DS_Store
+
 
 ### Custom
 
