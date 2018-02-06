@@ -21,6 +21,11 @@
       <artifactId>headless-server-core</artifactId>
       <version>${project.version}</version>
     </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>headless-server-doc</artifactId>
+      <version>${project.version}</version>
+    </dependency>
     <!-- third-party libs -->
     <dependency>
       <groupId>org.springframework.boot</groupId>

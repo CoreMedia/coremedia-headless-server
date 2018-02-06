@@ -14,7 +14,6 @@
 
   <description>Headless Server Library</description>
 
-
   <dependencies>
     <dependency>
       <groupId>com.coremedia.cms</groupId>
@@ -26,7 +25,6 @@
       <artifactId>cap-client-base</artifactId>
       <version>${coremedia.version}</version>
     </dependency>
-
     <dependency>
       <groupId>com.coremedia.blueprint.base</groupId>
       <artifactId>bpbase-multisite-api</artifactId>
@@ -47,24 +45,19 @@
       <artifactId>bpbase-settings-api</artifactId>
       <version>${coremedia.version}</version>
     </dependency>
-
     <!-- third-party libs -->
-
     <dependency>
       <groupId>commons-beanutils</groupId>
       <artifactId>commons-beanutils</artifactId>
     </dependency>
-
     <dependency>
       <groupId>com.graphql-java</groupId>
       <artifactId>graphql-java</artifactId>
     </dependency>
-
     <dependency>
       <groupId>org.yaml</groupId>
       <artifactId>snakeyaml</artifactId>
     </dependency>
-
     <dependency>
       <groupId>javax.validation</groupId>
       <artifactId>validation-api</artifactId>

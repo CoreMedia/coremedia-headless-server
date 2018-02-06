@@ -23,6 +23,7 @@ import org.springframework.context.annotation.ImportResource;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.filter.CommonsRequestLoggingFilter;
 import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import javax.servlet.Filter;
@@ -46,6 +47,15 @@ public class CaasConfig extends WebMvcConfigurerAdapter {
   public void configurePathMatch(PathMatchConfigurer matcher) {
     matcher.setUseSuffixPatternMatch(false);
   }
+
+
+  @Override
+  public void addResourceHandlers(ResourceHandlerRegistry registry) {
+    registry.addResourceHandler("/docs/**")
+            .addResourceLocations("classpath:/static/docs/");
+    super.addResourceHandlers(registry);
+  }
+
 
   @Bean
   public Filter logFilter() {

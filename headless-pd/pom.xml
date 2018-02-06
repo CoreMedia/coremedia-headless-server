@@ -15,7 +15,6 @@
 
   <description>Headless Server Processing Definition Module Parent</description>
 
-
   <modules>
     <module>headless-pd-sample</module>
   </modules>

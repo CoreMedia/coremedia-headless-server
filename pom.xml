@@ -31,7 +31,9 @@
     <graphql.java.version>4.2</graphql.java.version>
     <snakeyaml.version>1.18</snakeyaml.version>
     <swagger.version>2.7.0</swagger.version>
-    <validation.api.version>2.0.0.Final</validation.api.version>
+    <javax.servlet-api.version>3.1.0</javax.servlet-api.version>
+    <javax.validation-api.version>2.0.0.Final</javax.validation-api.version>
+    <spring-restdocs.version>2.0.0.RELEASE</spring-restdocs.version>
     <spring.cloud.spectator.version>1.3.5.RELEASE</spring.cloud.spectator.version>
     <netflix.spectator.version>0.58.2</netflix.spectator.version>
     <metrics.version>3.2.3</metrics.version>
@@ -63,6 +65,7 @@
     <module>headless-pd</module>
     <module>headless-server-lib</module>
     <module>headless-server-core</module>
+    <module>headless-server-doc</module>
     <module>headless-server-app</module>
     <module>headless-server-webapp</module>
     <module>headless-performance-test</module>
@@ -130,7 +133,12 @@
       <dependency>
         <groupId>javax.validation</groupId>
         <artifactId>validation-api</artifactId>
-        <version>${validation.api.version}</version>
+        <version>${javax.validation-api.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>javax.servlet</groupId>
+        <artifactId>javax.servlet-api</artifactId>
+        <version>${javax.servlet-api.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
