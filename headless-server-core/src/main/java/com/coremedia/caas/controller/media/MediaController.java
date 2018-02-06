@@ -13,6 +13,11 @@ import com.coremedia.cap.transform.TransformImageService;
 import com.coremedia.cap.transform.Transformation;
 import com.coremedia.transform.NamedTransformBeanBlobTransformer;
 import com.coremedia.transform.TransformedBlob;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.MediaType;
@@ -30,7 +35,8 @@ import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.OPTIONS}, allowedHeaders = {"authorization", "content-type", "x-requested-with"})
-@RequestMapping("/caas/v1/{tenantId}/sites/{siteId}")
+@RequestMapping("/caas/v1/{tenantId}/sites/{siteId}/media")
+@Api(value = "/caas/v1/{tenantId}/sites/{siteId}/media", tags = "Media", description = "Operations for media objects")
 public class MediaController extends AbstractController {
 
   private static final String TIMER_NAME = "caas.media.timer";
@@ -50,11 +56,30 @@ public class MediaController extends AbstractController {
 
 
   @ResponseBody
-  @RequestMapping(value = "/media/{mediaId}/{propertyName}", method = RequestMethod.GET)
-  public ResponseEntity getMedia(@PathVariable String tenantId, @PathVariable String siteId, @PathVariable String mediaId, @PathVariable String propertyName, @RequestParam(required = false) String ratio, @RequestParam(required = false, defaultValue = "-1") int minWidth, @RequestParam(required = false, defaultValue = "-1") int minHeight, HttpServletRequest request, HttpServletResponse response) {
+  @RequestMapping(value = "/{mediaId}/{propertyName}", method = RequestMethod.GET)
+  @ApiOperation(
+          value = "Media.Blob",
+          notes = "Return the binary data of a media object.\n" +
+                  "Images can be cropped and scaled according to the responsive image settings of the site.",
+          response = Byte.class,
+          responseContainer = "Array"
+  )
+  @ApiResponses(value = {
+          @ApiResponse(code = 400, message = "Invalid tenant or site"),
+          @ApiResponse(code = 404, message = "Media object not found")
+  })
+  public ResponseEntity getMedia(@ApiParam(value = "The tenant's unique ID", required = true) @PathVariable String tenantId,
+                                 @ApiParam(value = "The site's unique ID", required = true) @PathVariable String siteId,
+                                 @ApiParam(value = "The media object's numeric ID", required = true) @PathVariable int mediaId,
+                                 @ApiParam(value = "The blob property name", required = true) @PathVariable String propertyName,
+                                 @ApiParam(value = "The required ratio if requesting an image") @RequestParam(required = false) String ratio,
+                                 @ApiParam(value = "The required minimum width if requesting an image") @RequestParam(required = false, defaultValue = "-1") int minWidth,
+                                 @ApiParam(value = "The required minimum height if requesting an image") @RequestParam(required = false, defaultValue = "-1") int minHeight,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
     Site localizedSite = getLocalizedSite(tenantId, siteId);
     if (localizedSite == null) {
-      response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+      response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
       return null;
     }
     Content content = contentRepository.getContent(IdHelper.formatContentId(mediaId));
