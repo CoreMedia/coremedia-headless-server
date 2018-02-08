@@ -23,6 +23,7 @@ This README contains an overview of the code and how to start the server. For mo
 The workspace is comprised of the following modules:
 * **headless-server-lib**: The library module
 * **headless-server-core**: The core application module
+* **headless-server-doc**: The documentation module
 * **headless-server-app**: The Spring Boot Application packaged as executable JAR
 * **headless-server-webapp**: The Spring Boot Application packaged as WAR
 * **headless-schema-generator**: The Generator Application for creating a schema definition from the CoreMedia Doctype Model
@@ -41,7 +42,7 @@ Tomcat 8 can be configured by changing the properties `tomcat.id` and `tomcat.ve
 on `tomcat-juli` in module `headless-server-app`.
 
 
-## Building an running the server
+## Building and running the server
 
 Build the workspace with
     
@@ -53,7 +54,8 @@ Add the profile
 
     -P performance-test
     
-if you want to run the performance tests while building the workspace.
+if you want to run the performance tests while building the workspace. The default setup requires the test data to be imported into the
+CoreMedia content repository.
 
 Run the server with
 
@@ -66,8 +68,69 @@ or start the Tomcat Webapp
 
 ## Testing the API
 
-Test the API with your browser by calling the embedded Swagger UI, i.e. `http://localhost:8080/swagger-ui.html` if running the app locally. 
-Check out the Wiki for more details on the different API calls.
+### Using the test site and content
+
+Import the test data into your CoreMedia content repository. The test data contains a new site for the sample React client which is already enabled for delivery
+with the headless server.   
+Run the headless server and try the following URLs:
+
+    http://localhost:8080/caas/v1/coremedia/sites/caassiopeia-en-DE/navigation
+    http://localhost:8080/caas/v1/coremedia/sites/caassiopeia-en-DE/teasables/home.hero
+    http://localhost:8080/caas/v1/coremedia/sites/caassiopeia-en-DE/teasables/home.teaser-left
+    http://localhost:8080/caas/v1/coremedia/sites/caassiopeia-en-DE/teasables/home.teaser-right
+    http://localhost:8080/caas/v1/coremedia/sites/caassiopeia-en-DE/teasables/home.teaser-bottom
+    http://localhost:8080/caas/v1/coremedia/sites/caassiopeia-en-DE/articles/caas.article
+
+### Enable a site for use with the headless server
+
+1. Log in to CoreMedia Studio and open the *Site Indicator* document of the site
+
+2. Note the *ID* property on the content tab.
+   The value will be used for the `{siteId}` placeholder in the REST URLs
+
+3. Go to the system tab end expand the *Local Settings* property box.
+   Add a *String* property to it's root: 
+
+   *Property:* tenantId   
+   *Value:* your tenant identifier (only alphanumerical characters/lowercase)   
+
+   This value will be used for the `{tenantId}` placeholder in the REST URLs
+
+5. Try to fetch the JSON description of the enabled site:
+    
+    `http://localhost:8080/caas/v1/{tenantId}/sites/{siteId}`
+    
+    A response similar to the following one should be returned:
+    ```json
+    {
+    "__typename": "CMSiteImpl",
+    "__baseinterface": "CMSite",
+    "_id": "coremedia:///cap/content/5838",
+    "_name": "CaaS [Site]",
+    "_type": "CMSite",
+    "id": "caassiopeia-en-DE",
+    "name": "CaaS Fragment Demo Site",
+    "languageId": "en-DE"
+    }
+    ```
+    
+6. Test your site with the Swagger UI.
+
+### Swagger
+
+Test the API with your browser by calling the embedded Swagger UI: `http://localhost:8080/swagger-ui.html`.
+
+#### Static documentation
+
+During the test phase of the Maven build process HTML and PDF documentation is generated from the Swagger Specification. It can be accessed
+from the running server at:
+
+    http://localhost:8080/docs/index.html
+    http://localhost:8080/docs/index.pdf
+    
+A JSON representation of the Swagger Specification for import in third party tools, i.e. Postman, is available at:
+
+    http://localhost:8080/docs/swagger.json
 
 
 *******
