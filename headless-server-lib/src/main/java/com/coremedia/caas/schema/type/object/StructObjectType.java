@@ -1,4 +1,4 @@
-package com.coremedia.caas.schema.type;
+package com.coremedia.caas.schema.type.object;
 
 import com.coremedia.caas.schema.InvalidTypeDefinition;
 import com.coremedia.caas.schema.TypeDefinition;

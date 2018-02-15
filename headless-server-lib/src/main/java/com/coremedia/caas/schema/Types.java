@@ -1,6 +1,6 @@
 package com.coremedia.caas.schema;
 
-import com.coremedia.caas.schema.type.MapOfScalars;
+import com.coremedia.caas.schema.type.scalar.MapOfScalars;
 import graphql.Scalars;
 import graphql.schema.GraphQLList;
 import graphql.schema.GraphQLNonNull;
