@@ -55,6 +55,8 @@ public class DocumentFieldDefinition implements FieldDefinition {
           return targetType.getName();
         }
         break;
+      case INTEGER:
+        return "Int";
       default:
         return getTypeName().substring(0, 1).toUpperCase() + getTypeName().substring(1).toLowerCase();
     }

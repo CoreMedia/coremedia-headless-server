@@ -1,6 +1,7 @@
 package com.coremedia.caas.schema.type.scalar;
 
 import com.coremedia.caas.schema.Types;
+
 import com.google.common.collect.ImmutableMap;
 import graphql.schema.Coercing;
 import graphql.schema.CoercingParseValueException;
@@ -23,7 +24,7 @@ public class MapOfScalars {
 
   public static GraphQLScalarType BOOLEAN = graphQLObjectScalar("MapOfBoolean", new CoercingMap<String, Boolean>(Boolean.class));
   public static GraphQLScalarType FLOAT = graphQLObjectScalar("MapOfFloat", new CoercingMap<String, Float>(Float.class));
-  public static GraphQLScalarType INTEGER = graphQLObjectScalar("MapOfInteger", new CoercingMap<String, Integer>(Integer.class));
+  public static GraphQLScalarType INT = graphQLObjectScalar("MapOfInt", new CoercingMap<String, Integer>(Integer.class));
   public static GraphQLScalarType LONG = graphQLObjectScalar("MapOfLong", new CoercingMap<String, Long>(Long.class));
   public static GraphQLScalarType SHORT = graphQLObjectScalar("MapOfShort", new CoercingMap<String, Short>(Short.class));
   public static GraphQLScalarType STRING = graphQLObjectScalar("MapOfString", new CoercingMap<String, String>(String.class));
@@ -32,7 +33,7 @@ public class MapOfScalars {
     ImmutableMap.Builder<String, GraphQLScalarType> builder = ImmutableMap.builder();
     builder.put(Types.BOOLEAN, BOOLEAN);
     builder.put(Types.FLOAT, FLOAT);
-    builder.put(Types.INTEGER, INTEGER);
+    builder.put(Types.INT, INT);
     builder.put(Types.LONG, LONG);
     builder.put(Types.SHORT, SHORT);
     builder.put(Types.STRING, STRING);

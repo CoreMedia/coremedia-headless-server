@@ -1,6 +1,7 @@
 package com.coremedia.caas.schema;
 
 import com.coremedia.caas.schema.type.scalar.MapOfScalars;
+
 import graphql.Scalars;
 import graphql.schema.GraphQLList;
 import graphql.schema.GraphQLNonNull;
@@ -20,7 +21,7 @@ public class Types {
   public static final String CHAR = "Char";
   public static final String FLOAT = "Float";
   public static final String ID = "ID";
-  public static final String INTEGER = "Integer";
+  public static final String INT = "Int";
   public static final String LONG = "Long";
   public static final String SHORT = "Short";
   public static final String STRING = "String";
@@ -75,7 +76,7 @@ public class Types {
         return Scalars.GraphQLFloat;
       case ID:
         return Scalars.GraphQLID;
-      case INTEGER:
+      case INT:
         return Scalars.GraphQLInt;
       case LONG:
         return Scalars.GraphQLLong;
