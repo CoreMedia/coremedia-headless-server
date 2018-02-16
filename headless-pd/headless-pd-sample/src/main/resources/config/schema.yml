@@ -9,7 +9,9 @@ includedTypes:
   - CMNavigation
   - CMObject
   - CMPicture
+  - CMProduct
   - CMResourceBundle
   - CMSite
   - CMTeasable
   - CMTeaser
+  - CMVideo
