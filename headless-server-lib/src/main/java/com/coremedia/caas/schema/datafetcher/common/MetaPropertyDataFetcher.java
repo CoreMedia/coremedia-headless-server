@@ -1,7 +1,6 @@
 package com.coremedia.caas.schema.datafetcher.common;
 
 import com.coremedia.caas.schema.SchemaService;
-import com.coremedia.cap.content.Content;
 import graphql.schema.DataFetchingEnvironment;
 import graphql.schema.GraphQLInterfaceType;
 import graphql.schema.GraphQLObjectType;
@@ -33,11 +32,9 @@ public class MetaPropertyDataFetcher extends AbstractDataFetcher {
         }
       }
       if ("__baseinterface".equals(sourceName)) {
-        if (source instanceof Content) {
-          GraphQLInterfaceType interfaceType = schema.getInterfaceType(source);
-          if (interfaceType != null) {
-            return interfaceType.getName();
-          }
+        GraphQLInterfaceType interfaceType = schema.getInterfaceType(source);
+        if (interfaceType != null) {
+          return interfaceType.getName();
         }
       }
     }

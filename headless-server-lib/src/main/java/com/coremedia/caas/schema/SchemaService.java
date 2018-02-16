@@ -6,10 +6,10 @@ import com.coremedia.cap.content.ContentType;
 import graphql.schema.GraphQLInterfaceType;
 import graphql.schema.GraphQLObjectType;
 import graphql.schema.GraphQLOutputType;
+import graphql.schema.GraphQLType;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
@@ -20,9 +20,9 @@ public class SchemaService {
   private static final String CONTENT_OBJECTTYPE_SUFFIX = "Impl";
 
 
-  private Set<String> typeNames;
+  private Set<GraphQLOutputType> types;
 
-  private List<GraphQLOutputType> types;
+  private Map<String, GraphQLOutputType> typeMapping;
 
   private Map<ContentType, GraphQLInterfaceType> contentTypeInterfaceMapping = new HashMap<>();
   private Map<ContentType, GraphQLObjectType> contentTypeObjectMapping = new HashMap<>();
@@ -42,50 +42,33 @@ public class SchemaService {
 
 
   public boolean hasType(String baseTypeName) {
-    return typeNames.contains(baseTypeName);
+    return typeMapping.containsKey(baseTypeName);
   }
 
 
-  public List<GraphQLOutputType> getTypes() {
+  public Set<GraphQLOutputType> getTypes() {
     return types;
   }
 
 
-  public GraphQLInterfaceType getInterfaceType(ContentType contentType) {
-    GraphQLInterfaceType interfaceType = contentTypeInterfaceMapping.get(contentType);
-    if (interfaceType != null) {
-      return interfaceType;
-    }
-    throw new RuntimeException("Interface type not resolved: " + contentType);
-  }
-
   public GraphQLInterfaceType getInterfaceType(Object source) {
     if (source instanceof Content) {
-      return getInterfaceType(((Content) source).getType());
+      return contentTypeInterfaceMapping.get(((Content) source).getType());
     }
-    throw new RuntimeException("Interface type not resolved: " + source);
-  }
-
-
-  public GraphQLObjectType getObjectType(ContentType contentType) {
-    GraphQLObjectType objectType = contentTypeObjectMapping.get(contentType);
-    if (objectType != null) {
-      return objectType;
-    }
-    throw new RuntimeException("Object type not resolved: " + contentType);
+    return null;
   }
 
   public GraphQLObjectType getObjectType(Object source) {
     if (source instanceof Content) {
-      return getObjectType(((Content) source).getType());
+      return contentTypeObjectMapping.get(((Content) source).getType());
     }
-    throw new RuntimeException("Object type not resolved: " + source);
+    return null;
   }
 
 
-  void init(List<GraphQLOutputType> types, ContentRepository contentRepository) {
+  void init(Set<GraphQLOutputType> types, ContentRepository contentRepository) {
     this.types = types;
-    this.typeNames = types.stream().map(GraphQLOutputType::getName).collect(Collectors.toSet());
+    this.typeMapping = types.stream().collect(Collectors.toMap(GraphQLType::getName, Function.identity()));
     // map type names by object and interfaces
     Map<String, GraphQLInterfaceType> interfaceTypes = types.stream().filter(GraphQLInterfaceType.class::isInstance).map(GraphQLInterfaceType.class::cast).collect(Collectors.toMap(GraphQLInterfaceType::getName, Function.identity()));
     Map<String, GraphQLObjectType> objectTypes = types.stream().filter(GraphQLObjectType.class::isInstance).map(GraphQLObjectType.class::cast).collect(Collectors.toMap(GraphQLObjectType::getName, Function.identity()));

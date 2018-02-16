@@ -1,12 +1,13 @@
 package com.coremedia.caas.schema;
 
 import com.coremedia.cap.content.ContentRepository;
-import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 import graphql.schema.GraphQLOutputType;
 import graphql.schema.TypeResolver;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -40,11 +41,11 @@ public class TypeDefinitionRegistry {
     schemaService = new SchemaService();
     typeResolver = new ObjectTypeResolver(schemaService);
     // create GraphQL types for each registered definition
-    ImmutableList.Builder<GraphQLOutputType> builder = ImmutableList.builder();
+    ImmutableSet.Builder<GraphQLOutputType> builder = ImmutableSet.builder();
     for (TypeDefinition definition : typeDefinitions.values()) {
       builder.add(definition.build(this));
     }
-    List<GraphQLOutputType> types = builder.build();
+    Set<GraphQLOutputType> types = builder.build();
     // initialize schema type mappings
     schemaService.init(types, contentRepository);
     return schemaService;
