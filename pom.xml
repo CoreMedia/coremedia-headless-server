@@ -28,7 +28,7 @@
     <coremedia.version>1710.1</coremedia.version>
     <spring.boot.version>1.5.4.RELEASE</spring.boot.version>
     <stringtemplate.version>4.0.8</stringtemplate.version>
-    <graphql.java.version>4.2</graphql.java.version>
+    <graphql.java.version>7.0</graphql.java.version>
     <snakeyaml.version>1.18</snakeyaml.version>
     <swagger.version>2.7.0</swagger.version>
     <javax.servlet-api.version>3.1.0</javax.servlet-api.version>
