@@ -1,0 +1,65 @@
+#!query name=videos view=default type=CMVideoImpl
+
+query VideoQuery {
+
+  ... Teasable
+
+  link
+  timeLine {
+    defaultTarget {
+      ... Teasable
+    }
+    sequences {
+      position
+      startTimeMillis
+      target {
+        ... Teasable
+        ... on CMCollection {
+          viewtype
+          items {
+            ... Teasable
+          }
+        }
+      }
+    }
+  }
+}
+
+
+fragment Teasable on CMTeasable {
+  ... ContentInfo
+
+  teaserTitle
+  teaserText(view: "teaser")
+  teaserTarget {
+    ... Reference
+  }
+  picture {
+    ... ContentInfo
+
+    title
+    alt
+    link
+  }
+  ... on CMProduct {
+    price: floatSetting(key: "price")
+  }
+}
+
+
+fragment Reference on CMLinkable {
+  ... ContentInfo
+
+  title
+  segment
+  link
+}
+
+
+fragment ContentInfo on Content_ {
+  __typename
+  __baseinterface
+  _id
+  _name
+  _type
+}
