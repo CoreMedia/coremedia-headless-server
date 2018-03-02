@@ -2,11 +2,20 @@ package com.coremedia.caas.schema.field.common;
 
 import com.coremedia.caas.schema.FieldBuilder;
 import com.coremedia.caas.schema.FieldDefinition;
+import com.coremedia.caas.schema.datafetcher.StaticDataFetcherFactory;
+import com.coremedia.caas.schema.datafetcher.converter.ConvertingDataFetcher;
+import com.coremedia.caas.schema.directive.NoopDirectiveDataFetcher;
+
 import com.google.common.base.MoreObjects;
+import graphql.schema.DataFetcher;
+import graphql.schema.DataFetcherFactory;
 
 import java.util.List;
 
 public abstract class AbstractField implements FieldDefinition, FieldBuilder {
+
+  private boolean convertible;
+  private boolean withDirectives;
 
   private boolean nonNull;
 
@@ -14,6 +23,32 @@ public abstract class AbstractField implements FieldDefinition, FieldBuilder {
   private String sourceName;
   private List<String> fallbackSourceNames;
   private String typeName;
+
+
+  protected AbstractField(boolean convertible, boolean withDirectives) {
+    this.convertible = convertible;
+    this.withDirectives = withDirectives;
+  }
+
+
+  protected boolean isConvertible() {
+    return convertible;
+  }
+
+  protected boolean isWithDirectives() {
+    return withDirectives;
+  }
+
+
+  protected DataFetcherFactory decorate(DataFetcher dataFetcher) {
+    if (isWithDirectives()) {
+      dataFetcher = new NoopDirectiveDataFetcher(dataFetcher);
+    }
+    if (isConvertible()) {
+      dataFetcher = new ConvertingDataFetcher(getTypeName(), dataFetcher);
+    }
+    return new StaticDataFetcherFactory(dataFetcher);
+  }
 
 
   @Override
@@ -70,6 +105,8 @@ public abstract class AbstractField implements FieldDefinition, FieldBuilder {
             .add("fallbackSourceNames", fallbackSourceNames)
             .add("typeName", typeName)
             .add("nonNull", nonNull)
+            .add("convertible", convertible)
+            .add("withDirectives", withDirectives)
             .toString();
   }
 }
