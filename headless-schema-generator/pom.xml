@@ -48,6 +48,10 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
         <version>${spring.boot.version}</version>
+        <configuration>
+          <mainClass>com.coremedia.caas.generator.GeneratorRunner</mainClass>
+          <layout>JAR</layout>
+        </configuration>
         <executions>
           <execution>
             <goals>
