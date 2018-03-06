@@ -1,6 +1,7 @@
 package com.coremedia.caas.schema.field.common;
 
 import com.coremedia.caas.schema.datafetcher.converter.ConvertingDataFetcher;
+
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import graphql.Scalars;
@@ -36,6 +37,7 @@ public class StructFieldBuilder {
             .type(Scalars.GraphQLBoolean)
             .argument(new GraphQLArgument("key", Scalars.GraphQLString))
             .argument(new GraphQLArgument("default", Scalars.GraphQLBoolean))
+            .argument(new GraphQLArgument("separator", Scalars.GraphQLChar))
             .dataFetcher(new ConvertingDataFetcher("Boolean", dataFetcher))
             .build());
 
@@ -44,6 +46,7 @@ public class StructFieldBuilder {
             .type(Scalars.GraphQLInt)
             .argument(new GraphQLArgument("key", Scalars.GraphQLString))
             .argument(new GraphQLArgument("default", Scalars.GraphQLInt))
+            .argument(new GraphQLArgument("separator", Scalars.GraphQLChar))
             .dataFetcher(new ConvertingDataFetcher("Integer", dataFetcher))
             .build());
 
@@ -52,6 +55,7 @@ public class StructFieldBuilder {
             .type(Scalars.GraphQLFloat)
             .argument(new GraphQLArgument("key", Scalars.GraphQLString))
             .argument(new GraphQLArgument("default", Scalars.GraphQLFloat))
+            .argument(new GraphQLArgument("separator", Scalars.GraphQLChar))
             .dataFetcher(new ConvertingDataFetcher("Float", dataFetcher))
             .build());
 
@@ -59,6 +63,7 @@ public class StructFieldBuilder {
             .name(getFieldName("link"))
             .type(new GraphQLTypeReference("Content_"))
             .argument(new GraphQLArgument("key", Scalars.GraphQLString))
+            .argument(new GraphQLArgument("separator", Scalars.GraphQLChar))
             .dataFetcher(dataFetcher)
             .build());
 
@@ -67,6 +72,7 @@ public class StructFieldBuilder {
             .type(Scalars.GraphQLString)
             .argument(new GraphQLArgument("key", Scalars.GraphQLString))
             .argument(new GraphQLArgument("default", Scalars.GraphQLString))
+            .argument(new GraphQLArgument("separator", Scalars.GraphQLChar))
             .dataFetcher(new ConvertingDataFetcher("String", dataFetcher))
             .build());
 
