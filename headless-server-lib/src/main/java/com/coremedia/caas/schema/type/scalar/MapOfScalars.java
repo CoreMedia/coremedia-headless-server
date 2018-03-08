@@ -1,10 +1,13 @@
-package com.coremedia.caas.schema.type;
+package com.coremedia.caas.schema.type.scalar;
 
 import com.coremedia.caas.schema.Types;
+
 import com.google.common.collect.ImmutableMap;
 import graphql.schema.Coercing;
 import graphql.schema.CoercingParseValueException;
 import graphql.schema.GraphQLScalarType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.convert.ConversionService;
 
 import java.util.HashMap;
@@ -12,19 +15,28 @@ import java.util.Map;
 
 public class MapOfScalars {
 
-  private static ConversionService conversionService;
+  private static final Logger LOG = LoggerFactory.getLogger(MapOfScalars.class);
 
+
+  private static ConversionService conversionService;
 
   private static Map<String, GraphQLScalarType> typeMap;
 
+  public static GraphQLScalarType BOOLEAN = graphQLObjectScalar("MapOfBoolean", new CoercingMap<String, Boolean>(Boolean.class));
+  public static GraphQLScalarType FLOAT = graphQLObjectScalar("MapOfFloat", new CoercingMap<String, Float>(Float.class));
+  public static GraphQLScalarType INT = graphQLObjectScalar("MapOfInt", new CoercingMap<String, Integer>(Integer.class));
+  public static GraphQLScalarType LONG = graphQLObjectScalar("MapOfLong", new CoercingMap<String, Long>(Long.class));
+  public static GraphQLScalarType SHORT = graphQLObjectScalar("MapOfShort", new CoercingMap<String, Short>(Short.class));
+  public static GraphQLScalarType STRING = graphQLObjectScalar("MapOfString", new CoercingMap<String, String>(String.class));
+
   static {
     ImmutableMap.Builder<String, GraphQLScalarType> builder = ImmutableMap.builder();
-    builder.put(Types.BOOLEAN, graphQLObjectScalar("MapOfBoolean", new CoercingMap<String, Boolean>(Boolean.class)));
-    builder.put(Types.FLOAT, graphQLObjectScalar("MapOfFloat", new CoercingMap<String, Float>(Float.class)));
-    builder.put(Types.INTEGER, graphQLObjectScalar("MapOfInteger", new CoercingMap<String, Integer>(Integer.class)));
-    builder.put(Types.LONG, graphQLObjectScalar("MapOfLong", new CoercingMap<String, Long>(Long.class)));
-    builder.put(Types.SHORT, graphQLObjectScalar("MapOfShort", new CoercingMap<String, Short>(Short.class)));
-    builder.put(Types.STRING, graphQLObjectScalar("MapOfString", new CoercingMap<String, String>(String.class)));
+    builder.put(Types.BOOLEAN, BOOLEAN);
+    builder.put(Types.FLOAT, FLOAT);
+    builder.put(Types.INT, INT);
+    builder.put(Types.LONG, LONG);
+    builder.put(Types.SHORT, SHORT);
+    builder.put(Types.STRING, STRING);
     typeMap = builder.build();
   }
 
@@ -40,6 +52,11 @@ public class MapOfScalars {
 
   public MapOfScalars(ConversionService conversionService) {
     MapOfScalars.conversionService = conversionService;
+  }
+
+
+  public Map<String, GraphQLScalarType> getTypes() {
+    return typeMap;
   }
 
 
@@ -63,6 +80,7 @@ public class MapOfScalars {
                 try {
                   m.put(e.getKey(), conversionService.convert(e.getValue(), targetClass));
                 } catch (Exception ex) {
+                  LOG.warn("Type conversion failed for {}", e);
                 }
               }, HashMap::putAll);
     }

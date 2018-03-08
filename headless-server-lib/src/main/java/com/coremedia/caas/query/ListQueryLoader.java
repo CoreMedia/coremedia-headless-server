@@ -4,6 +4,7 @@ import com.coremedia.caas.schema.SchemaService;
 import com.coremedia.caas.schema.Types;
 import com.coremedia.caas.schema.query.RootDataFetcher;
 import com.google.common.collect.ImmutableSet;
+import graphql.GraphQLException;
 import graphql.schema.GraphQLSchema;
 
 import java.util.List;
@@ -20,7 +21,7 @@ class ListQueryLoader implements QuerySchemaLoader {
 
   ListQueryLoader(String queryName, String typeName, SchemaService schema) {
     querySchema = newSchema().query(newObject().name(queryName + "QueryType")
-                                            .field(newFieldDefinition().name("data")
+                                            .field(newFieldDefinition().name("items")
                                                            .type(Types.getType(typeName, true))
                                                            .dataFetcher(new RootDataFetcher()))
                                             .build())
@@ -31,7 +32,7 @@ class ListQueryLoader implements QuerySchemaLoader {
   @Override
   public GraphQLSchema load(Object target) {
     if (!(target instanceof List)) {
-      throw new RuntimeException("Invalid Type: " + target);
+      throw new GraphQLException("Invalid root type: " + target);
     }
     return querySchema;
   }

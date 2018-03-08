@@ -3,7 +3,7 @@ package com.coremedia.caas.schema.field.property;
 import com.coremedia.caas.schema.Types;
 import com.coremedia.caas.schema.datafetcher.property.StructPropertyDataFetcher;
 import com.coremedia.caas.schema.field.common.AbstractField;
-import com.coremedia.caas.schema.type.StructObjectType;
+import com.coremedia.caas.schema.type.object.StructObjectType;
 import com.google.common.collect.ImmutableList;
 import graphql.schema.GraphQLFieldDefinition;
 

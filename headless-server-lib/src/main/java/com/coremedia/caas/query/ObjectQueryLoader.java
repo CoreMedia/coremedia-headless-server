@@ -1,9 +1,9 @@
 package com.coremedia.caas.query;
 
 import com.coremedia.caas.schema.SchemaService;
-import com.coremedia.cap.content.Content;
-import com.coremedia.cap.content.ContentType;
 import com.google.common.collect.ImmutableSet;
+import graphql.GraphQLException;
+import graphql.schema.GraphQLObjectType;
 import graphql.schema.GraphQLSchema;
 
 import java.util.Map;
@@ -17,7 +17,7 @@ class ObjectQueryLoader implements QuerySchemaLoader {
   private SchemaService schema;
 
   // cache for built query schemas
-  private Map<ContentType, GraphQLSchema> querySchemas = new ConcurrentHashMap<>();
+  private Map<String, GraphQLSchema> querySchemas = new ConcurrentHashMap<>();
 
 
   ObjectQueryLoader(String typeName, SchemaService schema) {
@@ -29,11 +29,12 @@ class ObjectQueryLoader implements QuerySchemaLoader {
   @Override
   public GraphQLSchema load(Object target) {
     if (!schema.isInstanceOf(target, typeName)) {
-      throw new RuntimeException("Invalid Type: " + target);
+      throw new GraphQLException("Invalid root type: " + target);
     }
-    Content content = (Content) target;
-    // return most specific object type
-    return querySchemas.computeIfAbsent(content.getType(), e -> newSchema().query(schema.getObjectType(e))
-            .build(ImmutableSet.copyOf(schema.getTypes())));
+    GraphQLObjectType type = schema.getObjectType(target);
+    if (type == null) {
+      throw new GraphQLException("No object type for root: " + target);
+    }
+    return querySchemas.computeIfAbsent(type.getName(), __ -> newSchema().query(type).build(ImmutableSet.copyOf(schema.getTypes())));
   }
 }

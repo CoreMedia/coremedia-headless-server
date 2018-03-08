@@ -1,0 +1,11 @@
+name: CMVideo
+excludedProperties:
+  - asset
+  - data
+  - dataUrl
+customFields:
+  - !CustomField
+    name: timeLine
+    sourceName: (timeLine)
+    targetType: TimeLine
+    dataFetcher: Struct

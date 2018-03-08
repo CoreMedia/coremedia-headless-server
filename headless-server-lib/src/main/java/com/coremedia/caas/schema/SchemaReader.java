@@ -18,7 +18,7 @@ import com.coremedia.caas.schema.field.property.RichtextPropertyField;
 import com.coremedia.caas.schema.field.property.StructPropertyField;
 import com.coremedia.caas.schema.field.property.UriPropertyField;
 import com.coremedia.caas.schema.field.settings.SettingsField;
-import com.coremedia.caas.schema.type.StructObjectType;
+import com.coremedia.caas.schema.type.object.StructObjectType;
 import com.coremedia.cap.content.ContentRepository;
 import com.google.common.collect.ImmutableList;
 import org.yaml.snakeyaml.TypeDescription;
@@ -60,7 +60,7 @@ public class SchemaReader extends YamlConfigReader {
     for (ConfigResource resource : getResources("schema/*.yml")) {
       builder.add((TypeDefinition) yaml.load(resource.asString()));
     }
-    // add fixed types
+    // add builtin types
     builder.add(new StructObjectType());
     // create schema registry and service
     return new TypeDefinitionRegistry(builder.build()).createSchemaService(contentRepository);

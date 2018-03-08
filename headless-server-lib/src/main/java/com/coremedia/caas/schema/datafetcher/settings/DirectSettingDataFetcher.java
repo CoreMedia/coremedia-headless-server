@@ -1,18 +1,26 @@
 package com.coremedia.caas.schema.datafetcher.settings;
 
-import com.coremedia.blueprint.base.settings.SettingsService;
 import com.coremedia.caas.schema.datafetcher.common.AbstractDataFetcher;
+
+import com.google.common.base.Splitter;
 import graphql.schema.DataFetchingEnvironment;
+
+import java.util.List;
 
 public class DirectSettingDataFetcher extends AbstractDataFetcher {
 
   @Override
   public Object get(DataFetchingEnvironment environment) {
-    SettingsService settingsService = getContext(environment).getServiceRegistry().getSettingsService();
-    String key = environment.getArgument("key");
-    Object defaultValue = environment.getArgument("default");
+    String key = getArgument("key", environment);
     if (key != null) {
-      return settingsService.settingWithDefault(key, Object.class, defaultValue, (Object) environment.getSource());
+      List<String> keys = Splitter.on(getArgumentWithDefault("separator", '/', environment)).omitEmptyStrings().splitToList(key);
+      Object value = getContext(environment).getServiceRegistry().getSettingsService().nestedSetting(keys, Object.class, (Object) environment.getSource());
+      if (value != null) {
+        return value;
+      }
+      else {
+        return getArgument("default", environment);
+      }
     }
     return null;
   }

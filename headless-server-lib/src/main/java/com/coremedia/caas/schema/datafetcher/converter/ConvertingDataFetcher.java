@@ -1,6 +1,8 @@
 package com.coremedia.caas.schema.datafetcher.converter;
 
+import com.coremedia.caas.schema.Types;
 import com.coremedia.caas.schema.datafetcher.common.AbstractDataFetcher;
+
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
 import org.slf4j.Logger;
@@ -9,6 +11,7 @@ import org.springframework.core.convert.ConversionService;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import javax.validation.constraints.NotNull;
 
 public class ConvertingDataFetcher extends AbstractDataFetcher {
 
@@ -18,25 +21,27 @@ public class ConvertingDataFetcher extends AbstractDataFetcher {
   private static Class getTargetClass(String typeName, Object value) {
     if (value != null) {
       switch (typeName) {
-        case "Boolean":
+        case Types.BOOLEAN:
           return Boolean.class.isAssignableFrom(value.getClass()) ? null : Boolean.class;
-        case "BigDecimal":
+        case Types.BIGDECIMAL:
           return BigDecimal.class.isAssignableFrom(value.getClass()) ? null : BigDecimal.class;
-        case "BigInteger":
+        case Types.BIGINTEGER:
           return BigInteger.class.isAssignableFrom(value.getClass()) ? null : BigInteger.class;
-        case "Byte":
+        case Types.BYTE:
           return Byte.class.isAssignableFrom(value.getClass()) ? null : Byte.class;
-        case "Char":
+        case Types.CHAR:
           return Character.class.isAssignableFrom(value.getClass()) ? null : Character.class;
-        case "Float":
+        case Types.FLOAT:
           return Float.class.isAssignableFrom(value.getClass()) ? null : Float.class;
-        case "Integer":
+        case Types.ID:
+          return String.class.isAssignableFrom(value.getClass()) ? null : String.class;
+        case Types.INT:
           return Integer.class.isAssignableFrom(value.getClass()) ? null : Integer.class;
-        case "Long":
+        case Types.LONG:
           return Long.class.isAssignableFrom(value.getClass()) ? null : Long.class;
-        case "Short":
+        case Types.SHORT:
           return Short.class.isAssignableFrom(value.getClass()) ? null : Short.class;
-        case "String":
+        case Types.STRING:
           return String.class.isAssignableFrom(value.getClass()) ? null : String.class;
       }
     }
@@ -48,7 +53,7 @@ public class ConvertingDataFetcher extends AbstractDataFetcher {
   protected DataFetcher delegate;
 
 
-  public ConvertingDataFetcher(String typeName, DataFetcher delegate) {
+  public ConvertingDataFetcher(@NotNull String typeName, @NotNull DataFetcher delegate) {
     this.typeName = typeName;
     this.delegate = delegate;
   }
