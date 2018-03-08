@@ -4,6 +4,7 @@ import com.coremedia.caas.execution.ExecutionContext;
 import com.coremedia.caas.richtext.RichtextTransformer;
 import com.coremedia.caas.richtext.RichtextTransformerRegistry;
 import com.coremedia.xml.Markup;
+
 import graphql.schema.DataFetchingEnvironment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,10 +28,8 @@ public class RichtextPropertyDataFetcher extends AbstractPropertyDataFetcher {
     try {
       Markup markup = getProperty(environment);
       if (markup != null) {
-        String view = environment.getArgument("view");
-        if (view == null) {
-          view = "default";
-        }
+        String view = getArgumentWithDefault("view", "default", environment);
+        // get matching transformer and convert markup
         RichtextTransformerRegistry registry = context.getProcessingDefinition().getRichtextTransformerRegistry();
         RichtextTransformer transformer = registry.getTransformer(view);
         if (transformer != null) {
