@@ -13,7 +13,7 @@ public class DirectSettingDataFetcher extends AbstractDataFetcher {
   public Object get(DataFetchingEnvironment environment) {
     String key = getArgument("key", environment);
     if (key != null) {
-      List<String> keys = Splitter.on(getArgumentWithDefault("separator", '.', environment)).omitEmptyStrings().splitToList(key);
+      List<String> keys = Splitter.on(getArgumentWithDefault("separator", '/', environment)).omitEmptyStrings().splitToList(key);
       Object value = getContext(environment).getServiceRegistry().getSettingsService().nestedSetting(keys, Object.class, (Object) environment.getSource());
       if (value != null) {
         return value;
