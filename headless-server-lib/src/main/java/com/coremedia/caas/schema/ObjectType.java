@@ -40,18 +40,18 @@ public class ObjectType extends AbstractType {
   }
 
 
-  public ObjectType getParent(TypeDefinitionRegistry registry) {
+  public ObjectType getParent(SchemaService schemaService) {
     if (parent != null) {
-      return registry.getObjectType(getParent());
+      return schemaService.getObjectTypeDefinition(getParent());
     }
     return null;
   }
 
 
-  protected Set<InterfaceType> getInterfaces(TypeDefinitionRegistry registry) {
+  protected Set<InterfaceType> getInterfaces(SchemaService schemaService) {
     ImmutableSet.Builder<InterfaceType> builder = ImmutableSet.builder();
     for (String name : getInterfaces()) {
-      InterfaceType type = registry.getInterfaceType(name);
+      InterfaceType type = schemaService.getInterfaceTypeDefinition(name);
       builder.add(type);
     }
     return builder.build();
@@ -59,29 +59,29 @@ public class ObjectType extends AbstractType {
 
 
   @Override
-  public Set<InterfaceType> getAllInterfaces(TypeDefinitionRegistry registry) {
+  public Set<InterfaceType> getAllInterfaces(SchemaService schemaService) {
     ImmutableSet.Builder<InterfaceType> builder = ImmutableSet.builder();
     for (String name : getInterfaces()) {
-      InterfaceType type = registry.getInterfaceType(name);
-      builder.addAll(type.getAllInterfaces(registry));
+      InterfaceType type = schemaService.getInterfaceTypeDefinition(name);
+      builder.addAll(type.getAllInterfaces(schemaService));
     }
     if (parent != null) {
-      builder.addAll(getParent(registry).getAllInterfaces(registry));
+      builder.addAll(getParent(schemaService).getAllInterfaces(schemaService));
     }
     return builder.build();
   }
 
 
   @Override
-  public List<FieldBuilder> getFields(TypeDefinitionRegistry registry) throws InvalidTypeDefinition {
+  public List<FieldBuilder> getFields(SchemaService schemaService) throws InvalidTypeDefinition {
     Map<String, FieldBuilder> builderMap = Maps.newHashMap();
-    for (InterfaceType type : getInterfaces(registry)) {
-      for (FieldBuilder builder : type.getFields(registry)) {
+    for (InterfaceType type : getInterfaces(schemaService)) {
+      for (FieldBuilder builder : type.getFields(schemaService)) {
         builderMap.put(builder.getName(), builder);
       }
     }
     if (getParent() != null) {
-      for (FieldBuilder builder : getParent(registry).getFields(registry)) {
+      for (FieldBuilder builder : getParent(schemaService).getFields(schemaService)) {
         builderMap.put(builder.getName(), builder);
       }
     }
@@ -93,13 +93,13 @@ public class ObjectType extends AbstractType {
 
 
   @Override
-  public GraphQLObjectType build(TypeDefinitionRegistry registry) throws InvalidTypeDefinition {
+  public GraphQLObjectType build(SchemaService schemaService) throws InvalidTypeDefinition {
     GraphQLObjectType.Builder builder = GraphQLObjectType.newObject();
     builder.name(getName());
-    for (AbstractType interfaceType : getAllInterfaces(registry)) {
+    for (AbstractType interfaceType : getAllInterfaces(schemaService)) {
       builder.withInterface(new GraphQLTypeReference(interfaceType.getName()));
     }
-    List<FieldBuilder> fieldDefinitions = getFields(registry);
+    List<FieldBuilder> fieldDefinitions = getFields(schemaService);
     for (FieldBuilder definition : fieldDefinitions) {
       for (GraphQLFieldDefinition fieldDefinition : definition.build()) {
         builder.field(fieldDefinition);

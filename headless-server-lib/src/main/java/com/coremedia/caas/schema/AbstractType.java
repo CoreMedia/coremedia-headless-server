@@ -29,7 +29,7 @@ public abstract class AbstractType implements TypeDefinition {
   }
 
 
-  public abstract Set<InterfaceType> getAllInterfaces(TypeDefinitionRegistry registry);
+  public abstract Set<InterfaceType> getAllInterfaces(SchemaService schemaService);
 
-  public abstract List<FieldBuilder> getFields(TypeDefinitionRegistry registry) throws InvalidTypeDefinition;
+  public abstract List<FieldBuilder> getFields(SchemaService schemaService) throws InvalidTypeDefinition;
 }

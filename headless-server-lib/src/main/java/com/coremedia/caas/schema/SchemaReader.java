@@ -20,13 +20,15 @@ import com.coremedia.caas.schema.field.property.UriPropertyField;
 import com.coremedia.caas.schema.field.settings.SettingsField;
 import com.coremedia.caas.schema.type.object.StructObjectType;
 import com.coremedia.cap.content.ContentRepository;
-import com.google.common.collect.ImmutableList;
+
+import com.google.common.collect.ImmutableSet;
 import org.yaml.snakeyaml.TypeDescription;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 import org.yaml.snakeyaml.nodes.Tag;
 
 import java.io.IOException;
+import java.util.Set;
 
 public class SchemaReader extends YamlConfigReader {
 
@@ -36,6 +38,13 @@ public class SchemaReader extends YamlConfigReader {
 
 
   public SchemaService read(ContentRepository contentRepository) throws IOException, InvalidTypeDefinition {
+    Set<TypeDefinition> typeDefinitions = readTypeDefinitions();
+    // create schema registry for internal type building and public service
+    return new SchemaService(typeDefinitions, contentRepository);
+  }
+
+
+  private Set<TypeDefinition> readTypeDefinitions() throws IOException {
     Constructor constructor = new Constructor();
     constructor.addTypeDescription(new TypeDescription(InterfaceType.class, new Tag("!InterfaceType")));
     constructor.addTypeDescription(new TypeDescription(ObjectType.class, new Tag("!ObjectType")));
@@ -56,13 +65,12 @@ public class SchemaReader extends YamlConfigReader {
     constructor.addTypeDescription(new TypeDescription(NavigationPathField.class, new Tag("!NavigationPath")));
     Yaml yaml = new Yaml(constructor);
 
-    ImmutableList.Builder<TypeDefinition> builder = ImmutableList.builder();
+    ImmutableSet.Builder<TypeDefinition> builder = ImmutableSet.builder();
     for (ConfigResource resource : getResources("schema/*.yml")) {
       builder.add((TypeDefinition) yaml.load(resource.asString()));
     }
     // add builtin types
     builder.add(new StructObjectType());
-    // create schema registry and service
-    return new TypeDefinitionRegistry(builder.build()).createSchemaService(contentRepository);
+    return builder.build();
   }
 }
