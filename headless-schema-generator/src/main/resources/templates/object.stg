@@ -8,7 +8,7 @@ name: <type.name>
 parent: <type.parent.name>
 <endif>
 <interfaces(type.interfaceDefinitions)>
-<if(!(type.fieldDefinitions.empty))>
+<if(type.fieldDefinitions)>
 fields:
 <type.fieldDefinitions:field()>
 <endif>
@@ -16,7 +16,7 @@ fields:
 
 
 interfaces(interfaceDefinitions) ::= <<
-<if(!(interfaceDefinitions.empty))>
+<if(interfaceDefinitions)>
 interfaces:
   - <interfaceDefinitions:{type | <type.name>};separator="\n  - "><endif>
 >>

@@ -61,6 +61,11 @@ public class ConstantDefinition implements FieldDefinition {
   }
 
   @Override
+  public List<DirectiveDefinition> getDirectives() {
+    throw new IllegalArgumentException("Constant value cannot have directives");
+  }
+
+  @Override
   public String getTypeName() {
     return TYPE_NAME.toLowerCase();
   }
