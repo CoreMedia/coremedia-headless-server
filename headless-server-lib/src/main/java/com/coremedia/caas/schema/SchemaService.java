@@ -1,10 +1,12 @@
 package com.coremedia.caas.schema;
 
+import com.coremedia.caas.schema.directive.CustomDirective;
 import com.coremedia.cap.content.Content;
 import com.coremedia.cap.content.ContentRepository;
 import com.coremedia.cap.content.ContentType;
 
 import com.google.common.collect.HashMultimap;
+import graphql.schema.GraphQLDirective;
 import graphql.schema.GraphQLInterfaceType;
 import graphql.schema.GraphQLObjectType;
 import graphql.schema.GraphQLOutputType;
@@ -23,13 +25,16 @@ public class SchemaService {
   private static final String CONTENT_OBJECT_TYPE_SUFFIX = "Impl";
 
 
+  private Map<String, CustomDirective> customDirectives;
   private Map<String, TypeDefinition> typeDefinitions;
 
 
   private TypeResolver typeResolver;
 
+  private Set<GraphQLDirective> directives;
   private Set<GraphQLType> types;
 
+  private Map<String, GraphQLDirective> directiveMapping;
   private Map<String, GraphQLType> typeMapping;
 
   private Map<ContentType, GraphQLInterfaceType> contentTypeInterfaceMapping = new HashMap<>();
@@ -38,12 +43,22 @@ public class SchemaService {
   private HashMultimap<ContentType, String> contentTypeInstanceNamesMapping;
 
 
-  public SchemaService(Set<TypeDefinition> typeDefinitions, ContentRepository contentRepository) {
+  public SchemaService(Set<CustomDirective> customDirectives, Set<TypeDefinition> typeDefinitions, ContentRepository contentRepository) {
+    this.customDirectives = customDirectives.stream().collect(Collectors.toMap(CustomDirective::getName, Function.identity()));
     this.typeDefinitions = typeDefinitions.stream().collect(Collectors.toMap(TypeDefinition::getName, Function.identity()));
     // create type resolver
     this.typeResolver = new ObjectTypeResolver(this);
     // build GraphQL types
     buildTypes(contentRepository);
+  }
+
+
+  /*
+   * Directive definition operations
+   */
+
+  public CustomDirective getCustomDirective(String name) {
+    return customDirectives.get(name);
   }
 
 
@@ -75,10 +90,18 @@ public class SchemaService {
   }
 
 
+  public boolean hasDirective(String name) {
+    return directiveMapping.containsKey(name);
+  }
+
   public boolean hasType(String name) {
     return typeMapping.containsKey(name);
   }
 
+
+  public Set<GraphQLDirective> getDirectives() {
+    return directives;
+  }
 
   public Set<GraphQLType> getTypes() {
     return types;
@@ -110,6 +133,9 @@ public class SchemaService {
    */
 
   private void buildTypes(ContentRepository contentRepository) {
+    // map all directives
+    directives = customDirectives.values().stream().map(CustomDirective::createDirective).collect(Collectors.toSet());
+    directiveMapping = directives.stream().collect(Collectors.toMap(GraphQLDirective::getName, Function.identity()));
     // map all types
     types = typeDefinitions.values().stream().map(e -> e.build(this)).collect(Collectors.toSet());
     typeMapping = types.stream().collect(Collectors.toMap(GraphQLType::getName, Function.identity()));

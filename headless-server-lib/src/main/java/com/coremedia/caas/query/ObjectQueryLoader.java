@@ -1,7 +1,7 @@
 package com.coremedia.caas.query;
 
 import com.coremedia.caas.schema.SchemaService;
-import com.google.common.collect.ImmutableSet;
+
 import graphql.GraphQLException;
 import graphql.schema.GraphQLObjectType;
 import graphql.schema.GraphQLSchema;
@@ -35,6 +35,6 @@ class ObjectQueryLoader implements QuerySchemaLoader {
     if (type == null) {
       throw new GraphQLException("No object type for root: " + target);
     }
-    return querySchemas.computeIfAbsent(type.getName(), __ -> newSchema().query(type).build(ImmutableSet.copyOf(schema.getTypes())));
+    return querySchemas.computeIfAbsent(type.getName(), __ -> newSchema().query(type).build(schema.getTypes(), schema.getDirectives()));
   }
 }

@@ -3,7 +3,7 @@ package com.coremedia.caas.query;
 import com.coremedia.caas.schema.SchemaService;
 import com.coremedia.caas.schema.Types;
 import com.coremedia.caas.schema.query.RootDataFetcher;
-import com.google.common.collect.ImmutableSet;
+
 import graphql.GraphQLException;
 import graphql.schema.GraphQLSchema;
 
@@ -25,7 +25,7 @@ class ListQueryLoader implements QuerySchemaLoader {
                                                            .type(Types.getType(typeName, true))
                                                            .dataFetcher(new RootDataFetcher()))
                                             .build())
-            .build(ImmutableSet.copyOf(schema.getTypes()));
+            .build(schema.getTypes(), schema.getDirectives());
   }
 
 

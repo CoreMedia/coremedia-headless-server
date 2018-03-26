@@ -3,6 +3,10 @@ package com.coremedia.caas.schema;
 import com.coremedia.caas.config.loader.ConfigResourceLoader;
 import com.coremedia.caas.config.reader.ConfigResource;
 import com.coremedia.caas.config.reader.YamlConfigReader;
+import com.coremedia.caas.schema.directive.CustomDirective;
+import com.coremedia.caas.schema.directive.FieldDirective;
+import com.coremedia.caas.schema.directive.FilterDirective;
+import com.coremedia.caas.schema.directive.IfDirective;
 import com.coremedia.caas.schema.field.common.ConstantField;
 import com.coremedia.caas.schema.field.common.MetaPropertyField;
 import com.coremedia.caas.schema.field.grid.PageGridField;
@@ -38,11 +42,20 @@ public class SchemaReader extends YamlConfigReader {
 
 
   public SchemaService read(ContentRepository contentRepository) throws IOException, InvalidTypeDefinition {
+    Set<CustomDirective> directiveDefinitions = readCustomDirectives();
     Set<TypeDefinition> typeDefinitions = readTypeDefinitions();
     // create schema registry for internal type building and public service
-    return new SchemaService(typeDefinitions, contentRepository);
+    return new SchemaService(directiveDefinitions, typeDefinitions, contentRepository);
   }
 
+
+  private Set<CustomDirective> readCustomDirectives() {
+    // only builtin directives for now
+    ImmutableSet.Builder<CustomDirective> builder = ImmutableSet.builder();
+    builder.add(new IfDirective());
+    builder.add(new FilterDirective());
+    return builder.build();
+  }
 
   private Set<TypeDefinition> readTypeDefinitions() throws IOException {
     Constructor constructor = new Constructor();
@@ -63,6 +76,7 @@ public class SchemaReader extends YamlConfigReader {
     constructor.addTypeDescription(new TypeDescription(MetaPropertyField.class, new Tag("!Meta")));
     constructor.addTypeDescription(new TypeDescription(ContextField.class, new Tag("!Context")));
     constructor.addTypeDescription(new TypeDescription(NavigationPathField.class, new Tag("!NavigationPath")));
+    constructor.addTypeDescription(new TypeDescription(FieldDirective.class, new Tag("!Directive")));
     Yaml yaml = new Yaml(constructor);
 
     ImmutableSet.Builder<TypeDefinition> builder = ImmutableSet.builder();
