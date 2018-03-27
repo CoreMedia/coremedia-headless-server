@@ -5,26 +5,29 @@ import com.coremedia.blueprint.base.pagegrid.ContentBackedPageGridService;
 import com.coremedia.blueprint.base.settings.SettingsService;
 import com.coremedia.blueprint.base.tree.TreeRelation;
 import com.coremedia.caas.services.expression.ExpressionEvaluator;
-import com.coremedia.caas.services.expression.spel.SimpleSpelExpressionEvaluator;
+import com.coremedia.caas.services.expression.spel.SpelExpressionEvaluator;
 import com.coremedia.cap.content.Content;
 import com.coremedia.cap.content.ContentRepository;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.web.context.WebApplicationContext;
 
 @Configuration
 public class ServiceConfig {
 
   @Bean("spelEvaluator")
+  @Scope(value = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.INTERFACES)
   public ExpressionEvaluator createSpelExpressionEvaluator() {
-    return new SimpleSpelExpressionEvaluator();
+    return new SpelExpressionEvaluator();
   }
 
 
   @Bean
-  //@Scope(value = WebApplicationContext.SCOPE_REQUEST, proxyMode= ScopedProxyMode.TARGET_CLASS)
   public ServiceRegistry createServiceRegistry(
           ContentRepository contentRepository,
           SettingsService settingsService,

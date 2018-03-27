@@ -10,12 +10,20 @@ import org.springframework.expression.spel.support.StandardEvaluationContext;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class SimpleSpelExpressionEvaluator implements ExpressionEvaluator {
+public class SpelExpressionEvaluator implements ExpressionEvaluator {
 
-  private static StandardEvaluationContext context = new StandardEvaluationContext();
   private static ExpressionParser parser = new SpelExpressionParser();
 
   private static Map<String, Expression> expressionCache = new ConcurrentHashMap<>();
+
+
+  private StandardEvaluationContext context = new StandardEvaluationContext();
+
+
+  @Override
+  public void setVariables(Map<String, Object> variables) {
+    context.setVariables(variables);
+  }
 
 
   @Override
