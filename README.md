@@ -66,6 +66,14 @@ or start the Tomcat Webapp
 
     mvn cargo:run -pl headless-server-webapp -Dinstallation.server.host=<CMS-SERVER-HOSTNAME> -Dinstallation.server.port=<CMS-SERVER-PORT>
 
+### Executable Jar
+
+A fully executable jar, which can be executed as binary or registered with `init.d` or `systemd`, can be created by adding the profile
+
+    -P executable-jar`
+    
+at build time. For more information see ["Installing Spring Boot Applications"](https://docs.spring.io/spring-boot/docs/current/reference/html/deployment-install.html).
+
 
 ## Testing the API
 
