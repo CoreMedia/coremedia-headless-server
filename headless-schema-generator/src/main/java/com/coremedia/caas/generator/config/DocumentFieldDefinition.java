@@ -44,6 +44,11 @@ public class DocumentFieldDefinition implements FieldDefinition {
     return Collections.emptyList();
   }
 
+  @Override
+  public List<DirectiveDefinition> getDirectives() {
+    return Collections.emptyList();
+  }
+
 
   @Override
   public String getTargetType() {
@@ -70,7 +75,8 @@ public class DocumentFieldDefinition implements FieldDefinition {
       case LINK:
         if (propertyDescriptor.getMaxCardinality() == 1) {
           return "link";
-        } else {
+        }
+        else {
           return "linklist";
         }
       case MARKUP:

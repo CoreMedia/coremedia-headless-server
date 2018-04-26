@@ -28,25 +28,25 @@ public class InterfaceType extends AbstractType {
   }
 
 
-  protected InterfaceType getType(String name, TypeDefinitionRegistry registry) {
-    return registry.getInterfaceType(name);
+  protected InterfaceType getType(String name, SchemaService schemaService) {
+    return schemaService.getInterfaceTypeDefinition(name);
   }
 
   @Override
-  public Set<InterfaceType> getAllInterfaces(TypeDefinitionRegistry registry) {
+  public Set<InterfaceType> getAllInterfaces(SchemaService schemaService) {
     ImmutableSet.Builder<InterfaceType> builder = ImmutableSet.builder();
     builder.add(this);
     for (String name : getParents()) {
-      builder.addAll(getType(name, registry).getAllInterfaces(registry));
+      builder.addAll(getType(name, schemaService).getAllInterfaces(schemaService));
     }
     return builder.build();
   }
 
   @Override
-  public List<FieldBuilder> getFields(TypeDefinitionRegistry registry) throws InvalidTypeDefinition {
+  public List<FieldBuilder> getFields(SchemaService schemaService) throws InvalidTypeDefinition {
     Map<String, FieldBuilder> builderMap = Maps.newHashMap();
     for (String name : getParents()) {
-      for (FieldBuilder builder : getType(name, registry).getFields(registry)) {
+      for (FieldBuilder builder : getType(name, schemaService).getFields(schemaService)) {
         builderMap.put(builder.getName(), builder);
       }
     }
@@ -61,16 +61,16 @@ public class InterfaceType extends AbstractType {
 
 
   @Override
-  public GraphQLOutputType build(TypeDefinitionRegistry registry) throws InvalidTypeDefinition {
+  public GraphQLOutputType build(SchemaService schemaService) throws InvalidTypeDefinition {
     GraphQLInterfaceType.Builder builder = newInterface();
     builder.name(getName());
-    List<FieldBuilder> fieldBuilders = getFields(registry);
+    List<FieldBuilder> fieldBuilders = getFields(schemaService);
     for (FieldBuilder fieldBuilder : fieldBuilders) {
       for (GraphQLFieldDefinition fieldDefinition : fieldBuilder.build()) {
         builder.field(fieldDefinition);
       }
     }
-    builder.typeResolver(registry.getTypeResolver());
+    builder.typeResolver(schemaService.getTypeResolver());
     return builder.build();
   }
 

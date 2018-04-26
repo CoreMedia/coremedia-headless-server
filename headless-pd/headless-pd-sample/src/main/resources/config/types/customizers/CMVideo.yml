@@ -9,3 +9,8 @@ customFields:
     sourceName: (timeLine)
     targetType: TimeLine
     dataFetcher: Struct
+    directives:
+      - !Directive
+        name: if
+        arguments:
+          test: getLink('viewtype')?.getString('layout') == 'shoppable'

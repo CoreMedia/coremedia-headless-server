@@ -6,5 +6,5 @@ public interface TypeDefinition {
 
   String getName();
 
-  GraphQLOutputType build(TypeDefinitionRegistry registry) throws InvalidTypeDefinition;
+  GraphQLOutputType build(SchemaService schemaService) throws InvalidTypeDefinition;
 }

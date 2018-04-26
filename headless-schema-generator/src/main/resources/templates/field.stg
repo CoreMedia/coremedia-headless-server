@@ -4,9 +4,24 @@ field(fieldDefinition) ::= <<
 
 
 fallbackSources(fallbackSourceNames) ::= <<
-<if(!(fallbackSourceNames.empty))>
+<if(fallbackSourceNames)>
 fallbackSourceNames:
   - <fallbackSourceNames;separator="\n  - "><endif>
+>>
+
+
+directive(directiveDefinition) ::= <<
+- !Directive
+  name: <directiveDefinition.name>
+  <if(directiveDefinition.arguments)>
+  arguments:
+    <directiveDefinition.arguments.keys:{k | <k>: <directiveDefinition.arguments.(k)>};separator="\n"><endif>
+>>
+
+directives(directiveDefinitions) ::= <<
+<if(directiveDefinitions)>
+directives:
+  <directiveDefinitions:directive()><endif>
 >>
 
 
@@ -17,6 +32,7 @@ property(fieldDefinition) ::= <<
     <fallbackSources(fieldDefinition.fallbackSourceNames)>
     typeName: <fieldDefinition.targetType>
     <if(fieldDefinition.nonNull)>nonNull: true<endif>
+    <directives(fieldDefinition.directives)>
 
 >>
 
@@ -35,6 +51,7 @@ date(fieldDefinition) ::= <<
     <fallbackSources(fieldDefinition.fallbackSourceNames)>
     typeName: String
     <if(fieldDefinition.nonNull)>nonNull: true<endif>
+    <directives(fieldDefinition.directives)>
 
 >>
 
@@ -45,6 +62,7 @@ link(fieldDefinition) ::= <<
     <fallbackSources(fieldDefinition.fallbackSourceNames)>
     typeName: <fieldDefinition.targetType>
     <if(fieldDefinition.nonNull)>nonNull: true<endif>
+    <directives(fieldDefinition.directives)>
 
 >>
 
@@ -55,6 +73,7 @@ linklist(fieldDefinition) ::= <<
     <fallbackSources(fieldDefinition.fallbackSourceNames)>
     typeName: List:<fieldDefinition.targetType>
     <if(fieldDefinition.nonNull)>nonNull: true<endif>
+    <directives(fieldDefinition.directives)>
 
 >>
 
@@ -64,6 +83,7 @@ struct(fieldDefinition) ::= <<
     sourceName: <fieldDefinition.sourceName>
     <if(fieldDefinition.typeName)>typeName: <fieldDefinition.targetType><endif>
     <if(fieldDefinition.nonNull)>nonNull: true<endif>
+    <directives(fieldDefinition.directives)>
 
 >>
 
@@ -74,6 +94,7 @@ richtext(fieldDefinition) ::= <<
     <fallbackSources(fieldDefinition.fallbackSourceNames)>
     typeName: String
     <if(fieldDefinition.nonNull)>nonNull: true<endif>
+    <directives(fieldDefinition.directives)>
 
 >>
 
@@ -83,6 +104,7 @@ markup(fieldDefinition) ::= <<
     sourceName: <fieldDefinition.sourceName>
     typeName: String
     <if(fieldDefinition.nonNull)>nonNull: true<endif>
+    <directives(fieldDefinition.directives)>
 
 >>
 
@@ -102,6 +124,7 @@ builtin(fieldDefinition) ::= <<
     <endif>
     typeName: <fieldDefinition.targetType>
     <if(fieldDefinition.nonNull)>nonNull: true<endif>
+    <directives(fieldDefinition.directives)>
 
 >>
 
@@ -126,6 +149,7 @@ uri(fieldDefinition) ::= <<
     sourceName: <fieldDefinition.sourceName>
     typeName: String
     <if(fieldDefinition.nonNull)>nonNull: true<endif>
+    <directives(fieldDefinition.directives)>
 
 >>
 

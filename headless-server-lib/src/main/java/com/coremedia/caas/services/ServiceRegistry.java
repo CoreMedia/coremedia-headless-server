@@ -4,8 +4,10 @@ import com.coremedia.blueprint.base.navigation.context.ContextStrategy;
 import com.coremedia.blueprint.base.pagegrid.ContentBackedPageGridService;
 import com.coremedia.blueprint.base.settings.SettingsService;
 import com.coremedia.blueprint.base.tree.TreeRelation;
+import com.coremedia.caas.services.expression.ExpressionEvaluator;
 import com.coremedia.cap.content.Content;
 import com.coremedia.cap.content.ContentRepository;
+
 import org.springframework.core.convert.ConversionService;
 
 public class ServiceRegistry {
@@ -16,15 +18,17 @@ public class ServiceRegistry {
   private ContextStrategy<Content, Content> contextStrategy;
   private TreeRelation<Content> treeRelation;
   private ConversionService conversionService;
+  private ExpressionEvaluator expressionEvaluator;
 
 
-  public ServiceRegistry(ContentRepository contentRepository, SettingsService settingsService, ContentBackedPageGridService contentBackedPageGridService, ContextStrategy<Content, Content> contextStrategy, TreeRelation<Content> treeRelation, ConversionService conversionService) {
+  public ServiceRegistry(ContentRepository contentRepository, SettingsService settingsService, ContentBackedPageGridService contentBackedPageGridService, ContextStrategy<Content, Content> contextStrategy, TreeRelation<Content> treeRelation, ConversionService conversionService, ExpressionEvaluator expressionEvaluator) {
     this.contentRepository = contentRepository;
     this.settingsService = settingsService;
     this.contentBackedPageGridService = contentBackedPageGridService;
     this.contextStrategy = contextStrategy;
     this.treeRelation = treeRelation;
     this.conversionService = conversionService;
+    this.expressionEvaluator = expressionEvaluator;
   }
 
 
@@ -50,5 +54,9 @@ public class ServiceRegistry {
 
   public ConversionService getConversionService() {
     return conversionService;
+  }
+
+  public ExpressionEvaluator getExpressionEvaluator() {
+    return expressionEvaluator;
   }
 }

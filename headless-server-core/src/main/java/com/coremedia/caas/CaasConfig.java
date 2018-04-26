@@ -9,6 +9,7 @@ import com.coremedia.cap.transform.VariantsStructResolver;
 import com.coremedia.transform.BlobTransformer;
 import com.coremedia.transform.NamedTransformBeanBlobTransformer;
 import com.coremedia.transform.impl.ExpressionBasedBeanBlobTransformer;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.common.collect.ImmutableMap;
@@ -98,8 +99,7 @@ public class CaasConfig extends WebMvcConfigurerAdapter {
   }
 
 
-  @Bean
-  @Qualifier("mediaTransformer")
+  @Bean("mediaTransformer")
   public NamedTransformBeanBlobTransformer namedTransformBeanBlobTransformer(BlobTransformer blobTransformer) {
     ExpressionBasedBeanBlobTransformer transformer = new ExpressionBasedBeanBlobTransformer();
     transformer.setBlobTransformer(blobTransformer);

@@ -1,19 +1,56 @@
 package com.coremedia.caas.schema.field.common;
 
+import com.coremedia.caas.schema.DirectiveDefinition;
 import com.coremedia.caas.schema.FieldBuilder;
 import com.coremedia.caas.schema.FieldDefinition;
+import com.coremedia.caas.schema.datafetcher.StaticDataFetcherFactory;
+import com.coremedia.caas.schema.datafetcher.converter.ConvertingDataFetcher;
+import com.coremedia.caas.schema.datafetcher.directive.DirectiveEvaluatingDataFetcher;
+
 import com.google.common.base.MoreObjects;
+import graphql.schema.DataFetcher;
+import graphql.schema.DataFetcherFactory;
 
 import java.util.List;
 
 public abstract class AbstractField implements FieldDefinition, FieldBuilder {
+
+  private boolean convertible;
+  private boolean withDirectives;
 
   private boolean nonNull;
 
   private String name;
   private String sourceName;
   private List<String> fallbackSourceNames;
+  private List<DirectiveDefinition> directives;
   private String typeName;
+
+
+  protected AbstractField(boolean convertible, boolean withDirectives) {
+    this.convertible = convertible;
+    this.withDirectives = withDirectives;
+  }
+
+
+  protected boolean isConvertible() {
+    return convertible;
+  }
+
+  protected boolean isWithDirectives() {
+    return withDirectives;
+  }
+
+
+  protected DataFetcherFactory decorate(DataFetcher dataFetcher) {
+    if (isWithDirectives()) {
+      dataFetcher = new DirectiveEvaluatingDataFetcher(dataFetcher, directives);
+    }
+    if (isConvertible()) {
+      dataFetcher = new ConvertingDataFetcher(getTypeName(), dataFetcher);
+    }
+    return new StaticDataFetcherFactory(dataFetcher);
+  }
 
 
   @Override
@@ -53,6 +90,15 @@ public abstract class AbstractField implements FieldDefinition, FieldBuilder {
   }
 
   @Override
+  public List<DirectiveDefinition> getDirectives() {
+    return directives;
+  }
+
+  public void setDirectives(List<DirectiveDefinition> directives) {
+    this.directives = directives;
+  }
+
+  @Override
   public String getTypeName() {
     return typeName;
   }
@@ -68,8 +114,11 @@ public abstract class AbstractField implements FieldDefinition, FieldBuilder {
             .add("name", name)
             .add("sourceName", sourceName)
             .add("fallbackSourceNames", fallbackSourceNames)
+            .add("directives", directives)
             .add("typeName", typeName)
             .add("nonNull", nonNull)
+            .add("convertible", convertible)
+            .add("withDirectives", withDirectives)
             .toString();
   }
 }

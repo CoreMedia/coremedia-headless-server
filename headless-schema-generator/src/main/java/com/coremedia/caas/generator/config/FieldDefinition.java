@@ -12,6 +12,8 @@ public interface FieldDefinition {
 
   List<String> getFallbackSourceNames();
 
+  List<DirectiveDefinition> getDirectives();
+
   String getTargetType();
 
   String getTypeName();
