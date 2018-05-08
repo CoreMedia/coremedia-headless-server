@@ -9,22 +9,22 @@ fields:
     name: __interfaces
     typeName: List:String
     nonNull: true
-  - !Builtin
+  - !Property
     name: _id
     sourceName: id
     typeName: String
     nonNull: true
-  - !Builtin
+  - !Property
     name: _name
     sourceName: name
     typeName: String
     nonNull: true
-  - !Builtin
+  - !Property
     name: _type
     sourceName: type.name
     typeName: String
     nonNull: true
-  - !Builtin
+  - !Property
     name: this
     typeName: Content_
     nonNull: true

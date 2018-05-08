@@ -1,7 +1,7 @@
-package com.coremedia.caas.schema.field.property;
+package com.coremedia.caas.schema.field.content.property;
 
 import com.coremedia.caas.schema.Types;
-import com.coremedia.caas.schema.datafetcher.property.LinklistPropertyDataFetcher;
+import com.coremedia.caas.schema.datafetcher.property.LinkPropertyDataFetcher;
 import com.coremedia.caas.schema.field.common.AbstractField;
 
 import com.google.common.collect.ImmutableList;
@@ -11,9 +11,9 @@ import java.util.Collection;
 
 import static graphql.schema.GraphQLFieldDefinition.newFieldDefinition;
 
-public class LinklistPropertyField extends AbstractField {
+public class LinkPropertyField extends AbstractField {
 
-  public LinklistPropertyField() {
+  public LinkPropertyField() {
     super(false, true);
   }
 
@@ -23,7 +23,7 @@ public class LinklistPropertyField extends AbstractField {
     return ImmutableList.of(newFieldDefinition()
             .name(getName())
             .type(Types.getType(getTypeName(), isNonNull()))
-            .dataFetcherFactory(decorate(new LinklistPropertyDataFetcher(getSourceName(), getFallbackSourceNames(), Types.getBaseTypeName(getTypeName()))))
+            .dataFetcherFactory(decorate(new LinkPropertyDataFetcher(getSourceName(), getFallbackSourceNames(), Types.getBaseTypeName(getTypeName()))))
             .build());
   }
 }

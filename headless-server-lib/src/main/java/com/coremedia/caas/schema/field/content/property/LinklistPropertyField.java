@@ -1,7 +1,7 @@
-package com.coremedia.caas.schema.field.property;
+package com.coremedia.caas.schema.field.content.property;
 
-import com.coremedia.caas.schema.InvalidTypeDefinition;
 import com.coremedia.caas.schema.Types;
+import com.coremedia.caas.schema.datafetcher.property.LinklistPropertyDataFetcher;
 import com.coremedia.caas.schema.field.common.AbstractField;
 
 import com.google.common.collect.ImmutableList;
@@ -11,10 +11,10 @@ import java.util.Collection;
 
 import static graphql.schema.GraphQLFieldDefinition.newFieldDefinition;
 
-public class AbstractPropertyField extends AbstractField {
+public class LinklistPropertyField extends AbstractField {
 
-  public AbstractPropertyField() {
-    super(false, false);
+  public LinklistPropertyField() {
+    super(false, true);
   }
 
 
@@ -23,7 +23,7 @@ public class AbstractPropertyField extends AbstractField {
     return ImmutableList.of(newFieldDefinition()
             .name(getName())
             .type(Types.getType(getTypeName(), isNonNull()))
-            .dataFetcherFactory(decorate(__ -> { throw new InvalidTypeDefinition("Virtual property definition not replaced: " + getSourceName()); }))
+            .dataFetcherFactory(decorate(new LinklistPropertyDataFetcher(getSourceName(), getFallbackSourceNames(), Types.getBaseTypeName(getTypeName()))))
             .build());
   }
 }

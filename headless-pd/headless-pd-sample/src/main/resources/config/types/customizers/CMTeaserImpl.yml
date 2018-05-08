@@ -9,7 +9,7 @@ customFields:
     name: segment
     sourceName: (target)[0].(segment)
     targetType: String
-    dataFetcher: Property
+    dataFetcher: ContentProperty
   - !CustomField
     name: teaserTarget
     sourceName: (target)
@@ -30,4 +30,4 @@ customFields:
       - (target)[0].(teaserTitle)
       - (target)[0].(title)
     targetType: String
-    dataFetcher: Property
+    dataFetcher: ContentProperty

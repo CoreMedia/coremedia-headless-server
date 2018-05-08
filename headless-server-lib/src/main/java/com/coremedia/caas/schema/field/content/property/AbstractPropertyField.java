@@ -1,7 +1,7 @@
-package com.coremedia.caas.schema.field.property;
+package com.coremedia.caas.schema.field.content.property;
 
+import com.coremedia.caas.schema.InvalidTypeDefinition;
 import com.coremedia.caas.schema.Types;
-import com.coremedia.caas.schema.datafetcher.property.MarkupPropertyDataFetcher;
 import com.coremedia.caas.schema.field.common.AbstractField;
 
 import com.google.common.collect.ImmutableList;
@@ -11,10 +11,10 @@ import java.util.Collection;
 
 import static graphql.schema.GraphQLFieldDefinition.newFieldDefinition;
 
-public class MarkupPropertyField extends AbstractField {
+public class AbstractPropertyField extends AbstractField {
 
-  public MarkupPropertyField() {
-    super(false, true);
+  public AbstractPropertyField() {
+    super(false, false);
   }
 
 
@@ -23,7 +23,7 @@ public class MarkupPropertyField extends AbstractField {
     return ImmutableList.of(newFieldDefinition()
             .name(getName())
             .type(Types.getType(getTypeName(), isNonNull()))
-            .dataFetcherFactory(decorate(new MarkupPropertyDataFetcher(getSourceName())))
+            .dataFetcherFactory(decorate(__ -> { throw new InvalidTypeDefinition("Virtual property definition not replaced: " + getSourceName()); }))
             .build());
   }
 }

@@ -1,8 +1,8 @@
-package com.coremedia.caas.schema.field.navigation;
+package com.coremedia.caas.schema.field.content.adapter.navigation;
 
 import com.coremedia.caas.schema.FieldBuilder;
 import com.coremedia.caas.schema.Types;
-import com.coremedia.caas.schema.datafetcher.navigation.NavigationPathDataFetcher;
+import com.coremedia.caas.schema.datafetcher.navigation.ContextDataFetcher;
 import com.google.common.collect.ImmutableList;
 import graphql.schema.GraphQLFieldDefinition;
 
@@ -10,7 +10,7 @@ import java.util.Collection;
 
 import static graphql.schema.GraphQLFieldDefinition.newFieldDefinition;
 
-public class NavigationPathField implements FieldBuilder {
+public class ContextField implements FieldBuilder {
 
   private boolean nonNull;
 
@@ -48,7 +48,7 @@ public class NavigationPathField implements FieldBuilder {
     return ImmutableList.of(newFieldDefinition()
             .name(getName())
             .type(Types.getType(getTypeName(), isNonNull()))
-            .dataFetcher(new NavigationPathDataFetcher())
+            .dataFetcher(new ContextDataFetcher())
             .build());
   }
 }

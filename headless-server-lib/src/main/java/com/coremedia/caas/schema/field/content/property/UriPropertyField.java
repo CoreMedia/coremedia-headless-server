@@ -1,7 +1,7 @@
-package com.coremedia.caas.schema.field.property;
+package com.coremedia.caas.schema.field.content.property;
 
 import com.coremedia.caas.schema.Types;
-import com.coremedia.caas.schema.datafetcher.property.ContentPropertyDataFetcher;
+import com.coremedia.caas.schema.datafetcher.property.UriPropertyDataFetcher;
 import com.coremedia.caas.schema.field.common.AbstractField;
 
 import com.google.common.collect.ImmutableList;
@@ -11,10 +11,10 @@ import java.util.Collection;
 
 import static graphql.schema.GraphQLFieldDefinition.newFieldDefinition;
 
-public class ContentPropertyField extends AbstractField {
+public class UriPropertyField extends AbstractField {
 
-  public ContentPropertyField() {
-    super(true, true);
+  public UriPropertyField() {
+    super(false, true);
   }
 
 
@@ -23,7 +23,7 @@ public class ContentPropertyField extends AbstractField {
     return ImmutableList.of(newFieldDefinition()
             .name(getName())
             .type(Types.getType(getTypeName(), isNonNull()))
-            .dataFetcherFactory(decorate(new ContentPropertyDataFetcher(getSourceName(), getFallbackSourceNames())))
+            .dataFetcherFactory(decorate(new UriPropertyDataFetcher(getSourceName())))
             .build());
   }
 }

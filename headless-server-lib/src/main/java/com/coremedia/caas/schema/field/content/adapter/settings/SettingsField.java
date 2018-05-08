@@ -1,4 +1,4 @@
-package com.coremedia.caas.schema.field.settings;
+package com.coremedia.caas.schema.field.content.adapter.settings;
 
 import com.coremedia.caas.schema.FieldBuilder;
 import com.coremedia.caas.schema.datafetcher.settings.DirectSettingDataFetcher;

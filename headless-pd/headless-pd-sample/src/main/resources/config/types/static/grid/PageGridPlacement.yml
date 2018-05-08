@@ -1,13 +1,13 @@
 !ObjectType
 name: PageGridPlacement
 fields:
-  - !Builtin
+  - !Property
     name: name
     typeName: String
-  - !Builtin
+  - !Property
     name: viewtype
     sourceName: viewtype.(layout)
     typeName: String
-  - !Builtin
+  - !Property
     name: items
     typeName: List:CMLinkable

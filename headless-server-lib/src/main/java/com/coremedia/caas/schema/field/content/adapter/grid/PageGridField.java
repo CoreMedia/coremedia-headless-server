@@ -1,4 +1,4 @@
-package com.coremedia.caas.schema.field.grid;
+package com.coremedia.caas.schema.field.content.adapter.grid;
 
 import com.coremedia.caas.schema.FieldBuilder;
 import com.coremedia.caas.schema.datafetcher.grid.PageGridDataFetcher;

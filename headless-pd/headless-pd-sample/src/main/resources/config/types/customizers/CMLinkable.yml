@@ -23,7 +23,7 @@ customFields:
     name: viewtype
     sourceName: (viewtype)[0].(layout)
     targetType: String
-    dataFetcher: Property
+    dataFetcher: ContentProperty
   - !CustomField
     name: context
     targetType: CMNavigation
