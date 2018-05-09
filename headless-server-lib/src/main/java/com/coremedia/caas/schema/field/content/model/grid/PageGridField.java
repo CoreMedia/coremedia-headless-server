@@ -1,13 +1,15 @@
-package com.coremedia.caas.schema.field.content.adapter.grid;
+package com.coremedia.caas.schema.field.content.model.grid;
 
 import com.coremedia.caas.schema.FieldBuilder;
-import com.coremedia.caas.schema.datafetcher.grid.PageGridDataFetcher;
+import com.coremedia.caas.schema.datafetcher.content.model.grid.PageGridDataFetcher;
+
 import com.google.common.collect.ImmutableList;
 import graphql.schema.GraphQLFieldDefinition;
 import graphql.schema.GraphQLTypeReference;
 
 import java.util.Collection;
 
+import static com.coremedia.caas.services.repository.ModelFactory.PAGEGRID_MODEL;
 import static graphql.schema.GraphQLFieldDefinition.newFieldDefinition;
 
 public class PageGridField implements FieldBuilder {
@@ -42,7 +44,7 @@ public class PageGridField implements FieldBuilder {
     return ImmutableList.of(newFieldDefinition()
             .name(getName())
             .type(new GraphQLTypeReference("PageGrid"))
-            .dataFetcher(new PageGridDataFetcher(getSourceName()))
+            .dataFetcher(new PageGridDataFetcher(getSourceName(), PAGEGRID_MODEL))
             .build());
   }
 }
