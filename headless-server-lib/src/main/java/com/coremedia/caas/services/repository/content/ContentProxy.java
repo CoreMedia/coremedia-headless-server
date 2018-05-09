@@ -6,6 +6,8 @@ public interface ContentProxy {
 
   String getId();
 
+  String getName();
+
   String getType();
 
   Object get(String propertyName);

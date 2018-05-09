@@ -1,10 +1,10 @@
 package com.coremedia.caas.link.builder;
 
 import com.coremedia.caas.link.LinkBuilder;
+import com.coremedia.caas.services.repository.content.ContentProxy;
 import com.coremedia.cap.common.Blob;
 import com.coremedia.cap.common.CapBlobRef;
 import com.coremedia.cap.common.IdHelper;
-import com.coremedia.cap.content.Content;
 
 import org.springframework.stereotype.Component;
 
@@ -19,30 +19,30 @@ public class SimpleLinkBuilder implements LinkBuilder {
     if (target instanceof CapBlobRef) {
       target = ((CapBlobRef) target).getCapObject();
     }
-    if (target instanceof Content) {
-      Content content = (Content) target;
+    if (target instanceof ContentProxy) {
+      ContentProxy content = (ContentProxy) target;
 
-      if (content.getType().isSubtypeOf("CMImage")) {
+      if (content.isSubtypeOf("CMImage")) {
         return "coremedia:///image/" + IdHelper.parseContentId(content.getId()) + "/data";
       }
-      else if (content.getType().isSubtypeOf("CMPicture")) {
+      else if (content.isSubtypeOf("CMPicture")) {
         return "coremedia:///image/" + IdHelper.parseContentId(content.getId()) + "/data";
       }
-      else if (content.getType().isSubtypeOf("CMArticle")) {
-        return "coremedia:///article/" + content.getString("segment") + "~" + IdHelper.parseContentId(content.getId());
+      else if (content.isSubtypeOf("CMArticle")) {
+        return "coremedia:///article/" + content.get("segment") + "~" + IdHelper.parseContentId(content.getId());
       }
-      else if (content.getType().isSubtypeOf("CMNavigation")) {
-        return "coremedia:///page/" + content.getString("segment") + "~" + IdHelper.parseContentId(content.getId());
+      else if (content.isSubtypeOf("CMNavigation")) {
+        return "coremedia:///page/" + content.get("segment") + "~" + IdHelper.parseContentId(content.getId());
       }
-      else if (content.getType().isSubtypeOf("CMExternalLink")) {
-        return content.getString("url");
+      else if (content.isSubtypeOf("CMExternalLink")) {
+        return (String) content.get("url");
       }
-      else if (content.getType().isSubtypeOf("CMVisual") || content.getType().isSubtypeOf("CMAudio")) {
-        Blob blob = content.getBlob("data");
+      else if (content.isSubtypeOf("CMVisual") || content.isSubtypeOf("CMAudio")) {
+        Blob blob = (Blob) content.get("data");
         if (blob != null) {
           return "coremedia:///media/" + IdHelper.parseContentId(content.getId()) + "/data";
         }
-        return content.getString("dataUrl");
+        return (String) content.get("dataUrl");
       }
     }
     else if (target instanceof String) {
