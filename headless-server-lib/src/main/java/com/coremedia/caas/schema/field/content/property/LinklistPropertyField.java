@@ -1,7 +1,7 @@
 package com.coremedia.caas.schema.field.content.property;
 
 import com.coremedia.caas.schema.Types;
-import com.coremedia.caas.schema.datafetcher.property.LinklistPropertyDataFetcher;
+import com.coremedia.caas.schema.datafetcher.content.property.LinklistPropertyDataFetcher;
 import com.coremedia.caas.schema.field.common.AbstractField;
 
 import com.google.common.collect.ImmutableList;

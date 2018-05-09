@@ -7,6 +7,8 @@ import graphql.schema.DataFetchingEnvironment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.InvocationTargetException;
+
 public abstract class AbstractContentDataFetcher extends AbstractDataFetcher {
 
   private static final Logger LOG = LoggerFactory.getLogger(AbstractContentDataFetcher.class);
@@ -36,5 +38,5 @@ public abstract class AbstractContentDataFetcher extends AbstractDataFetcher {
   }
 
 
-  protected abstract Object getData(ContentProxy contentProxy, String sourceName, DataFetchingEnvironment environment);
+  protected abstract Object getData(ContentProxy contentProxy, String sourceName, DataFetchingEnvironment environment) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException;
 }
