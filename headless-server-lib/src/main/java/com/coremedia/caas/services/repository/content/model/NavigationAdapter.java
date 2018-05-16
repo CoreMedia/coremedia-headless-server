@@ -34,7 +34,9 @@ public class NavigationAdapter {
 
 
   public ContentProxy getContext() {
-    return rootContext.getProxyFactory().makeContentProxy(contextStrategy.findAndSelectContextFor(content, rootContext.getCurrentContentContext()));
+    Object currentContext = rootContext.getCurrentContext();
+    Content activeContext = (currentContext != null && currentContext instanceof Content) ? (Content) currentContext : rootContext.getRootDocument();
+    return rootContext.getProxyFactory().makeContentProxy(contextStrategy.findAndSelectContextFor(content, activeContext));
   }
 
   public List<ContentProxy> getChildren() {
