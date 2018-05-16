@@ -23,7 +23,7 @@ customFields:
     dataFetcher: Property
   - !CustomField
     name: _type
-    sourceName: type.name
+    sourceName: type
     targetType: String
     nonNull: true
     dataFetcher: Property

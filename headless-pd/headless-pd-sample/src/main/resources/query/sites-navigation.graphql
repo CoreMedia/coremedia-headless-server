@@ -10,16 +10,16 @@ query NavigationQuery {
   root {
     ... NavigationEntry
     ... on CMNavigation {
-      children @filter(test: "?[!getBoolean('hidden')]") {
+      children @filter(test: "?[!navigation.hidden]") {
         ... NavigationEntry
         ... on CMNavigation {
-          children @filter(test: "?[!getBoolean('hidden')]") {
+          children @filter(test: "?[!navigation.hidden]") {
             ... NavigationEntry
             ... on CMNavigation {
-              children @filter(test: "?[!getBoolean('hidden')]") {
+              children @filter(test: "?[!navigation.hidden]") {
                 ... NavigationEntry
                 ... on CMNavigation {
-                  children @filter(test: "?[!getBoolean('hidden')]") {
+                  children @filter(test: "?[!navigation.hidden]") {
                     ... NavigationEntry
                   }
                 }

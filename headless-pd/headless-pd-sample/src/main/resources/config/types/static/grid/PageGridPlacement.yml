@@ -6,7 +6,6 @@ fields:
     typeName: String
   - !Property
     name: viewtype
-    sourceName: viewtype.(layout)
     typeName: String
   - !Property
     name: items
