@@ -10,8 +10,11 @@ import com.coremedia.caas.richtext.stax.handler.event.EventHandler;
 import com.coremedia.caas.richtext.stax.handler.output.OutputHandler;
 import com.coremedia.caas.richtext.stax.handler.output.OutputTracer;
 import com.coremedia.caas.richtext.stax.writer.XMLStreamWriterFactory;
-import com.coremedia.cap.content.ContentRepository;
+import com.coremedia.caas.services.repository.ProxyFactory;
+import com.coremedia.caas.services.repository.RootContext;
 
+import java.util.Map;
+import java.util.Stack;
 import javax.xml.stream.XMLEventFactory;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLOutputFactory;
@@ -20,8 +23,6 @@ import javax.xml.stream.XMLStreamWriter;
 import javax.xml.stream.events.Characters;
 import javax.xml.stream.events.EndElement;
 import javax.xml.stream.events.StartElement;
-import java.util.Map;
-import java.util.Stack;
 
 public class ExecutionEnvironment<E> {
 
@@ -158,8 +159,12 @@ public class ExecutionEnvironment<E> {
     return executionContext.getProcessingDefinition().getLinkBuilderRegistry().getBuilder();
   }
 
-  public ContentRepository getContentRepository() {
-    return executionContext.getServiceRegistry().getContentRepository();
+  public RootContext getRootContext() {
+    return executionContext.getRootContext();
+  }
+
+  public ProxyFactory getProxyFactory() {
+    return getRootContext().getProxyFactory();
   }
 
 

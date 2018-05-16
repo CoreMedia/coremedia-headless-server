@@ -1,7 +1,10 @@
 package com.coremedia.caas.services.repository.content;
 
 import com.coremedia.caas.services.repository.ProxyFactory;
+import com.coremedia.cap.common.Blob;
 import com.coremedia.cap.content.Content;
+
+import java.util.List;
 
 public class ContentProxyImpl implements ContentProxy {
 
@@ -40,6 +43,41 @@ public class ContentProxyImpl implements ContentProxy {
   @Override
   public Object get(String propertyName) {
     return proxyFactory.makeProxy(content.get(propertyName));
+  }
+
+
+  @Override
+  public Blob getBlob(String propertyName) {
+    return new BlobProxy(content.getBlob(propertyName));
+  }
+
+  @Override
+  public Boolean getBoolean(String propertyName) {
+    return content.getBoolean(propertyName);
+  }
+
+  @Override
+  public Integer getInteger(String propertyName) {
+    return content.getInteger(propertyName);
+  }
+
+  @Override
+  public ContentProxy getLink(String propertyName) {
+    Content target = content.getLink(propertyName);
+    if (target != null) {
+      return proxyFactory.makeContentProxy(target);
+    }
+    return null;
+  }
+
+  @Override
+  public List<ContentProxy> getLinks(String propertyName) {
+    return proxyFactory.makeContentProxyList(content.getLinks(propertyName));
+  }
+
+  @Override
+  public String getString(String propertyName) {
+    return content.getString(propertyName);
   }
 
 
