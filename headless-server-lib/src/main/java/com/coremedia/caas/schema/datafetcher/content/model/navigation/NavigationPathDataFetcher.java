@@ -1,7 +1,7 @@
 package com.coremedia.caas.schema.datafetcher.content.model.navigation;
 
 import com.coremedia.caas.services.repository.content.ContentProxy;
-import com.coremedia.caas.services.repository.content.model.NavigationAdapter;
+import com.coremedia.caas.services.repository.content.model.adapter.NavigationAdapter;
 
 import java.util.List;
 

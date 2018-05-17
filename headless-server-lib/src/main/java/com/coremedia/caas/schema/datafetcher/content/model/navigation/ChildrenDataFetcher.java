@@ -1,6 +1,6 @@
 package com.coremedia.caas.schema.datafetcher.content.model.navigation;
 
-import com.coremedia.caas.services.repository.content.model.NavigationAdapter;
+import com.coremedia.caas.services.repository.content.model.adapter.NavigationAdapter;
 
 public class ChildrenDataFetcher extends NavigationDataFetcher {
 

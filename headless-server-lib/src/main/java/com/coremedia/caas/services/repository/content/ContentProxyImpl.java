@@ -48,7 +48,7 @@ public class ContentProxyImpl implements ContentProxy {
 
   @Override
   public Blob getBlob(String propertyName) {
-    return new BlobProxy(content.getBlob(propertyName));
+    return new ContentBlobProxy(content.getBlob(propertyName));
   }
 
   @Override

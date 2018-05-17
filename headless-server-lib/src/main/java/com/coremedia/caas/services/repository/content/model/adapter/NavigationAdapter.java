@@ -1,4 +1,4 @@
-package com.coremedia.caas.services.repository.content.model;
+package com.coremedia.caas.services.repository.content.model.adapter;
 
 import com.coremedia.blueprint.base.navigation.context.ContextStrategy;
 import com.coremedia.blueprint.base.tree.TreeRelation;

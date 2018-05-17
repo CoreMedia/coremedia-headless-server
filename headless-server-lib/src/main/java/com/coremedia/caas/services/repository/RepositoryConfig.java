@@ -1,10 +1,5 @@
 package com.coremedia.caas.services.repository;
 
-import com.coremedia.blueprint.base.navigation.context.ContextStrategy;
-import com.coremedia.blueprint.base.pagegrid.ContentBackedPageGridService;
-import com.coremedia.blueprint.base.settings.SettingsService;
-import com.coremedia.blueprint.base.tree.TreeRelation;
-import com.coremedia.caas.services.repository.content.ContentModelAdapterFactory;
 import com.coremedia.caas.services.repository.content.ContentProxyModelAccessor;
 import com.coremedia.caas.services.request.RequestContext;
 import com.coremedia.caas.services.security.AccessValidator;
@@ -21,7 +16,6 @@ import org.springframework.expression.PropertyAccessor;
 import org.springframework.expression.spel.support.ReflectivePropertyAccessor;
 
 import java.util.List;
-import java.util.Map;
 
 @Configuration
 public class RepositoryConfig {
@@ -38,11 +32,6 @@ public class RepositoryConfig {
     return new RootContextImpl(siteIndicator, rootDocument, currentContext, target, requestContext, accessValidators, proxyModelFactories, contentRepository);
   }
 
-
-  @Bean("contentModelAdapterFactory")
-  public ContentModelAdapterFactory createContentModelAdapterFactory(ContentBackedPageGridService contentBackedPageGridService, ContextStrategy<Content, Content> contextStrategy, Map<String, TreeRelation<Content>> treeRelations, SettingsService settingsService) {
-    return new ContentModelAdapterFactory(contentBackedPageGridService, contextStrategy, treeRelations, settingsService);
-  }
 
   @Bean("rootContextFactory")
   public RootContextFactory rootContextFactory(List<AccessValidator> accessValidators, List<ProxyModelFactory> proxyModelFactories, ContentRepository contentRepository) {

@@ -7,12 +7,12 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import javax.activation.MimeType;
 
-class BlobProxy implements Blob {
+class ContentBlobProxy implements Blob {
 
   private Blob delegate;
 
 
-  BlobProxy(Blob delegate) {
+  ContentBlobProxy(Blob delegate) {
     this.delegate = delegate;
   }
 

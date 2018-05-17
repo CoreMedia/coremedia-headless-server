@@ -2,7 +2,7 @@ package com.coremedia.caas.schema.datafetcher.content.model.settings;
 
 import com.coremedia.caas.schema.datafetcher.content.model.AbstractModelDataFetcher;
 import com.coremedia.caas.services.repository.content.ContentProxy;
-import com.coremedia.caas.services.repository.content.model.SettingsAdapter;
+import com.coremedia.caas.services.repository.content.model.adapter.SettingsAdapter;
 
 import com.google.common.base.Splitter;
 import graphql.schema.DataFetchingEnvironment;
