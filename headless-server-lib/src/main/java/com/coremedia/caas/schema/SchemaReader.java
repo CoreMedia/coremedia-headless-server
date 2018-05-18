@@ -12,7 +12,7 @@ import com.coremedia.caas.schema.field.common.MetaPropertyField;
 import com.coremedia.caas.schema.field.common.PropertyField;
 import com.coremedia.caas.schema.field.content.model.NavigationModelField;
 import com.coremedia.caas.schema.field.content.model.PageGridModelField;
-import com.coremedia.caas.schema.field.content.model.SettingsModelField;
+import com.coremedia.caas.schema.field.content.model.SettingModelField;
 import com.coremedia.caas.schema.field.content.property.AbstractPropertyField;
 import com.coremedia.caas.schema.field.content.property.ContentPropertyField;
 import com.coremedia.caas.schema.field.content.property.LinkPropertyField;
@@ -21,7 +21,6 @@ import com.coremedia.caas.schema.field.content.property.MarkupPropertyField;
 import com.coremedia.caas.schema.field.content.property.RichtextPropertyField;
 import com.coremedia.caas.schema.field.content.property.StructPropertyField;
 import com.coremedia.caas.schema.field.content.property.UriPropertyField;
-import com.coremedia.caas.schema.type.object.StructObjectType;
 import com.coremedia.cap.content.ContentRepository;
 
 import com.google.common.collect.ImmutableSet;
@@ -64,7 +63,7 @@ public class SchemaReader extends YamlConfigReader {
     constructor.addTypeDescription(new TypeDescription(AbstractPropertyField.class, new Tag("!AbstractProperty")));
     constructor.addTypeDescription(new TypeDescription(RichtextPropertyField.class, new Tag("!Richtext")));
     constructor.addTypeDescription(new TypeDescription(MarkupPropertyField.class, new Tag("!Markup")));
-    constructor.addTypeDescription(new TypeDescription(SettingsModelField.class, new Tag("!Settings")));
+    constructor.addTypeDescription(new TypeDescription(SettingModelField.class, new Tag("!Setting")));
     constructor.addTypeDescription(new TypeDescription(StructPropertyField.class, new Tag("!Struct")));
     constructor.addTypeDescription(new TypeDescription(UriPropertyField.class, new Tag("!Uri")));
     constructor.addTypeDescription(new TypeDescription(PropertyField.class, new Tag("!Property")));
@@ -81,8 +80,6 @@ public class SchemaReader extends YamlConfigReader {
     for (ConfigResource resource : getResources("schema/*.yml")) {
       builder.add((TypeDefinition) yaml.load(resource.asString()));
     }
-    // add builtin types
-    builder.add(new StructObjectType());
     return builder.build();
   }
 }

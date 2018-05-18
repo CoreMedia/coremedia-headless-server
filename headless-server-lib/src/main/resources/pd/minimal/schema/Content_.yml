@@ -21,7 +21,7 @@ fields:
     nonNull: true
   - !Property
     name: _type
-    sourceName: type.name
+    sourceName: type
     typeName: String
     nonNull: true
   - !Property

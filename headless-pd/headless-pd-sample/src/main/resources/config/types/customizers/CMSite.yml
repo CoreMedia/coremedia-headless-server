@@ -3,7 +3,3 @@ excludedProperties:
   - linkedSettings
   - localSettings
   - siteManagerGroup
-customFields:
-  - !CustomField
-    name: settings
-    dataFetcher: Settings

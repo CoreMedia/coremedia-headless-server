@@ -3,25 +3,24 @@ package com.coremedia.caas.schema.datafetcher.content.model;
 import com.coremedia.caas.services.repository.content.ContentProxy;
 import com.coremedia.caas.services.repository.content.model.adapter.SettingsAdapter;
 
-import com.google.common.base.Splitter;
 import graphql.schema.DataFetchingEnvironment;
-
-import java.util.List;
 
 public class DirectSettingModelDataFetcher extends AbstractModelDataFetcher {
 
-  public DirectSettingModelDataFetcher(String modelName) {
-    super(null, modelName);
+  private Object defaultValue;
+
+
+  public DirectSettingModelDataFetcher(String sourceName, String modelName, Object defaultValue) {
+    super(sourceName, modelName);
+    this.defaultValue = defaultValue;
   }
 
 
   @Override
   protected Object getData(ContentProxy contentProxy, String modelName, String sourceName, DataFetchingEnvironment environment) {
-    String key = getArgument("key", environment);
-    Object defaultValue = getArgument("default", environment);
-    if (key != null) {
-      List<String> keys = Splitter.on(getArgumentWithDefault("separator", '/', environment)).omitEmptyStrings().splitToList(key);
-      return ((SettingsAdapter) getContext(environment).getRootContext().getModelFactory().createModel(modelName, sourceName, contentProxy)).getSetting(keys, defaultValue);
+    SettingsAdapter model = getContext(environment).getRootContext().getModelFactory().createModel(modelName, sourceName, contentProxy);
+    if (model != null) {
+      return model.getSetting(sourceName, defaultValue);
     }
     return null;
   }

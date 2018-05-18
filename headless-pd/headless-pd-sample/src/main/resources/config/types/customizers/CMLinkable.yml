@@ -17,9 +17,6 @@ customFields:
     targetType: String
     dataFetcher: Uri
   - !CustomField
-    name: settings
-    dataFetcher: Settings
-  - !CustomField
     name: viewtype
     sourceName: (viewtype)[0].(layout)
     targetType: String

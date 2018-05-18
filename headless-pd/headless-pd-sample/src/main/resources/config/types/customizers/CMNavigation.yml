@@ -13,6 +13,7 @@ customFields:
   - !CustomField
     name: grid
     sourceName: placement
+    targetType: PageGrid
     dataFetcher: PageGrid
   - !CustomField
     name: hidden

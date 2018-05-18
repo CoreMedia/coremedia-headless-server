@@ -168,13 +168,17 @@ pagegrid(fieldDefinition) ::= <<
   - !<fieldDefinition.dataFetcher>
     name: <fieldDefinition.name>
     sourceName: <fieldDefinition.sourceName>
+    typeName: <fieldDefinition.targetType>
     <if(fieldDefinition.nonNull)>nonNull: true<endif>
 
 >>
 
-settings(fieldDefinition) ::= <<
+setting(fieldDefinition) ::= <<
   - !<fieldDefinition.dataFetcher>
     name: <fieldDefinition.name>
+    sourceName: <fieldDefinition.sourceName>
+    typeName: <fieldDefinition.targetType>
+    <if(fieldDefinition.defaultValue)>defaultValue: <fieldDefinition.defaultValue><endif>
     <if(fieldDefinition.nonNull)>nonNull: true<endif>
 
 >>

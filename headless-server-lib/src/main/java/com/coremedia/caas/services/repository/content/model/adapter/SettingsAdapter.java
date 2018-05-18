@@ -4,9 +4,12 @@ import com.coremedia.blueprint.base.settings.SettingsService;
 import com.coremedia.caas.services.repository.RootContext;
 import com.coremedia.cap.content.Content;
 
-import java.util.List;
+import com.google.common.base.Splitter;
 
 public class SettingsAdapter {
+
+  private static final Splitter PATH_SPLITTER = Splitter.on('/').omitEmptyStrings();
+
 
   private Content content;
   private SettingsService settingsService;
@@ -20,8 +23,8 @@ public class SettingsAdapter {
   }
 
 
-  public Object getSetting(List<String> keys, Object defaultValue) {
-    Object value = settingsService.nestedSetting(keys, Object.class, content);
+  public Object getSetting(String sourceName, Object defaultValue) {
+    Object value = settingsService.nestedSetting(PATH_SPLITTER.splitToList(sourceName), Object.class, content);
     return rootContext.getProxyFactory().makeProxy(value != null ? value : defaultValue);
   }
 }
