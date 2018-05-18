@@ -23,6 +23,11 @@ public class ContentNavigationModelFactory implements ContentModelFactory<Naviga
 
 
   @Override
+  public boolean isExpressionModel() {
+    return true;
+  }
+
+  @Override
   public String getModelName() {
     return NAVIGATION_MODEL;
   }

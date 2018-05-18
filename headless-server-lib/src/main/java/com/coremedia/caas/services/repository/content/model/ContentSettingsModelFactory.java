@@ -18,6 +18,11 @@ public class ContentSettingsModelFactory implements ContentModelFactory<Settings
 
 
   @Override
+  public boolean isExpressionModel() {
+    return false;
+  }
+
+  @Override
   public String getModelName() {
     return SETTINGS_MODEL;
   }

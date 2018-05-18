@@ -19,6 +19,11 @@ public class ContentPageGridModelFactory implements ContentModelFactory<PageGrid
 
 
   @Override
+  public boolean isExpressionModel() {
+    return false;
+  }
+
+  @Override
   public String getModelName() {
     return PAGEGRID_MODEL;
   }

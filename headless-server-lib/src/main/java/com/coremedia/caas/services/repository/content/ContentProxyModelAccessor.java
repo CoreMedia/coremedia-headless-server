@@ -7,20 +7,28 @@ import org.springframework.expression.TypedValue;
 
 public class ContentProxyModelAccessor implements PropertyAccessor {
 
+  private ContentProxyModelFactory contentProxyModelFactory;
+
+
+  public ContentProxyModelAccessor(ContentProxyModelFactory contentProxyModelFactory) {
+    this.contentProxyModelFactory = contentProxyModelFactory;
+  }
+
+
   @Override
   public Class<?>[] getSpecificTargetClasses() {
-    return new Class[]{ContentProxyImpl.class};
+    return contentProxyModelFactory.getTargetClasses();
   }
 
 
   @Override
   public boolean canRead(EvaluationContext context, Object target, String name) {
-    return (target instanceof ContentProxyImpl) && "navigation".equals(name);
+    return contentProxyModelFactory.isExpressionModel(target, name);
   }
 
   @Override
   public TypedValue read(EvaluationContext context, Object target, String name) {
-    return new TypedValue(((ContentProxyImpl) target).getModel(name));
+    return new TypedValue(contentProxyModelFactory.getModel(target, name));
   }
 
   @Override

@@ -40,4 +40,10 @@ public class ContentModelConfig {
   public ContentSettingsModelFactory contentSettingsModelFactory(@Qualifier("settingsService") SettingsService settingsService) {
     return new ContentSettingsModelFactory(settingsService);
   }
+
+
+  @Bean
+  public ContentProxyModelAccessor contentProxyModelAccessor(ContentProxyModelFactory contentProxyModelFactory) {
+    return new ContentProxyModelAccessor(contentProxyModelFactory);
+  }
 }

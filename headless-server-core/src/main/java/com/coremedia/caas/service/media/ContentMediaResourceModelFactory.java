@@ -19,6 +19,11 @@ public class ContentMediaResourceModelFactory implements ContentModelFactory<Con
 
 
   @Override
+  public boolean isExpressionModel() {
+    return false;
+  }
+
+  @Override
   public String getModelName() {
     return MODEL_NAME;
   }

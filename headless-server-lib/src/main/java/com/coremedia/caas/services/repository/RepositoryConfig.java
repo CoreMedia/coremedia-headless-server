@@ -40,9 +40,9 @@ public class RepositoryConfig {
 
 
   @Bean("spelPropertyAccessors")
-  public List<PropertyAccessor> spelPropertyAccessors() {
+  public List<PropertyAccessor> spelPropertyAccessors(ContentProxyModelAccessor contentProxyModelAccessor) {
     return ImmutableList.of(
-            new ContentProxyModelAccessor(),
+            contentProxyModelAccessor,
             new MapAccessor(),
             new ReflectivePropertyAccessor());
   }
