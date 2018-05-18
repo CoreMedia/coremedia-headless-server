@@ -5,6 +5,8 @@ import com.coremedia.caas.services.repository.content.ContentProxy;
 
 import graphql.schema.DataFetchingEnvironment;
 
+import java.lang.reflect.InvocationTargetException;
+
 public abstract class AbstractModelDataFetcher extends AbstractContentDataFetcher {
 
   private String modelName;
@@ -17,10 +19,10 @@ public abstract class AbstractModelDataFetcher extends AbstractContentDataFetche
 
 
   @Override
-  protected final Object getData(ContentProxy contentProxy, String sourceName, DataFetchingEnvironment environment) {
+  protected final Object getData(ContentProxy contentProxy, String sourceName, DataFetchingEnvironment environment) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
     return getData(contentProxy, modelName, sourceName, environment);
   }
 
 
-  protected abstract Object getData(ContentProxy contentProxy, String modelName, String sourceName, DataFetchingEnvironment environment);
+  protected abstract Object getData(ContentProxy contentProxy, String modelName, String sourceName, DataFetchingEnvironment environment) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException;
 }

@@ -9,10 +9,10 @@ customFields:
   - !CustomField
     name: children
     targetType: List:CMLinkable
-    dataFetcher: Children
+    dataFetcher: Navigation
   - !CustomField
     name: grid
-    sourceName: (placement)
+    sourceName: placement
     dataFetcher: PageGrid
   - !CustomField
     name: hidden

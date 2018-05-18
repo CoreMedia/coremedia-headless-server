@@ -27,8 +27,9 @@ customFields:
   - !CustomField
     name: context
     targetType: CMNavigation
-    dataFetcher: Context
+    dataFetcher: Navigation
   - !CustomField
     name: navigationPath
+    sourceName: pathToRoot
     targetType: List:CMNavigation
-    dataFetcher: NavigationPath
+    dataFetcher: Navigation

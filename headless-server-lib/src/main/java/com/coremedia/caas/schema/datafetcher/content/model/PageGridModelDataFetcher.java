@@ -1,13 +1,12 @@
-package com.coremedia.caas.schema.datafetcher.content.model.grid;
+package com.coremedia.caas.schema.datafetcher.content.model;
 
-import com.coremedia.caas.schema.datafetcher.content.model.AbstractModelDataFetcher;
 import com.coremedia.caas.services.repository.content.ContentProxy;
 
 import graphql.schema.DataFetchingEnvironment;
 
-public class PageGridDataFetcher extends AbstractModelDataFetcher {
+public class PageGridModelDataFetcher extends AbstractModelDataFetcher {
 
-  public PageGridDataFetcher(String sourceName, String modelName) {
+  public PageGridModelDataFetcher(String sourceName, String modelName) {
     super(sourceName, modelName);
   }
 

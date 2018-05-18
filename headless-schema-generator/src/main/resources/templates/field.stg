@@ -128,21 +128,6 @@ blob(fieldDefinition) ::= <<
 
 >>
 
-settings(fieldDefinition) ::= <<
-  - !<fieldDefinition.dataFetcher>
-    name: <fieldDefinition.name>
-    <if(fieldDefinition.nonNull)>nonNull: true<endif>
-
->>
-
-pagegrid(fieldDefinition) ::= <<
-  - !<fieldDefinition.dataFetcher>
-    name: <fieldDefinition.name>
-    sourceName: <fieldDefinition.sourceName>
-    <if(fieldDefinition.nonNull)>nonNull: true<endif>
-
->>
-
 uri(fieldDefinition) ::= <<
   - !<fieldDefinition.dataFetcher>
     name: <fieldDefinition.name>
@@ -170,26 +155,26 @@ constant(fieldDefinition) ::= <<
 
 >>
 
-context(fieldDefinition) ::= <<
+navigation(fieldDefinition) ::= <<
   - !<fieldDefinition.dataFetcher>
     name: <fieldDefinition.name>
+    sourceName: <fieldDefinition.sourceName>
     typeName: <fieldDefinition.targetType>
     <if(fieldDefinition.nonNull)>nonNull: true<endif>
 
 >>
 
-children(fieldDefinition) ::= <<
+pagegrid(fieldDefinition) ::= <<
   - !<fieldDefinition.dataFetcher>
     name: <fieldDefinition.name>
-    typeName: <fieldDefinition.targetType>
+    sourceName: <fieldDefinition.sourceName>
     <if(fieldDefinition.nonNull)>nonNull: true<endif>
 
 >>
 
-navigationpath(fieldDefinition) ::= <<
+settings(fieldDefinition) ::= <<
   - !<fieldDefinition.dataFetcher>
     name: <fieldDefinition.name>
-    typeName: <fieldDefinition.targetType>
     <if(fieldDefinition.nonNull)>nonNull: true<endif>
 
 >>

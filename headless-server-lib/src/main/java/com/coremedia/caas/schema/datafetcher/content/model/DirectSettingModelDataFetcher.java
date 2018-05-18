@@ -1,6 +1,5 @@
-package com.coremedia.caas.schema.datafetcher.content.model.settings;
+package com.coremedia.caas.schema.datafetcher.content.model;
 
-import com.coremedia.caas.schema.datafetcher.content.model.AbstractModelDataFetcher;
 import com.coremedia.caas.services.repository.content.ContentProxy;
 import com.coremedia.caas.services.repository.content.model.adapter.SettingsAdapter;
 
@@ -9,9 +8,9 @@ import graphql.schema.DataFetchingEnvironment;
 
 import java.util.List;
 
-public class DirectSettingDataFetcher extends AbstractModelDataFetcher {
+public class DirectSettingModelDataFetcher extends AbstractModelDataFetcher {
 
-  public DirectSettingDataFetcher(String modelName) {
+  public DirectSettingModelDataFetcher(String modelName) {
     super(null, modelName);
   }
 
