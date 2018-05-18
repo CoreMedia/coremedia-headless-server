@@ -7,8 +7,8 @@ import com.coremedia.cache.CacheKey;
 import com.coremedia.cap.common.Blob;
 import com.coremedia.cap.content.Content;
 import com.coremedia.cap.content.ContentRepository;
-import com.coremedia.cap.multisite.Site;
 import com.coremedia.cap.struct.Struct;
+
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableMap;
 import org.slf4j.Logger;
@@ -32,9 +32,9 @@ public class CaasProcessingDefinitionCacheKey extends CacheKey<Map<String, CaasP
   private ApplicationContext applicationContext;
 
 
-  public CaasProcessingDefinitionCacheKey(Site site, ApplicationContext applicationContext) {
-    this.siteId = site.getSiteIndicator().getId();
-    this.contentRepository = site.getSiteIndicator().getRepository();
+  public CaasProcessingDefinitionCacheKey(Content siteIndicator, ApplicationContext applicationContext) {
+    this.siteId = siteIndicator.getId();
+    this.contentRepository = siteIndicator.getRepository();
     this.applicationContext = applicationContext;
   }
 

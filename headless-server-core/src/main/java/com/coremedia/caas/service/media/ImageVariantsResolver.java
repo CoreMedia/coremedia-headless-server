@@ -1,4 +1,4 @@
-package com.coremedia.caas.controller.media;
+package com.coremedia.caas.service.media;
 
 import com.coremedia.blueprint.base.settings.SettingsService;
 import com.coremedia.cap.content.Content;
@@ -7,7 +7,7 @@ import com.coremedia.cap.multisite.Site;
 import com.coremedia.cap.struct.Struct;
 import com.coremedia.cap.transform.VariantsStructResolver;
 
-import javax.validation.constraints.NotNull;
+import javax.annotation.Nonnull;
 import javax.validation.constraints.Null;
 
 public class ImageVariantsResolver implements VariantsStructResolver {
@@ -33,7 +33,7 @@ public class ImageVariantsResolver implements VariantsStructResolver {
 
   @Null
   @Override
-  public Struct getVariantsForSite(@NotNull Site site) {
+  public Struct getVariantsForSite(@Nonnull Site site) {
     Struct setting = settingsService.setting(NAME_VARIANTS_STRUCT, Struct.class, site);
     if (setting == null) {
       Content globalSettings = contentRepository.getChild(PATH_GLOBAL_SETTINGS);
