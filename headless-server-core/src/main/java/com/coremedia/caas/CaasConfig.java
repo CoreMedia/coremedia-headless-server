@@ -16,6 +16,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.filter.CommonsRequestLoggingFilter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -48,6 +49,15 @@ public class CaasConfig extends WebMvcConfigurerAdapter {
   @Override
   public void configurePathMatch(PathMatchConfigurer matcher) {
     matcher.setUseSuffixPatternMatch(false);
+  }
+
+
+  @Override
+  public void addCorsMappings(CorsRegistry registry) {
+    registry.addMapping("/caas/v1/**")
+            .allowedOrigins("*")
+            .allowedMethods("GET", "OPTIONS")
+            .allowedHeaders("authorization", "content-type", "x-requested-with");
   }
 
 
