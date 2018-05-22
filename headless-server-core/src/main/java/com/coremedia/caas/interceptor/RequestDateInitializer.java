@@ -6,19 +6,22 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
-import java.time.OffsetDateTime;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import static com.coremedia.caas.service.request.ApplicationHeaders.PREVIEW_DATE;
 import static com.coremedia.caas.service.request.ContextProperties.REQUEST_DATE;
+import static com.coremedia.caas.service.request.GlobalParameters.PREVIEW_DATE;
 
 public class RequestDateInitializer extends HandlerInterceptorAdapter {
 
   private static final Logger LOG = LoggerFactory.getLogger(RequestDateInitializer.class);
+
+  public static final String PREVIEW_DATE_FORMAT = "dd-MM-yyyy mm:HH VV";
+  public static final DateTimeFormatter PREVIEW_DATE_FORMATTER = DateTimeFormatter.ofPattern(PREVIEW_DATE_FORMAT);
 
 
   private boolean isPreview;
@@ -33,7 +36,7 @@ public class RequestDateInitializer extends HandlerInterceptorAdapter {
 
   @Override
   public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
-    String previewDate = request.getHeader(PREVIEW_DATE);
+    String previewDate = request.getParameter(PREVIEW_DATE);
     // fail if illegal header is sent
     if (!isPreview && previewDate != null) {
       LOG.warn("Must not pass preview date in live mode");
@@ -45,8 +48,8 @@ public class RequestDateInitializer extends HandlerInterceptorAdapter {
     }
     else {
       try {
-        OffsetDateTime offsetDateTime = OffsetDateTime.parse(previewDate, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
-        Date requestDate = Date.from(offsetDateTime.toInstant());
+        ZonedDateTime zonedDateTime = ZonedDateTime.parse(previewDate, PREVIEW_DATE_FORMATTER);
+        Date requestDate = Date.from(zonedDateTime.toInstant());
         requestContext.setProperty(REQUEST_DATE, requestDate);
       } catch (DateTimeParseException e) {
         LOG.warn("Cannot parse preview date '{}'", previewDate);

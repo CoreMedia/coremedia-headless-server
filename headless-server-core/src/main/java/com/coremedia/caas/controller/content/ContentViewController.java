@@ -17,10 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import static com.coremedia.caas.service.request.ApplicationHeaders.PREVIEW_DATE;
-
 @RestController
-@CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.OPTIONS}, allowedHeaders = {"authorization", "content-type", "x-requested-with", PREVIEW_DATE})
+@CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.OPTIONS}, allowedHeaders = {"authorization", "content-type", "x-requested-with"})
 @RequestMapping("/caas/v1/{tenantId}/sites/{siteId}")
 @Api(value = "/caas/v1/{tenantId}/sites/{siteId}", tags = "Content", description = "Operations for content objects")
 public class ContentViewController extends GraphQLControllerBase {
