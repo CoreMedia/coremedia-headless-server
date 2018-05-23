@@ -25,6 +25,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import javax.servlet.Filter;
 import javax.servlet.http.HttpServletRequest;
 
+import static com.coremedia.caas.service.request.ApplicationHeaders.CLIENTID;
+
 @Configuration
 @ComponentScan("com.coremedia.cap.undoc.common.spring")
 @ImportResource({
@@ -57,13 +59,13 @@ public class CaasConfig extends WebMvcConfigurerAdapter {
     registry.addMapping("/caas/v1/**")
             .allowedOrigins("*")
             .allowedMethods("GET", "OPTIONS")
-            .allowedHeaders("authorization", "content-type", "x-requested-with");
+            .allowedHeaders("authorization", "content-type", "x-requested-with", CLIENTID);
   }
 
 
   @Override
   public void addInterceptors(InterceptorRegistry registry) {
-    registry.addInterceptor(requestDateInitializer).addPathPatterns("/caas/**");
+    registry.addInterceptor(requestDateInitializer).addPathPatterns("/caas/v1/**");
   }
 
 

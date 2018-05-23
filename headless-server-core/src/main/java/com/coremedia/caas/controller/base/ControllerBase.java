@@ -3,6 +3,7 @@ package com.coremedia.caas.controller.base;
 import com.coremedia.blueprint.base.settings.SettingsService;
 import com.coremedia.caas.monitoring.Metrics;
 import com.coremedia.caas.resolver.TargetResolver;
+import com.coremedia.caas.service.request.ClientIdentification;
 import com.coremedia.caas.services.repository.RootContext;
 import com.coremedia.caas.services.repository.RootContextFactory;
 import com.coremedia.caas.services.request.RequestContext;
@@ -13,6 +14,7 @@ import com.coremedia.cap.multisite.SitesService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -83,11 +85,15 @@ public abstract class ControllerBase {
   }
 
 
+  protected ClientIdentification resolveClient(RootContext rootContext, HttpServletRequest request, HttpServletResponse response) {
+    return ClientIdentification.from(rootContext, settingsService, request);
+  }
+
+
   protected RootContext resolveRootContext(String tenantId, String siteId, HttpServletRequest request, HttpServletResponse response) throws AccessControlViolation {
     Site site = resolveSite(tenantId, siteId);
     if (site == null) {
-      response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-      return null;
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
     // site indicator itself is the query root
     return rootContextFactory.createRootContext(site.getSiteIndicator(), site.getSiteRootDocument(), null, site.getSiteIndicator(), requestContext);
@@ -96,14 +102,12 @@ public abstract class ControllerBase {
   protected RootContext resolveRootContext(String tenantId, String siteId, String targetId, HttpServletRequest request, HttpServletResponse response) throws AccessControlViolation {
     Site site = resolveSite(tenantId, siteId);
     if (site == null) {
-      response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-      return null;
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
     // resolve query root
     Object target = resolveTarget(site, targetId);
     if (target == null) {
-      response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-      return null;
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
     return rootContextFactory.createRootContext(site.getSiteIndicator(), site.getSiteRootDocument(), null, target, requestContext);
   }
@@ -115,21 +119,21 @@ public abstract class ControllerBase {
 
 
   protected ResponseEntity handleError(Exception error, HttpServletRequest request, HttpServletResponse response) {
-    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-    return null;
+    return new ResponseEntity(HttpStatus.BAD_REQUEST);
   }
 
   protected ResponseEntity handleError(AccessControlViolation error, HttpServletRequest request, HttpServletResponse response) {
     switch (error.getErrorCode()) {
       case INVALID_OBJECT:
-        response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-        return null;
+        return new ResponseEntity(HttpStatus.NOT_FOUND);
       case INSUFFICIENT_RIGHTS:
-        response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-        return null;
+        return new ResponseEntity(HttpStatus.FORBIDDEN);
       default:
-        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-        return null;
+        return new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
+  }
+
+  protected ResponseEntity handleError(ResponseStatusException error, HttpServletRequest request, HttpServletResponse response) {
+    return new ResponseEntity(error.getStatus());
   }
 }
