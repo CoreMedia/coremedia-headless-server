@@ -14,7 +14,7 @@ import java.util.Map;
 @Order(100)
 public class ContentMappingResolver implements TargetResolver {
 
-  public static final String STATIC_MAPPING_KEY = "caas.mappings";
+  public static final String STATIC_MAPPING_KEY = "caasMappings";
 
 
   @Autowired
