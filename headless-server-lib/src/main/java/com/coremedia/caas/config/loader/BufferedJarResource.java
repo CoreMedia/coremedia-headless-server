@@ -8,16 +8,20 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URL;
+import java.nio.file.Paths;
 
-public class BufferedJarResource implements Resource {
+class BufferedJarResource implements Resource {
 
   private String filename;
-
   private byte[] data;
 
-  public BufferedJarResource(String filename, byte[] data) {
+  private JarConfigResourceLoader loader;
+
+
+  BufferedJarResource(String filename, byte[] data, JarConfigResourceLoader loader) {
     this.filename = filename;
     this.data = data;
+    this.loader = loader;
   }
 
 
@@ -52,7 +56,7 @@ public class BufferedJarResource implements Resource {
   }
 
   @Override
-  public long contentLength() throws IOException {
+  public long contentLength() {
     return data.length;
   }
 
@@ -62,8 +66,8 @@ public class BufferedJarResource implements Resource {
   }
 
   @Override
-  public Resource createRelative(String s) throws IOException {
-    throw new IOException("This is a virtual resource");
+  public Resource createRelative(String relativePath) {
+    return loader.getResource(Paths.get(Paths.get(getFilename()).getParent().toString(), relativePath).toString());
   }
 
   @Override
@@ -77,7 +81,7 @@ public class BufferedJarResource implements Resource {
   }
 
   @Override
-  public InputStream getInputStream() throws IOException {
+  public InputStream getInputStream() {
     return new ByteArrayInputStream(data);
   }
 }
