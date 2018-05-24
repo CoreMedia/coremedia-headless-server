@@ -1,6 +1,7 @@
 package com.coremedia.caas.controller.media;
 
 import com.coremedia.caas.controller.base.ControllerBase;
+import com.coremedia.caas.controller.base.ResponseStatusException;
 import com.coremedia.caas.service.media.MediaResource;
 import com.coremedia.caas.service.media.MediaResourceModel;
 import com.coremedia.caas.service.media.MediaResourceModelFactory;
@@ -73,6 +74,10 @@ public class MediaController extends ControllerBase {
       }
       return null;
     } catch (AccessControlViolation e) {
+      return handleError(e, request, response);
+    } catch (ResponseStatusException e) {
+      return handleError(e, request, response);
+    } catch (Exception e) {
       return handleError(e, request, response);
     }
   }

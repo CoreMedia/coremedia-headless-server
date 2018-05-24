@@ -8,6 +8,19 @@
 <siteManagerGroup></siteManagerGroup>
 <localSettings><Struct xmlns="http://www.coremedia.com/2008/struct" xmlns:xlink="http://www.w3.org/1999/xlink">
 <StringProperty Name="tenantId">coremedia</StringProperty>
+<StructProperty Name="caasClients">
+<Struct>
+<StructProperty Name="00000000-0000-0000-0000-000000000000">
+<Struct>
+<StringProperty Name="pd">default</StringProperty>
+</Struct>
+</StructProperty>
+</Struct>
+</StructProperty>
+<StructProperty Name="caasDefinitions">
+<Struct>
+</Struct>
+</StructProperty>
 </Struct></localSettings>
 <linkedSettings><link href="../Options/Settings/CaaS%20Mappings.xml" path="/Sites/CaaSsiopeia/Germany/English/Options/Settings/CaaS%20Mappings"/></linkedSettings>
 </CMSite>

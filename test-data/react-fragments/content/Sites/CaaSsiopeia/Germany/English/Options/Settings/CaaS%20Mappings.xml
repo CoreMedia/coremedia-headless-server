@@ -3,7 +3,7 @@
 <locale>en-DE</locale>
 <master/>
 <settings><Struct xmlns="http://www.coremedia.com/2008/struct" xmlns:xlink="http://www.w3.org/1999/xlink">
-<StructProperty Name="caas.mappings">
+<StructProperty Name="caasMappings">
 <Struct>
 <LinkProperty Name="caas.article" LinkType="coremedia:///cap/contenttype/Content_" xlink:href="coremedia:///cap/resources/../../Editorial/Products/CaaS/CoreMedia%20CaaS.xml" cmexport:path="/Sites/CaaSsiopeia/Germany/English/Editorial/Products/CaaS/CoreMedia%20CaaS"/>
 <LinkProperty Name="home.teaser-bottom" LinkType="coremedia:///cap/contenttype/Content_" xlink:href="coremedia:///cap/resources/../../Navigation/Home/www%2Ecoremedia%2Ecom-platform.xml" cmexport:path="/Sites/CaaSsiopeia/Germany/English/Navigation/Home/www%2Ecoremedia%2Ecom-platform"/>

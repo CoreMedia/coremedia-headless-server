@@ -149,7 +149,7 @@
                   <type>jar</type>
                   <overWrite>true</overWrite>
                   <excludes>META-INF/**</excludes>
-                  <outputDirectory>${project.build.directory}/classes/pd/sample</outputDirectory>
+                  <outputDirectory>${project.build.directory}/classes/pd/static/default</outputDirectory>
                 </artifactItem>
               </artifactItems>
             </configuration>

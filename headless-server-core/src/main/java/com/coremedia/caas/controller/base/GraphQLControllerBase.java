@@ -1,8 +1,10 @@
 package com.coremedia.caas.controller.base;
 
+import com.coremedia.blueprint.base.settings.SettingsService;
 import com.coremedia.caas.config.CaasProcessingDefinition;
 import com.coremedia.caas.config.CaasProcessingDefinitionCacheKey;
 import com.coremedia.caas.execution.ExecutionContext;
+import com.coremedia.caas.service.request.ClientIdentification;
 import com.coremedia.caas.services.ServiceRegistry;
 import com.coremedia.caas.services.repository.RootContext;
 import com.coremedia.caas.services.security.AccessControlViolation;
@@ -17,6 +19,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
+import org.springframework.http.HttpStatus;
 
 import java.util.Collections;
 import java.util.Map;
@@ -39,6 +42,9 @@ public abstract class GraphQLControllerBase extends ControllerBase {
   private ServiceRegistry serviceRegistry;
 
   @Autowired
+  private SettingsService settingsService;
+
+  @Autowired
   @Qualifier("staticProcessingDefinitions")
   private Map<String, CaasProcessingDefinition> staticProcessingDefinitions;
 
@@ -48,18 +54,15 @@ public abstract class GraphQLControllerBase extends ControllerBase {
   }
 
 
-  private String getDefinitionName(HttpServletRequest request, HttpServletResponse response) {
-    return "default";
-  }
-
   private Map<String, Object> getQueryArgs(HttpServletRequest request, HttpServletResponse response) {
     return Collections.emptyMap();
   }
 
 
-  private Object runQuery(@Nonnull RootContext rootContext, @Nonnull String definitionName, @Nonnull String queryName, @Nonnull String viewName, Map<String, Object> queryArgs, HttpServletRequest request, HttpServletResponse response) {
+  private Object runQuery(@Nonnull RootContext rootContext, @Nonnull ClientIdentification clientIdentification, @Nonnull String queryName, @Nonnull String viewName, Map<String, Object> queryArgs, HttpServletRequest request, HttpServletResponse response) {
+    String definitionName = clientIdentification.getDefinitionName();
     // repository defined runtime definition
-    CaasProcessingDefinitionCacheKey processingDefinitionCacheKey = new CaasProcessingDefinitionCacheKey(rootContext.getSiteIndicator(), applicationContext);
+    CaasProcessingDefinitionCacheKey processingDefinitionCacheKey = new CaasProcessingDefinitionCacheKey(rootContext.getSiteIndicator(), settingsService, applicationContext);
     CaasProcessingDefinition resolvedDefinition = cache.get(processingDefinitionCacheKey).get(definitionName);
     // fallback executable static definition
     if (resolvedDefinition == null || !resolvedDefinition.hasQueryDefinition(queryName, viewName)) {
@@ -67,8 +70,7 @@ public abstract class GraphQLControllerBase extends ControllerBase {
     }
     if (resolvedDefinition == null || !resolvedDefinition.hasQueryDefinition(queryName, viewName)) {
       LOG.error("No processing definition found for name '{}' and query '{}#{}'", definitionName, queryName, viewName);
-      response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-      return null;
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
     CaasProcessingDefinition processingDefinition = resolvedDefinition;
     // create new runtime context for capturing all required runtime services and state
@@ -102,15 +104,21 @@ public abstract class GraphQLControllerBase extends ControllerBase {
       else {
         rootContext = resolveRootContext(tenantId, siteId, targetId, request, response);
       }
-      // determine pd name
-      String definitionName = getDefinitionName(request, response);
+      // determine client
+      ClientIdentification clientIdentification = resolveClient(rootContext, request, response);
+      String clientId = clientIdentification.getId().toString();
+      String definitionName = clientIdentification.getDefinitionName();
       // determine query arguments
       Map<String, Object> queryArgs = getQueryArgs(request, response);
       // initialize expression evaluator
       serviceRegistry.getExpressionEvaluator().init(queryArgs);
       // run query
-      return execute(() -> runQuery(rootContext, definitionName, queryName, viewName, queryArgs, request, response), "tenant", tenantId, "site", siteId, "pd", definitionName, "query", queryName, "view", viewName);
+      return execute(() -> runQuery(rootContext, clientIdentification, queryName, viewName, queryArgs, request, response), "tenant", tenantId, "site", siteId, "client", clientId, "pd", definitionName, "query", queryName, "view", viewName);
     } catch (AccessControlViolation e) {
+      return handleError(e, request, response);
+    } catch (ResponseStatusException e) {
+      return handleError(e, request, response);
+    } catch (Exception e) {
       return handleError(e, request, response);
     }
   }
