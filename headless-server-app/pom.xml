@@ -49,6 +49,7 @@
         <configuration>
           <mainClass>com.coremedia.caas.CaasServletInitializer</mainClass>
           <layout>JAR</layout>
+          <executable>true</executable>
         </configuration>
         <executions>
           <execution>
