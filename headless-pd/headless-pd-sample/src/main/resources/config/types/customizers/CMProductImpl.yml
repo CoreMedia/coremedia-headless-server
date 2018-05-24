@@ -4,9 +4,9 @@ customFields:
     name: title
     sourceName: (productName)
     targetType: String
-    dataFetcher: Property
+    dataFetcher: ContentProperty
   - !CustomField
     name: teaserTitle
     sourceName: (productName)
     targetType: String
-    dataFetcher: Property
+    dataFetcher: ContentProperty

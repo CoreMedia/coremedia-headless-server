@@ -13,6 +13,7 @@ public class CustomFieldDefinition implements FieldDefinition {
   private List<String> fallbackSourceNames;
   private List<DirectiveDefinition> directives;
   private String dataFetcher;
+  private Object defaultValue;
 
 
   @Override
@@ -76,6 +77,14 @@ public class CustomFieldDefinition implements FieldDefinition {
 
   public void setDataFetcher(String dataFetcher) {
     this.dataFetcher = dataFetcher;
+  }
+
+  public Object getDefaultValue() {
+    return defaultValue;
+  }
+
+  public void setDefaultValue(Object defaultValue) {
+    this.defaultValue = defaultValue;
   }
 
 

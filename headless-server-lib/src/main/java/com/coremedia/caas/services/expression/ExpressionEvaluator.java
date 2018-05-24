@@ -4,7 +4,7 @@ import java.util.Map;
 
 public interface ExpressionEvaluator {
 
-  void setVariables(Map<String, Object> variables);
+  void init(Map<String, Object> variables);
 
   <E> E evaluate(String expression, Object rootObject, Class<E> resultType);
 }

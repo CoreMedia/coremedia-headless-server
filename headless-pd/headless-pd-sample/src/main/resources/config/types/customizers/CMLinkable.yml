@@ -17,18 +17,16 @@ customFields:
     targetType: String
     dataFetcher: Uri
   - !CustomField
-    name: settings
-    dataFetcher: Settings
-  - !CustomField
     name: viewtype
     sourceName: (viewtype)[0].(layout)
     targetType: String
-    dataFetcher: Property
+    dataFetcher: ContentProperty
   - !CustomField
     name: context
     targetType: CMNavigation
-    dataFetcher: Context
+    dataFetcher: Navigation
   - !CustomField
     name: navigationPath
+    sourceName: pathToRoot
     targetType: List:CMNavigation
-    dataFetcher: NavigationPath
+    dataFetcher: Navigation
