@@ -13,6 +13,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -61,6 +62,8 @@ public class MediaController extends ControllerBase {
       // create model for media data
       MediaResourceModel resourceModel = rootContext.getModelFactory().createModel(MediaResourceModelFactory.MODEL_NAME, propertyName, rootContext.getTarget());
       if (resourceModel != null) {
+        String contentType = resourceModel.getType();
+        String requestedRatio = ratio != null ? ratio : "none";
         return execute(() -> {
           MediaResource resource = resourceModel.getMediaResource(ratio, minWidth, minHeight);
           if (resource != null) {
@@ -69,8 +72,8 @@ public class MediaController extends ControllerBase {
                     .contentType(resource.getMediaType())
                     .body(resource.getInputStreamResource());
           }
-          return null;
-        }, "tenant", tenantId, "site", siteId, "contentType", resourceModel.getType(), "ratio", ratio);
+          throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }, "tenant", tenantId, "site", siteId, "type", contentType, "ratio", requestedRatio);
       }
       return null;
     } catch (AccessControlViolation e) {
