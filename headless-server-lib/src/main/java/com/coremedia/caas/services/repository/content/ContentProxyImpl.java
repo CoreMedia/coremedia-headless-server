@@ -63,9 +63,9 @@ public class ContentProxyImpl implements ContentProxy {
 
   @Override
   public ContentProxy getLink(String propertyName) {
-    Content target = content.getLink(propertyName);
-    if (target != null) {
-      return proxyFactory.makeContentProxy(target);
+    List<ContentProxy> contentProxies = getLinks(propertyName);
+    if (!contentProxies.isEmpty()) {
+      return contentProxies.get(0);
     }
     return null;
   }
