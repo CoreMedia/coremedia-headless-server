@@ -6,7 +6,6 @@ import com.coremedia.caas.services.security.AccessValidator;
 import com.coremedia.cap.content.Content;
 
 import java.util.Calendar;
-import java.util.Date;
 
 import static com.coremedia.caas.service.request.ContextProperties.REQUEST_DATE;
 
@@ -26,10 +25,10 @@ public class ValidityDateValidator implements AccessValidator<Content> {
   @Override
   public boolean validate(Content target, RootContext rootContext) {
     if (target.getType().isSubtypeOf("CMLinkable")) {
-      Date now = rootContext.getRequestContext().getProperty(REQUEST_DATE, Date.class);
+      Calendar now = rootContext.getRequestContext().getProperty(REQUEST_DATE, Calendar.class);
       Calendar validFrom = target.getDate("validFrom");
       Calendar validTo = target.getDate("validTo");
-      return (validFrom == null || !now.before(validFrom.getTime())) && (validTo == null || !now.after(validTo.getTime()));
+      return (validFrom == null || validFrom.compareTo(now) <= 0) && (validTo == null || validTo.compareTo(now) > 0);
     }
     return true;
   }

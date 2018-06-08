@@ -9,7 +9,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.Date;
+import java.util.GregorianCalendar;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -44,13 +44,12 @@ public class RequestDateInitializer extends HandlerInterceptorAdapter {
       return false;
     }
     if (!isPreview || previewDate == null) {
-      requestContext.setProperty(REQUEST_DATE, new Date());
+      requestContext.setProperty(REQUEST_DATE, new GregorianCalendar());
     }
     else {
       try {
         ZonedDateTime zonedDateTime = ZonedDateTime.parse(previewDate, PREVIEW_DATE_FORMATTER);
-        Date requestDate = Date.from(zonedDateTime.toInstant());
-        requestContext.setProperty(REQUEST_DATE, requestDate);
+        requestContext.setProperty(REQUEST_DATE, GregorianCalendar.from(zonedDateTime));
       } catch (DateTimeParseException e) {
         LOG.warn("Cannot parse preview date '{}'", previewDate);
         response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
