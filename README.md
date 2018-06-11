@@ -19,6 +19,12 @@ Integrate ready-to-go content fragments and new dynamic client-side modules into
 This README contains an overview of the code and how to start the server. For more detailed documentation, see the [wiki](https://github.com/CoreMedia/coremedia-headless-server/wiki). 
 
 
+## Versions in this Repository
+
+* **master**: This is the release branch.
+* **develop**: This is the branch for all current, unreleased work.
+
+
 ## Workspace Structure
 
 The workspace is comprised of the following modules:
@@ -98,14 +104,29 @@ Run the headless server and try the following URLs:
    The value will be used for the `{siteId}` placeholder in the REST URLs
 
 3. Go to the system tab end expand the *Local Settings* property box.
-   Add a *String* property to it's root: 
+   1. Add a *String* property to it's root: 
 
-   *Property:* tenantId   
-   *Value:* your tenant identifier (only alphanumerical characters/lowercase)   
+      *Property:* tenantId   
+      *Value:* your tenant identifier (only alphanumerical characters/lowercase)   
 
-   This value will be used for the `{tenantId}` placeholder in the REST URLs
+      This value will be used for the `{tenantId}` placeholder in the REST URLs
 
-5. Try to fetch the JSON description of the enabled site:
+   2. Add a *Struct* property to it's root:
+   
+      *Property:* caasClients
+      
+      Add a sub *Struct* property (empty UUID):
+      
+      *Property*: 00000000-0000-0000-0000-000000000000
+      
+      Add a *String* property to the sub struct:
+      
+      *Property:* pd   
+      *value:* default
+      
+      This maps all 'unknown' clients to the processing definition named 'default'. See the [wiki](https://github.com/CoreMedia/coremedia-headless-server/wiki/Processing-Definitions) for more information.
+      
+4. Try to fetch the JSON description of the enabled site:
     
     `http://localhost:8080/caas/v1/{tenantId}/sites/{siteId}`
     
@@ -123,7 +144,7 @@ Run the headless server and try the following URLs:
     }
     ```
     
-6. Test your site with the Swagger UI.
+5. Test your site with the Swagger UI.
 
 ### Swagger
 
