@@ -1,6 +1,7 @@
 package com.coremedia.caas.server;
 
 import com.coremedia.caas.server.interceptor.RequestDateInitializer;
+import com.coremedia.caas.server.interceptor.ResponseHeaderInitializer;
 import com.coremedia.cache.Cache;
 import com.coremedia.cache.CacheCapacityConfigurer;
 
@@ -44,10 +45,12 @@ public class CaasConfig extends WebMvcConfigurerAdapter {
 
 
   private RequestDateInitializer requestDateInitializer;
+  private ResponseHeaderInitializer responseHeaderInitializer;
 
 
-  public CaasConfig(RequestDateInitializer requestDateInitializer) {
+  public CaasConfig(RequestDateInitializer requestDateInitializer, ResponseHeaderInitializer responseHeaderInitializer) {
     this.requestDateInitializer = requestDateInitializer;
+    this.responseHeaderInitializer = responseHeaderInitializer;
   }
 
 
@@ -69,6 +72,7 @@ public class CaasConfig extends WebMvcConfigurerAdapter {
   @Override
   public void addInterceptors(InterceptorRegistry registry) {
     registry.addInterceptor(requestDateInitializer).addPathPatterns("/caas/v1/**");
+    registry.addInterceptor(responseHeaderInitializer).addPathPatterns("/caas/v1/**");
   }
 
 
