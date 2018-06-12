@@ -3,7 +3,7 @@ package com.coremedia.caas.richtext.stax.handler.output;
 import com.coremedia.caas.richtext.common.RTAttributes;
 import com.coremedia.caas.richtext.stax.ExecutionEnvironment;
 import com.coremedia.caas.richtext.stax.transformer.attribute.AttributeTransformer;
-import com.coremedia.caas.services.repository.content.ContentProxy;
+import com.coremedia.caas.service.repository.content.ContentProxy;
 import com.coremedia.cap.common.Blob;
 import com.coremedia.cap.common.IdHelper;
 

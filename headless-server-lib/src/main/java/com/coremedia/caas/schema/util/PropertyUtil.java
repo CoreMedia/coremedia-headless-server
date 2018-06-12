@@ -1,6 +1,6 @@
 package com.coremedia.caas.schema.util;
 
-import com.coremedia.caas.services.repository.content.ContentProxy;
+import com.coremedia.caas.service.repository.content.ContentProxy;
 import com.coremedia.xml.Markup;
 import com.coremedia.xml.MarkupUtil;
 

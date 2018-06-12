@@ -3,7 +3,7 @@ package com.coremedia.caas.schema.datafetcher.content.property;
 import com.coremedia.caas.execution.ExecutionContext;
 import com.coremedia.caas.richtext.RichtextTransformer;
 import com.coremedia.caas.richtext.RichtextTransformerRegistry;
-import com.coremedia.caas.services.repository.content.ContentProxy;
+import com.coremedia.caas.service.repository.content.ContentProxy;
 import com.coremedia.xml.Markup;
 
 import graphql.schema.DataFetchingEnvironment;

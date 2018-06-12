@@ -2,7 +2,7 @@ package com.coremedia.caas.schema.datafetcher.content.property;
 
 import com.coremedia.caas.schema.datafetcher.content.AbstractContentDataFetcher;
 import com.coremedia.caas.schema.util.PropertyUtil;
-import com.coremedia.caas.services.repository.content.ContentProxy;
+import com.coremedia.caas.service.repository.content.ContentProxy;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;

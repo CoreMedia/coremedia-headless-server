@@ -1,7 +1,7 @@
 package com.coremedia.caas.schema.datafetcher.content.model;
 
 import com.coremedia.caas.schema.util.PropertyUtil;
-import com.coremedia.caas.services.repository.content.ContentProxy;
+import com.coremedia.caas.service.repository.content.ContentProxy;
 
 import graphql.schema.DataFetchingEnvironment;
 

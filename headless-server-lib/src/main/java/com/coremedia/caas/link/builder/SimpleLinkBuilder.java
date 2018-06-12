@@ -1,7 +1,7 @@
 package com.coremedia.caas.link.builder;
 
 import com.coremedia.caas.link.LinkBuilder;
-import com.coremedia.caas.services.repository.content.ContentProxy;
+import com.coremedia.caas.service.repository.content.ContentProxy;
 import com.coremedia.cap.common.Blob;
 import com.coremedia.cap.common.IdHelper;
 

@@ -1,7 +1,7 @@
 package com.coremedia.caas.schema;
 
 import com.coremedia.caas.schema.directive.CustomDirective;
-import com.coremedia.caas.services.repository.content.ContentProxy;
+import com.coremedia.caas.service.repository.content.ContentProxy;
 import com.coremedia.cap.content.ContentRepository;
 import com.coremedia.cap.content.ContentType;
 

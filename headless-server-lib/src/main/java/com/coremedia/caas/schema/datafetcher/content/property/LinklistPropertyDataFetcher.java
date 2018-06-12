@@ -1,7 +1,7 @@
 package com.coremedia.caas.schema.datafetcher.content.property;
 
 import com.coremedia.caas.schema.SchemaService;
-import com.coremedia.caas.services.repository.content.ContentProxy;
+import com.coremedia.caas.service.repository.content.ContentProxy;
 
 import com.google.common.collect.ImmutableList;
 import graphql.schema.DataFetchingEnvironment;

@@ -1,8 +1,8 @@
 package com.coremedia.caas.execution;
 
 import com.coremedia.caas.config.CaasProcessingDefinition;
-import com.coremedia.caas.services.ServiceRegistry;
-import com.coremedia.caas.services.repository.RootContext;
+import com.coremedia.caas.service.ServiceRegistry;
+import com.coremedia.caas.service.repository.RootContext;
 
 public class ExecutionContext {
 

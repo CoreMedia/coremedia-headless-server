@@ -9,7 +9,7 @@ import graphql.schema.GraphQLFieldDefinition;
 
 import java.util.Collection;
 
-import static com.coremedia.caas.services.repository.ModelFactory.PAGEGRID_MODEL;
+import static com.coremedia.caas.service.repository.ModelFactory.PAGEGRID_MODEL;
 import static graphql.schema.GraphQLFieldDefinition.newFieldDefinition;
 
 public class PageGridModelField implements FieldBuilder {

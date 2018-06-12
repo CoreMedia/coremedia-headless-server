@@ -10,8 +10,8 @@ import com.coremedia.caas.richtext.stax.handler.event.EventHandler;
 import com.coremedia.caas.richtext.stax.handler.output.OutputHandler;
 import com.coremedia.caas.richtext.stax.handler.output.OutputTracer;
 import com.coremedia.caas.richtext.stax.writer.XMLStreamWriterFactory;
-import com.coremedia.caas.services.repository.ProxyFactory;
-import com.coremedia.caas.services.repository.RootContext;
+import com.coremedia.caas.service.repository.ProxyFactory;
+import com.coremedia.caas.service.repository.RootContext;
 
 import java.util.Map;
 import java.util.Stack;
