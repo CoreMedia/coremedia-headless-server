@@ -6,7 +6,9 @@ import com.coremedia.caas.service.ServiceRegistry;
 import com.coremedia.caas.service.expression.ExpressionEvaluator;
 import com.coremedia.caas.service.request.RequestContext;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
@@ -19,6 +21,17 @@ import java.util.List;
 
 @Configuration
 public class ServiceConfig {
+
+  @Bean("modelMapper")
+  @ConditionalOnMissingBean
+  public ModelMapper modelMapper() {
+    ModelMapper modelMapper = new ModelMapper();
+    modelMapper.getConfiguration()
+            .setFieldMatchingEnabled(true)
+            .setFieldAccessLevel(org.modelmapper.config.Configuration.AccessLevel.PRIVATE);
+    return modelMapper;
+  }
+
 
   @Bean("requestContext")
   @Scope(value = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.INTERFACES)

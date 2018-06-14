@@ -2,6 +2,8 @@ package com.coremedia.caas.server.controller.media;
 
 import com.coremedia.caas.server.controller.base.ControllerBase;
 import com.coremedia.caas.server.controller.base.ResponseStatusException;
+import com.coremedia.caas.server.service.media.ImageVariantsDescriptor;
+import com.coremedia.caas.server.service.media.ImageVariantsResolver;
 import com.coremedia.caas.server.service.media.MediaResource;
 import com.coremedia.caas.server.service.media.MediaResourceModel;
 import com.coremedia.caas.server.service.media.MediaResourceModelFactory;
@@ -30,8 +32,12 @@ import javax.servlet.http.HttpServletResponse;
 @Api(value = "/caas/v1/{tenantId}/sites/{siteId}/media", tags = "Media", description = "Operations for media objects")
 public class MediaController extends ControllerBase {
 
-  public MediaController() {
+  private ImageVariantsResolver imageVariantsResolver;
+
+
+  public MediaController(ImageVariantsResolver imageVariantsResolver) {
     super("caas.media.timer");
+    this.imageVariantsResolver = imageVariantsResolver;
   }
 
 
@@ -76,6 +82,34 @@ public class MediaController extends ControllerBase {
         }, "tenant", tenantId, "site", siteId, "type", contentType, "ratio", requestedRatio);
       }
       return null;
+    } catch (AccessControlViolation e) {
+      return handleError(e, request, response);
+    } catch (ResponseStatusException e) {
+      return handleError(e, request, response);
+    } catch (Exception e) {
+      return handleError(e, request, response);
+    }
+  }
+
+
+  @ResponseBody
+  @RequestMapping(value = "/image/variants", method = RequestMethod.GET)
+  @ApiOperation(
+          value = "Media.ImageVariants",
+          notes = "Return the delivery variants of an image.\n" +
+                  "The variants consist of specified aspect ratios in different resolutions.",
+          response = ImageVariantsDescriptor.class
+  )
+  @ApiResponses(value = {
+          @ApiResponse(code = 400, message = "Invalid tenant or site")
+  })
+  public ResponseEntity<ImageVariantsDescriptor> getMediaVariants(@ApiParam(value = "The tenant's unique ID", required = true) @PathVariable String tenantId,
+                                                                  @ApiParam(value = "The site's unique ID", required = true) @PathVariable String siteId,
+                                                                  HttpServletRequest request,
+                                                                  HttpServletResponse response) {
+    try {
+      RootContext rootContext = resolveRootContext(tenantId, siteId, request, response);
+      return new ResponseEntity<>(imageVariantsResolver.getVariantsDescriptor(rootContext.getSiteIndicator()), HttpStatus.OK);
     } catch (AccessControlViolation e) {
       return handleError(e, request, response);
     } catch (ResponseStatusException e) {

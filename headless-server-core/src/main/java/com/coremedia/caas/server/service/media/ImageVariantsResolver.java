@@ -7,7 +7,14 @@ import com.coremedia.cap.multisite.Site;
 import com.coremedia.cap.struct.Struct;
 import com.coremedia.cap.transform.VariantsStructResolver;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSortedMap;
+import com.google.common.primitives.Ints;
+import org.modelmapper.ModelMapper;
+
+import java.util.Map;
 import javax.annotation.Nonnull;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 
 public class ImageVariantsResolver implements VariantsStructResolver {
@@ -23,18 +30,25 @@ public class ImageVariantsResolver implements VariantsStructResolver {
 
   private ContentRepository contentRepository;
   private SettingsService settingsService;
+  private ModelMapper modelMapper;
 
 
-  public ImageVariantsResolver(ContentRepository contentRepository, SettingsService settingsService) {
+  public ImageVariantsResolver(ContentRepository contentRepository, SettingsService settingsService, ModelMapper modelMapper) {
     this.contentRepository = contentRepository;
     this.settingsService = settingsService;
+    this.modelMapper = modelMapper;
   }
 
 
   @Null
   @Override
-  public Struct getVariantsForSite(@Nonnull Site site) {
-    Struct setting = settingsService.setting(NAME_VARIANTS_STRUCT, Struct.class, site);
+  public Struct getVariantsForSite(@NotNull Site site) {
+    return getVariantsForSite(site.getSiteIndicator());
+  }
+
+  @Null
+  public Struct getVariantsForSite(@NotNull Content siteIndicator) {
+    Struct setting = settingsService.setting(NAME_VARIANTS_STRUCT, Struct.class, siteIndicator);
     if (setting == null) {
       Content globalSettings = contentRepository.getChild(PATH_GLOBAL_SETTINGS);
       if (globalSettings != null && globalSettings.getType().isSubtypeOf(DOCTYPE_SETTINGS)) {
@@ -45,5 +59,36 @@ public class ImageVariantsResolver implements VariantsStructResolver {
       }
     }
     return setting;
+  }
+
+
+  public ImageVariantsDescriptor getVariantsDescriptor(@Nonnull Content siteIndicator) {
+    ImmutableSortedMap.Builder<String, ImageVariantsDescriptor.Ratio> ratiosBuilder = ImmutableSortedMap.naturalOrder();
+    // scan setting for ratio definitions
+    Struct setting = getVariantsForSite(siteIndicator);
+    if (setting != null) {
+      for (Map.Entry<String, Object> settingEntry : setting.getProperties().entrySet()) {
+        Object value = settingEntry.getValue();
+        // assume a struct value always defines a ratio
+        if (value instanceof Struct) {
+          Map<String, Object> subStruct = ((Struct) value).getProperties();
+          // map default ratio properties
+          ImageVariantsDescriptor.Ratio ratio = modelMapper.map(subStruct, ImageVariantsDescriptor.Ratio.class);
+          // scan for defined resolutions by numbered keys
+          ImmutableList.Builder<ImageVariantsDescriptor.Dimension> dimensionsBuilder = ImmutableList.builder();
+          for (Map.Entry<String, Object> subStructEntry : subStruct.entrySet()) {
+            String subKey = subStructEntry.getKey();
+            Object subValue = subStructEntry.getValue();
+            if (subValue instanceof Struct && Ints.tryParse(subKey) != null) {
+              Struct dimensionStruct = (Struct) subValue;
+              dimensionsBuilder.add(new ImageVariantsDescriptor.Dimension(dimensionStruct.getInt("width"), dimensionStruct.getInt("height")));
+            }
+          }
+          ratio.setDimensions(dimensionsBuilder.build());
+          ratiosBuilder.put(settingEntry.getKey(), ratio);
+        }
+      }
+    }
+    return new ImageVariantsDescriptor(ratiosBuilder.build());
   }
 }

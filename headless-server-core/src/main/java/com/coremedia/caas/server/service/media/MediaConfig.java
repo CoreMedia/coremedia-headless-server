@@ -8,6 +8,7 @@ import com.coremedia.transform.BlobTransformer;
 import com.coremedia.transform.NamedTransformBeanBlobTransformer;
 import com.coremedia.transform.impl.ExpressionBasedBeanBlobTransformer;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,8 +31,8 @@ public class MediaConfig {
 
 
   @Bean("imageVariantsResolver")
-  public VariantsStructResolver imageVariantsResolver(ContentRepository contentRepository, @Qualifier("settingsService") SettingsService settingsService) {
-    return new ImageVariantsResolver(contentRepository, settingsService);
+  public VariantsStructResolver imageVariantsResolver(ContentRepository contentRepository, @Qualifier("settingsService") SettingsService settingsService, @Qualifier("modelMapper") ModelMapper modelMapper) {
+    return new ImageVariantsResolver(contentRepository, settingsService, modelMapper);
   }
 
 
