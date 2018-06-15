@@ -16,6 +16,7 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -93,7 +94,7 @@ public class MediaController extends ControllerBase {
 
 
   @ResponseBody
-  @RequestMapping(value = "/image/variants", method = RequestMethod.GET)
+  @RequestMapping(value = "/image/variants", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
   @ApiOperation(
           value = "Media.ImageVariants",
           notes = "Return the delivery variants of an image.\n" +
@@ -101,6 +102,11 @@ public class MediaController extends ControllerBase {
           response = ImageVariantsDescriptor.class
   )
   @ApiResponses(value = {
+          @ApiResponse(
+                  code = 200,
+                  message = "The transformation map",
+                  response = ImageVariantsDescriptor.class
+          ),
           @ApiResponse(code = 400, message = "Invalid tenant or site")
   })
   public ResponseEntity<ImageVariantsDescriptor> getMediaVariants(@ApiParam(value = "The tenant's unique ID", required = true) @PathVariable String tenantId,
