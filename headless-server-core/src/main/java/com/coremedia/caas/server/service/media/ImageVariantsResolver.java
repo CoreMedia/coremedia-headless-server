@@ -13,7 +13,6 @@ import com.google.common.primitives.Ints;
 import org.modelmapper.ModelMapper;
 
 import java.util.Map;
-import javax.annotation.Nonnull;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 
@@ -62,7 +61,7 @@ public class ImageVariantsResolver implements VariantsStructResolver {
   }
 
 
-  public ImageVariantsDescriptor getVariantsDescriptor(@Nonnull Content siteIndicator) {
+  public ImageVariantsDescriptor getVariantsDescriptor(@NotNull Content siteIndicator) {
     ImmutableSortedMap.Builder<String, ImageVariantsDescriptor.Ratio> ratiosBuilder = ImmutableSortedMap.naturalOrder();
     // scan setting for ratio definitions
     Struct setting = getVariantsForSite(siteIndicator);

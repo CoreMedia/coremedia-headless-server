@@ -23,9 +23,9 @@ import org.springframework.http.HttpStatus;
 
 import java.util.Collections;
 import java.util.Map;
-import javax.annotation.Nonnull;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.constraints.NotNull;
 
 public abstract class GraphQLControllerBase extends ControllerBase {
 
@@ -59,7 +59,7 @@ public abstract class GraphQLControllerBase extends ControllerBase {
   }
 
 
-  private Object runQuery(@Nonnull RootContext rootContext, @Nonnull ClientIdentification clientIdentification, @Nonnull String queryName, @Nonnull String viewName, Map<String, Object> queryArgs, HttpServletRequest request, HttpServletResponse response) {
+  private Object runQuery(@NotNull RootContext rootContext, @NotNull ClientIdentification clientIdentification, @NotNull String queryName, @NotNull String viewName, Map<String, Object> queryArgs, HttpServletRequest request, HttpServletResponse response) {
     String definitionName = clientIdentification.getDefinitionName();
     // repository defined runtime definition
     CaasProcessingDefinitionCacheKey processingDefinitionCacheKey = new CaasProcessingDefinitionCacheKey(rootContext.getSiteIndicator(), settingsService, applicationContext);

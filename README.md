@@ -1,6 +1,5 @@
 ![Status: Active](https://documentation.coremedia.com/badges/badge_status_active.png "Status: Active")
 ![For CoreMedia CMS](https://documentation.coremedia.com/badges/badge_coremedia_cms.png "For CoreMedia CMS")
-![Tested: 9.1707.4](https://documentation.coremedia.com/badges/badge_tested_coremedia_9-1707-4.png "Tested: 9.1707.4")
 ![Tested: 9.1710.1](https://documentation.coremedia.com/badges/badge_tested_coremedia_9-1710-1.png "Tested: 9.1710.1")
 ![Tested: 9.1801.1](https://documentation.coremedia.com/badges/badge_tested_coremedia_9-1801-1.png "Tested: 9.1801.1")
 

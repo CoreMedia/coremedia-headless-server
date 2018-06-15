@@ -15,7 +15,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedMap;
-import javax.annotation.Nonnull;
+import javax.validation.constraints.NotNull;
 
 public class ProxyFactoryImpl implements ProxyFactory {
 
@@ -71,7 +71,7 @@ public class ProxyFactoryImpl implements ProxyFactory {
 
 
   @Override
-  public ContentProxy makeContentProxy(@Nonnull Content source) {
+  public ContentProxy makeContentProxy(@NotNull Content source) {
     if (rootContext.getAccessControl().check(source)) {
       return new ContentProxyImpl(source, this);
     }
@@ -79,7 +79,7 @@ public class ProxyFactoryImpl implements ProxyFactory {
   }
 
   @Override
-  public ContentProxy makeContentProxy(@Nonnull String id) {
+  public ContentProxy makeContentProxy(@NotNull String id) {
     Content content = contentRepository.getContent(id);
     if (content != null) {
       return makeContentProxy(content);
@@ -88,7 +88,7 @@ public class ProxyFactoryImpl implements ProxyFactory {
   }
 
   @Override
-  public List<ContentProxy> makeContentProxyList(@Nonnull Collection<Content> source) {
+  public List<ContentProxy> makeContentProxyList(@NotNull Collection<Content> source) {
     return FluentIterable.from(source).transform(this::makeContentProxy).filter(Predicates.notNull()).toList();
   }
 

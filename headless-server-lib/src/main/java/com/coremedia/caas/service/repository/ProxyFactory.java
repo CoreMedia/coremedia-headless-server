@@ -5,7 +5,7 @@ import com.coremedia.cap.content.Content;
 
 import java.util.Collection;
 import java.util.List;
-import javax.annotation.Nonnull;
+import javax.validation.constraints.NotNull;
 
 public interface ProxyFactory {
 
@@ -18,9 +18,9 @@ public interface ProxyFactory {
   Object makeProxy(Object source);
 
 
-  ContentProxy makeContentProxy(@Nonnull Content source);
+  ContentProxy makeContentProxy(@NotNull Content source);
 
-  ContentProxy makeContentProxy(@Nonnull String id);
+  ContentProxy makeContentProxy(@NotNull String id);
 
-  List<ContentProxy> makeContentProxyList(@Nonnull Collection<Content> source);
+  List<ContentProxy> makeContentProxyList(@NotNull Collection<Content> source);
 }
