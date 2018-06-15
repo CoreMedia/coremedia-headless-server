@@ -118,22 +118,22 @@ public abstract class ControllerBase {
   }
 
 
-  protected ResponseEntity handleError(Exception error, HttpServletRequest request, HttpServletResponse response) {
-    return new ResponseEntity(HttpStatus.BAD_REQUEST);
+  protected <T> ResponseEntity<T> handleError(Exception error, HttpServletRequest request, HttpServletResponse response) {
+    return new ResponseEntity<T>(HttpStatus.BAD_REQUEST);
   }
 
-  protected ResponseEntity handleError(AccessControlViolation error, HttpServletRequest request, HttpServletResponse response) {
+  protected <T> ResponseEntity<T> handleError(AccessControlViolation error, HttpServletRequest request, HttpServletResponse response) {
     switch (error.getErrorCode()) {
       case INVALID_OBJECT:
-        return new ResponseEntity(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<T>(HttpStatus.NOT_FOUND);
       case INSUFFICIENT_RIGHTS:
-        return new ResponseEntity(HttpStatus.FORBIDDEN);
+        return new ResponseEntity<T>(HttpStatus.FORBIDDEN);
       default:
-        return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<T>(HttpStatus.BAD_REQUEST);
     }
   }
 
-  protected ResponseEntity handleError(ResponseStatusException error, HttpServletRequest request, HttpServletResponse response) {
-    return new ResponseEntity(error.getStatus());
+  protected <T> ResponseEntity<T> handleError(ResponseStatusException error, HttpServletRequest request, HttpServletResponse response) {
+    return new ResponseEntity<T>(error.getStatus());
   }
 }
