@@ -75,9 +75,8 @@ public class MediaController extends ControllerBase {
           MediaResource resource = resourceModel.getMediaResource(ratio, minWidth, minHeight);
           if (resource != null) {
             return ResponseEntity.ok()
-                    .contentLength(resource.getSize())
                     .contentType(resource.getMediaType())
-                    .body(resource.getInputStreamResource());
+                    .body(resource);
           }
           throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }, "tenant", tenantId, "site", siteId, "type", contentType, "ratio", requestedRatio);

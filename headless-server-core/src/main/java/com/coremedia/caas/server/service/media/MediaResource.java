@@ -1,13 +1,9 @@
 package com.coremedia.caas.server.service.media;
 
-import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 
-public interface MediaResource {
-
-  long getSize();
+public interface MediaResource extends Resource {
 
   MediaType getMediaType();
-
-  InputStreamResource getInputStreamResource();
 }

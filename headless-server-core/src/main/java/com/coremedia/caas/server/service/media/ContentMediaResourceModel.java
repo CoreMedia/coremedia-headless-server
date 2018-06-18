@@ -44,7 +44,7 @@ class ContentMediaResourceModel implements MediaResourceModel {
   public MediaResource getMediaResource(String ratio, int minWidth, int minHeight) {
     Blob blob = transformBlob(ratio, minWidth, minHeight);
     if (blob != null) {
-      return new ContentBlobMediaResource(blob);
+      return new ContentBlobMediaResource(blob, content, propertyName);
     }
     return null;
   }
