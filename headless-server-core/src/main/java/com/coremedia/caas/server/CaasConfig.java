@@ -65,7 +65,7 @@ public class CaasConfig extends WebMvcConfigurerAdapter {
     registry.addMapping("/caas/v1/**")
             .allowedOrigins("*")
             .allowedMethods("GET", "OPTIONS")
-            .allowedHeaders("authorization", "content-type", "x-requested-with", CLIENTID);
+            .allowedHeaders("Authorization", "Cache-Control", "Content-Type", "X-Requested-With", CLIENTID);
   }
 
 
