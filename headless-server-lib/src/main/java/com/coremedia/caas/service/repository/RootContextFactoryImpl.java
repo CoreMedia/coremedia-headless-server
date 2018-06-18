@@ -2,8 +2,8 @@ package com.coremedia.caas.service.repository;
 
 import com.coremedia.caas.service.request.RequestContext;
 import com.coremedia.caas.service.security.AccessValidator;
-import com.coremedia.cap.content.Content;
 import com.coremedia.cap.content.ContentRepository;
+import com.coremedia.cap.multisite.Site;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
@@ -34,7 +34,7 @@ public class RootContextFactoryImpl implements RootContextFactory, BeanFactoryAw
 
 
   @Override
-  public RootContext createRootContext(Content siteIndicator, Content rootDocument, Object currentContext, Object target, RequestContext requestContext) {
-    return beanFactory.getBean(RootContext.class, siteIndicator, rootDocument, currentContext, target, requestContext, accessValidators, proxyModelFactories, contentRepository);
+  public RootContext createRootContext(Site site, Object currentContext, Object target, RequestContext requestContext) {
+    return beanFactory.getBean(RootContext.class, site, currentContext, target, requestContext, accessValidators, proxyModelFactories, contentRepository);
   }
 }

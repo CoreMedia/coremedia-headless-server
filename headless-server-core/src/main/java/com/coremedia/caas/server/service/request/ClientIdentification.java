@@ -29,7 +29,7 @@ public class ClientIdentification {
     }
     UUID uuid = UUID.fromString(clientId);
     // fetch client settings from site indicator
-    Struct clientSettings = settingsService.nestedSetting(ImmutableList.of(KEY_REGISTERED_CLIENTS, uuid.toString()), Struct.class, rootContext.getSiteIndicator());
+    Struct clientSettings = settingsService.nestedSetting(ImmutableList.of(KEY_REGISTERED_CLIENTS, uuid.toString()), Struct.class, rootContext.getSite().getSiteIndicator());
     if (clientSettings != null) {
       String definitionName = clientSettings.getString("pd");
       if (definitionName != null) {

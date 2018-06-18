@@ -42,12 +42,7 @@ public class ImageVariantsResolver implements VariantsStructResolver {
   @Null
   @Override
   public Struct getVariantsForSite(@NotNull Site site) {
-    return getVariantsForSite(site.getSiteIndicator());
-  }
-
-  @Null
-  public Struct getVariantsForSite(@NotNull Content siteIndicator) {
-    Struct setting = settingsService.setting(NAME_VARIANTS_STRUCT, Struct.class, siteIndicator);
+    Struct setting = settingsService.setting(NAME_VARIANTS_STRUCT, Struct.class, site);
     if (setting == null) {
       Content globalSettings = contentRepository.getChild(PATH_GLOBAL_SETTINGS);
       if (globalSettings != null && globalSettings.getType().isSubtypeOf(DOCTYPE_SETTINGS)) {
@@ -61,10 +56,11 @@ public class ImageVariantsResolver implements VariantsStructResolver {
   }
 
 
-  public ImageVariantsDescriptor getVariantsDescriptor(@NotNull Content siteIndicator) {
+  @NotNull
+  public ImageVariantsDescriptor getVariantsDescriptor(@NotNull Site site) {
     ImmutableSortedMap.Builder<String, ImageVariantsDescriptor.Ratio> ratiosBuilder = ImmutableSortedMap.naturalOrder();
     // scan setting for ratio definitions
-    Struct setting = getVariantsForSite(siteIndicator);
+    Struct setting = getVariantsForSite(site);
     if (setting != null) {
       for (Map.Entry<String, Object> settingEntry : setting.getProperties().entrySet()) {
         Object value = settingEntry.getValue();

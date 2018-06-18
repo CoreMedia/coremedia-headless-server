@@ -56,7 +56,7 @@ public abstract class ControllerBase {
 
 
   private List<Site> resolveSites(String tenantId) {
-    return siteService.getSites().stream().filter(site -> tenantId.equals(settingsService.setting(TENANT_ID, String.class, site))).collect(Collectors.toList());
+    return siteService.getSites().stream().filter(site -> tenantId.equals(settingsService.setting(TENANT_ID, String.class, site.getSiteIndicator()))).collect(Collectors.toList());
   }
 
   private Site resolveSite(String tenantId, String siteId) {
@@ -96,7 +96,7 @@ public abstract class ControllerBase {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
     // site indicator itself is the query root
-    return rootContextFactory.createRootContext(site.getSiteIndicator(), site.getSiteRootDocument(), null, site.getSiteIndicator(), requestContext);
+    return rootContextFactory.createRootContext(site, null, site.getSiteIndicator(), requestContext);
   }
 
   protected RootContext resolveRootContext(String tenantId, String siteId, String targetId, HttpServletRequest request, HttpServletResponse response) throws AccessControlViolation {
@@ -109,7 +109,7 @@ public abstract class ControllerBase {
     if (target == null) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
-    return rootContextFactory.createRootContext(site.getSiteIndicator(), site.getSiteRootDocument(), null, target, requestContext);
+    return rootContextFactory.createRootContext(site, null, target, requestContext);
   }
 
 

@@ -115,7 +115,7 @@ public class MediaController extends ControllerBase {
                                                                   HttpServletResponse response) {
     try {
       RootContext rootContext = resolveRootContext(tenantId, siteId, request, response);
-      return new ResponseEntity<>(imageVariantsResolver.getVariantsDescriptor(rootContext.getSiteIndicator()), HttpStatus.OK);
+      return new ResponseEntity<>(imageVariantsResolver.getVariantsDescriptor(rootContext.getSite()), HttpStatus.OK);
     } catch (AccessControlViolation e) {
       return handleError(e, request, response);
     } catch (ResponseStatusException e) {

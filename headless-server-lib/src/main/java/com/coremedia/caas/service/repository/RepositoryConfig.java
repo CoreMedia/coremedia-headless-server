@@ -3,8 +3,8 @@ package com.coremedia.caas.service.repository;
 import com.coremedia.caas.service.repository.content.ContentProxyModelAccessor;
 import com.coremedia.caas.service.request.RequestContext;
 import com.coremedia.caas.service.security.AccessValidator;
-import com.coremedia.cap.content.Content;
 import com.coremedia.cap.content.ContentRepository;
+import com.coremedia.cap.multisite.Site;
 
 import com.google.common.collect.ImmutableList;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -28,8 +28,8 @@ public class RepositoryConfig {
 
   @Bean("rootContext")
   @Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
-  public RootContext rootContext(Content siteIndicator, Content rootDocument, Object currentContext, Object target, RequestContext requestContext, List<AccessValidator> accessValidators, List<ProxyModelFactory> proxyModelFactories, ContentRepository contentRepository) {
-    return new RootContextImpl(siteIndicator, rootDocument, currentContext, target, requestContext, accessValidators, proxyModelFactories, contentRepository);
+  public RootContext rootContext(Site site, Object currentContext, Object target, RequestContext requestContext, List<AccessValidator> accessValidators, List<ProxyModelFactory> proxyModelFactories, ContentRepository contentRepository) {
+    return new RootContextImpl(site, currentContext, target, requestContext, accessValidators, proxyModelFactories, contentRepository);
   }
 
 

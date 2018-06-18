@@ -4,8 +4,8 @@ import com.coremedia.caas.service.request.RequestContext;
 import com.coremedia.caas.service.security.AccessControl;
 import com.coremedia.caas.service.security.AccessControlViolation;
 import com.coremedia.caas.service.security.AccessValidator;
-import com.coremedia.cap.content.Content;
 import com.coremedia.cap.content.ContentRepository;
+import com.coremedia.cap.multisite.Site;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,8 +22,7 @@ public class RootContextImpl implements RootContext, BeanFactoryAware {
 
   private ContentRepository contentRepository;
 
-  private Content siteIndicator;
-  private Content rootDocument;
+  private Site site;
 
   private Object currentContext;
   private Object target;
@@ -39,9 +38,8 @@ public class RootContextImpl implements RootContext, BeanFactoryAware {
   private List<ProxyModelFactory> proxyModelFactories;
 
 
-  public RootContextImpl(Content siteIndicator, Content rootDocument, Object currentContext, Object target, RequestContext requestContext, List<AccessValidator> accessValidators, List<ProxyModelFactory> proxyModelFactories, ContentRepository contentRepository) {
-    this.siteIndicator = siteIndicator;
-    this.rootDocument = rootDocument;
+  public RootContextImpl(Site site, Object currentContext, Object target, RequestContext requestContext, List<AccessValidator> accessValidators, List<ProxyModelFactory> proxyModelFactories, ContentRepository contentRepository) {
+    this.site = site;
     this.currentContext = currentContext;
     this.target = target;
     this.requestContext = requestContext;
@@ -70,13 +68,8 @@ public class RootContextImpl implements RootContext, BeanFactoryAware {
 
 
   @Override
-  public Content getSiteIndicator() {
-    return siteIndicator;
-  }
-
-  @Override
-  public Content getRootDocument() {
-    return rootDocument;
+  public Site getSite() {
+    return site;
   }
 
   @Override

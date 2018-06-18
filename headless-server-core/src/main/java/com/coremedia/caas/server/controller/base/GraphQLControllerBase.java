@@ -62,7 +62,7 @@ public abstract class GraphQLControllerBase extends ControllerBase {
   private Object runQuery(@NotNull RootContext rootContext, @NotNull ClientIdentification clientIdentification, @NotNull String queryName, @NotNull String viewName, Map<String, Object> queryArgs, HttpServletRequest request, HttpServletResponse response) {
     String definitionName = clientIdentification.getDefinitionName();
     // repository defined runtime definition
-    CaasProcessingDefinitionCacheKey processingDefinitionCacheKey = new CaasProcessingDefinitionCacheKey(rootContext.getSiteIndicator(), settingsService, applicationContext);
+    CaasProcessingDefinitionCacheKey processingDefinitionCacheKey = new CaasProcessingDefinitionCacheKey(rootContext.getSite().getSiteIndicator(), settingsService, applicationContext);
     CaasProcessingDefinition resolvedDefinition = cache.get(processingDefinitionCacheKey).get(definitionName);
     // fallback executable static definition
     if (resolvedDefinition == null || !resolvedDefinition.hasQueryDefinition(queryName, viewName)) {
