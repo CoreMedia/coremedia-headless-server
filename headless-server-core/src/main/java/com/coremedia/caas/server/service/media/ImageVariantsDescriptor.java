@@ -1,11 +1,9 @@
 package com.coremedia.caas.server.service.media;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.common.collect.Ordering;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -104,7 +102,7 @@ public class ImageVariantsDescriptor {
     }
 
     public void setDimensions(List<Dimension> dimensions) {
-      this.dimensions = Ordering.from(Comparator.comparingInt(Dimension::getWidth)).sortedCopy(dimensions);
+      this.dimensions = dimensions;
     }
   }
 
@@ -113,11 +111,6 @@ public class ImageVariantsDescriptor {
 
     private int width;
     private int height;
-
-    public Dimension(int width, int height) {
-      this.width = width;
-      this.height = height;
-    }
 
     @JsonProperty
     public int getWidth() {

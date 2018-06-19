@@ -1,18 +1,24 @@
 package com.coremedia.caas.server.service.media;
 
 import com.coremedia.blueprint.base.settings.SettingsService;
+import com.coremedia.caas.server.service.media.ImageVariantsDescriptor.Dimension;
+import com.coremedia.caas.server.service.media.ImageVariantsDescriptor.Ratio;
+import com.coremedia.cap.common.CapPropertyDescriptor;
+import com.coremedia.cap.common.CapPropertyDescriptorType;
 import com.coremedia.cap.content.Content;
 import com.coremedia.cap.content.ContentRepository;
 import com.coremedia.cap.multisite.Site;
 import com.coremedia.cap.struct.Struct;
 import com.coremedia.cap.transform.VariantsStructResolver;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSortedMap;
-import com.google.common.primitives.Ints;
 import org.modelmapper.ModelMapper;
 
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
+import java.util.stream.Collectors;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 
@@ -58,32 +64,33 @@ public class ImageVariantsResolver implements VariantsStructResolver {
 
   @NotNull
   public ImageVariantsDescriptor getVariantsDescriptor(@NotNull Site site) {
-    ImmutableSortedMap.Builder<String, ImageVariantsDescriptor.Ratio> ratiosBuilder = ImmutableSortedMap.naturalOrder();
-    // scan setting for ratio definitions
-    Struct setting = getVariantsForSite(site);
-    if (setting != null) {
-      for (Map.Entry<String, Object> settingEntry : setting.getProperties().entrySet()) {
-        Object value = settingEntry.getValue();
-        // assume a struct value always defines a ratio
-        if (value instanceof Struct) {
-          Map<String, Object> subStruct = ((Struct) value).getProperties();
-          // map default ratio properties
-          ImageVariantsDescriptor.Ratio ratio = modelMapper.map(subStruct, ImageVariantsDescriptor.Ratio.class);
-          // scan for defined resolutions by numbered keys
-          ImmutableList.Builder<ImageVariantsDescriptor.Dimension> dimensionsBuilder = ImmutableList.builder();
-          for (Map.Entry<String, Object> subStructEntry : subStruct.entrySet()) {
-            String subKey = subStructEntry.getKey();
-            Object subValue = subStructEntry.getValue();
-            if (subValue instanceof Struct && Ints.tryParse(subKey) != null) {
-              Struct dimensionStruct = (Struct) subValue;
-              dimensionsBuilder.add(new ImageVariantsDescriptor.Dimension(dimensionStruct.getInt("width"), dimensionStruct.getInt("height")));
-            }
-          }
-          ratio.setDimensions(dimensionsBuilder.build());
-          ratiosBuilder.put(settingEntry.getKey(), ratio);
-        }
-      }
+    Struct variantSetting = getVariantsForSite(site);
+    if (variantSetting != null) {
+      // scan setting for ratio definitions
+      Map<String, Ratio> ratios = variantSetting.getType().getDescriptors().stream()
+              .filter(rd -> rd.getType() == CapPropertyDescriptorType.STRUCT)
+              .collect(Collectors.toMap(CapPropertyDescriptor::getName, rd -> {
+                Struct ratioSetting = variantSetting.getStruct(rd.getName());
+                Map<String, Object> ratioMap = ratioSetting.toNestedMaps();
+                // map default ratio properties
+                Ratio ratio = modelMapper.map(ratioMap, Ratio.class);
+                // map defined dimensions
+                List<Dimension> dimensions = ratioSetting.getType().getDescriptors().stream()
+                        .filter(dd -> dd.getType() == CapPropertyDescriptorType.STRUCT)
+                        .map(dd -> modelMapper.map(ratioSetting.getStruct(dd.getName()).toNestedMaps(), Dimension.class))
+                        .sorted(Comparator.comparingInt(Dimension::getWidth))
+                        .collect(Collectors.toList());
+                ratio.setDimensions(dimensions);
+                return ratio;
+              })).entrySet().stream()
+              .filter(e -> e.getValue().getWidthRatio() > 0 && e.getValue().getHeightRatio() > 0)
+              .sorted(Comparator.comparing(Map.Entry::getKey))
+              .collect(Collectors.toMap(Map.Entry::getKey,
+                                        Map.Entry::getValue,
+                                        (v1, v2) -> { throw new RuntimeException(String.format("Duplicate key for values %s and %s", v1, v2)); },
+                                        TreeMap::new));
+      return new ImageVariantsDescriptor(ratios);
     }
-    return new ImageVariantsDescriptor(ratiosBuilder.build());
+    return new ImageVariantsDescriptor(Collections.emptyMap());
   }
 }
