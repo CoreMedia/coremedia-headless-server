@@ -63,6 +63,7 @@ public class CaasConfig extends WebMvcConfigurerAdapter {
   @Override
   public void addCorsMappings(CorsRegistry registry) {
     registry.addMapping("/caas/v1/**")
+            .maxAge(3600L)
             .allowedOrigins("*")
             .allowedMethods("GET", "OPTIONS")
             .allowedHeaders("Authorization", "Cache-Control", "Content-Type", "X-Requested-With", CLIENTID);
