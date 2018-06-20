@@ -1,6 +1,6 @@
 package com.coremedia.caas.schema.directive;
 
-import com.coremedia.caas.services.expression.ExpressionEvaluator;
+import com.coremedia.caas.service.expression.ExpressionEvaluator;
 
 import com.google.common.base.Strings;
 import graphql.Scalars;

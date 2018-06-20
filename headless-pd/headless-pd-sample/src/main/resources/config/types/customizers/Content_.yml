@@ -14,22 +14,22 @@ customFields:
     name: this
     targetType: Content_
     nonNull: true
-    dataFetcher: Builtin
+    dataFetcher: Property
   - !CustomField
     name: _id
     sourceName: id
     targetType: String
     nonNull: true
-    dataFetcher: Builtin
+    dataFetcher: Property
   - !CustomField
     name: _type
-    sourceName: type.name
+    sourceName: type
     targetType: String
     nonNull: true
-    dataFetcher: Builtin
+    dataFetcher: Property
   - !CustomField
     name: _name
     sourceName: name
     targetType: String
     nonNull: true
-    dataFetcher: Builtin
+    dataFetcher: Property

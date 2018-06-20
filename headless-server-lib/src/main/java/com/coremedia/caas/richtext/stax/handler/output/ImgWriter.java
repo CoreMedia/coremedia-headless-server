@@ -3,14 +3,16 @@ package com.coremedia.caas.richtext.stax.handler.output;
 import com.coremedia.caas.richtext.common.RTAttributes;
 import com.coremedia.caas.richtext.stax.ExecutionEnvironment;
 import com.coremedia.caas.richtext.stax.transformer.attribute.AttributeTransformer;
-import com.coremedia.cap.common.CapBlobRef;
+import com.coremedia.caas.service.repository.content.ContentProxy;
+import com.coremedia.cap.common.Blob;
 import com.coremedia.cap.common.IdHelper;
+
 import com.google.common.base.Strings;
 
+import java.util.List;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.StartElement;
-import java.util.List;
 
 public class ImgWriter extends AbstractOutputHandler {
 
@@ -32,24 +34,27 @@ public class ImgWriter extends AbstractOutputHandler {
     if (href != null) {
       String value = href.getValue();
       if (value != null && IdHelper.isBlobId(value)) {
-        CapBlobRef blobRef = env.getContentRepository().getBlobRef(value);
-        if (blobRef != null) {
-          String link = env.getLinkBuilder().createLink(blobRef);
-          String alt = null;
-          if (blobRef.getCapObject().getType().isSubtypeOf("CMMedia")) {
-            alt = blobRef.getCapObject().getString("alt");
-          }
-          if (!Strings.isNullOrEmpty(link)) {
-            env.getWriter().writeEmptyElement("img");
-            env.getWriter().writeAttribute("cms-src", link);
-            if (!Strings.isNullOrEmpty(alt)) {
-              env.getWriter().writeAttribute("alt", alt);
+        ContentProxy contentProxy = env.getProxyFactory().makeContentProxy(IdHelper.parseContentIdFromBlobId(value));
+        if (contentProxy != null) {
+          Blob blob = contentProxy.getBlob(IdHelper.parsePropertyFromBlobId(value));
+          if (blob != null) {
+            String link = env.getLinkBuilder().createLink(contentProxy);
+            String alt = null;
+            if (contentProxy.isSubtypeOf("CMMedia")) {
+              alt = contentProxy.getString("alt");
             }
-            if (attributeTransformers != null) {
-              for (AttributeTransformer transformer : attributeTransformers) {
-                Attribute attribute = transformer.getAttribute(startElement, env);
-                if (attribute != null) {
-                  env.getWriter().writeAttribute(attribute.getName().getLocalPart(), attribute.getValue());
+            if (!Strings.isNullOrEmpty(link)) {
+              env.getWriter().writeEmptyElement("img");
+              env.getWriter().writeAttribute("cms-src", link);
+              if (!Strings.isNullOrEmpty(alt)) {
+                env.getWriter().writeAttribute("alt", alt);
+              }
+              if (attributeTransformers != null) {
+                for (AttributeTransformer transformer : attributeTransformers) {
+                  Attribute attribute = transformer.getAttribute(startElement, env);
+                  if (attribute != null) {
+                    env.getWriter().writeAttribute(attribute.getName().getLocalPart(), attribute.getValue());
+                  }
                 }
               }
             }

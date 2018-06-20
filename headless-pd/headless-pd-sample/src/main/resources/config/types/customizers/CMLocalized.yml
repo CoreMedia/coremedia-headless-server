@@ -8,4 +8,4 @@ customFields:
     name: languageId
     sourceName: (locale)
     targetType: String
-    dataFetcher: Property
+    dataFetcher: ContentProperty

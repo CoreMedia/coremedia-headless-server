@@ -49,9 +49,9 @@
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
-        <version>${spring.boot.version}</version>
+        <version>${spring-boot.version}</version>
         <configuration>
-          <mainClass>com.coremedia.caas.CaasServletInitializer</mainClass>
+          <mainClass>com.coremedia.caas.server.CaasServletInitializer</mainClass>
           <layout>JAR</layout>
           <executable>${executable-jar}</executable>
         </configuration>

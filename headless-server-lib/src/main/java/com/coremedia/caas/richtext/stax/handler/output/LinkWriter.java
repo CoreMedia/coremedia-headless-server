@@ -2,8 +2,9 @@ package com.coremedia.caas.richtext.stax.handler.output;
 
 import com.coremedia.caas.richtext.common.RTAttributes;
 import com.coremedia.caas.richtext.stax.ExecutionEnvironment;
+import com.coremedia.caas.service.repository.content.ContentProxy;
 import com.coremedia.cap.common.IdHelper;
-import com.coremedia.cap.content.Content;
+
 import com.google.common.base.Strings;
 
 import javax.xml.stream.XMLStreamException;
@@ -24,9 +25,9 @@ public class LinkWriter extends AbstractOutputHandler {
       String value = href.getValue();
       if (value != null) {
         if (IdHelper.isContentId(value)) {
-          Content content = env.getContentRepository().getContent(value);
-          if (content != null) {
-            String link = env.getLinkBuilder().createLink(content);
+          ContentProxy contentProxy = env.getProxyFactory().makeContentProxy(value);
+          if (contentProxy != null) {
+            String link = env.getLinkBuilder().createLink(contentProxy);
             if (!Strings.isNullOrEmpty(link)) {
               env.getWriter().writeStartElement("a");
               env.getWriter().writeAttribute("href", "#none");
@@ -35,7 +36,8 @@ public class LinkWriter extends AbstractOutputHandler {
               env.setAttribute(LINK_GENERATED, true);
             }
           }
-        } else {
+        }
+        else {
           // assume external link
           env.getWriter().writeStartElement("a");
           env.getWriter().writeAttribute("href", value);

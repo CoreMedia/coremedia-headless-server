@@ -1,7 +1,7 @@
 package com.coremedia.caas.schema;
 
 import com.coremedia.caas.schema.directive.CustomDirective;
-import com.coremedia.cap.content.Content;
+import com.coremedia.caas.service.repository.content.ContentProxy;
 import com.coremedia.cap.content.ContentRepository;
 import com.coremedia.cap.content.ContentType;
 
@@ -37,10 +37,10 @@ public class SchemaService {
   private Map<String, GraphQLDirective> directiveMapping;
   private Map<String, GraphQLType> typeMapping;
 
-  private Map<ContentType, GraphQLInterfaceType> contentTypeInterfaceMapping = new HashMap<>();
-  private Map<ContentType, GraphQLObjectType> contentTypeObjectMapping = new HashMap<>();
+  private Map<String, GraphQLInterfaceType> contentTypeInterfaceMapping = new HashMap<>();
+  private Map<String, GraphQLObjectType> contentTypeObjectMapping = new HashMap<>();
 
-  private HashMultimap<ContentType, String> contentTypeInstanceNamesMapping;
+  private HashMultimap<String, String> contentTypeInstanceNamesMapping;
 
 
   public SchemaService(Set<CustomDirective> customDirectives, Set<TypeDefinition> typeDefinitions, ContentRepository contentRepository) {
@@ -80,8 +80,8 @@ public class SchemaService {
    */
 
   public boolean isInstanceOf(Object source, String name) {
-    if (source instanceof Content) {
-      Set<String> instanceNames = contentTypeInstanceNamesMapping.get(((Content) source).getType());
+    if (source instanceof ContentProxy) {
+      Set<String> instanceNames = contentTypeInstanceNamesMapping.get(((ContentProxy) source).getType());
       if (instanceNames != null) {
         return instanceNames.contains(name);
       }
@@ -109,15 +109,15 @@ public class SchemaService {
 
 
   public GraphQLInterfaceType getInterfaceType(Object source) {
-    if (source instanceof Content) {
-      return contentTypeInterfaceMapping.get(((Content) source).getType());
+    if (source instanceof ContentProxy) {
+      return contentTypeInterfaceMapping.get(((ContentProxy) source).getType());
     }
     return null;
   }
 
   public GraphQLObjectType getObjectType(Object source) {
-    if (source instanceof Content) {
-      return contentTypeObjectMapping.get(((Content) source).getType());
+    if (source instanceof ContentProxy) {
+      return contentTypeObjectMapping.get(((ContentProxy) source).getType());
     }
     return null;
   }
@@ -152,23 +152,23 @@ public class SchemaService {
     for (ContentType contentType : contentRepository.getContentTypes()) {
       ContentType currentContentType = contentType;
       while (currentContentType != null) {
-        GraphQLObjectType type = contentTypeObjectMapping.get(currentContentType);
+        GraphQLObjectType type = contentTypeObjectMapping.get(currentContentType.getName());
         // add object type name
-        contentTypeInstanceNamesMapping.put(contentType, type.getName());
+        contentTypeInstanceNamesMapping.put(contentType.getName(), type.getName());
         // add all implemented interface names
-        contentTypeInstanceNamesMapping.putAll(contentType, type.getInterfaces().stream().map(GraphQLOutputType::getName).collect(Collectors.toList()));
+        contentTypeInstanceNamesMapping.putAll(contentType.getName(), type.getInterfaces().stream().map(GraphQLOutputType::getName).collect(Collectors.toList()));
         currentContentType = currentContentType.getParent();
       }
     }
   }
 
 
-  private <T> void buildContentTypeMapping(ContentType contentType, String suffix, Map<String, T> definedTypes, Map<ContentType, T> typeMapping) {
+  private <T> void buildContentTypeMapping(ContentType contentType, String suffix, Map<String, T> definedTypes, Map<String, T> typeMapping) {
     ContentType currentContentType = contentType;
     while (currentContentType != null) {
       T type = definedTypes.get(currentContentType.getName() + suffix);
       if (type != null) {
-        typeMapping.put(contentType, type);
+        typeMapping.put(contentType.getName(), type);
         return;
       }
       currentContentType = currentContentType.getParent();

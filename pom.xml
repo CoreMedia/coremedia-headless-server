@@ -3,12 +3,6 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-  <parent>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-parent</artifactId>
-    <version>1.5.4.RELEASE</version>
-  </parent>
-
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.coremedia.labs</groupId>
@@ -26,12 +20,15 @@
     <compile.target.jdk>1.8</compile.target.jdk>
 
     <coremedia.version>1801.1</coremedia.version>
-    <graphql.java.version>7.0</graphql.java.version>
-    <netflix.spectator.version>0.58.2</netflix.spectator.version>
-    <spring.boot.version>1.5.4.RELEASE</spring.boot.version>
-    <spring.cloud.spectator.version>1.3.5.RELEASE</spring.cloud.spectator.version>
+    <dropwizard-metrics.version>3.1.4</dropwizard-metrics.version>
+    <graphql-java.version>7.0</graphql-java.version>
+    <modelmapper.version>2.0.0</modelmapper.version>
+    <netflix-spectator.version>0.58.2</netflix-spectator.version>
+    <spring-boot.version>1.5.4.RELEASE</spring-boot.version>
+    <spring-cloud-spectator.version>1.3.5.RELEASE</spring-cloud-spectator.version>
+    <spring-restdocs.version>1.1.3.RELEASE</spring-restdocs.version>
     <stringtemplate.version>4.0.8</stringtemplate.version>
-    <swagger.version>2.7.0</swagger.version>
+    <springfox-swagger.version>2.8.0</springfox-swagger.version>
 
     <maven.dependency.plugin.version>3.0.0</maven.dependency.plugin.version>
     <maven.surefire.plugin.version>2.19.1</maven.surefire.plugin.version>
@@ -69,13 +66,6 @@
   <dependencyManagement>
     <dependencies>
       <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-dependencies</artifactId>
-        <version>${spring.boot.version}</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-      <dependency>
         <groupId>com.coremedia.cms</groupId>
         <artifactId>cms-thirdparty-bom</artifactId>
         <version>${coremedia.version}</version>
@@ -85,42 +75,52 @@
       <dependency>
         <groupId>org.springframework.cloud</groupId>
         <artifactId>spring-cloud-starter-spectator</artifactId>
-        <version>${spring.cloud.spectator.version}</version>
+        <version>${spring-cloud-spectator.version}</version>
       </dependency>
       <dependency>
         <groupId>com.netflix.spectator</groupId>
         <artifactId>spectator-api</artifactId>
-        <version>${netflix.spectator.version}</version>
+        <version>${netflix-spectator.version}</version>
       </dependency>
       <dependency>
         <groupId>com.netflix.spectator</groupId>
         <artifactId>spectator-reg-servo</artifactId>
-        <version>${netflix.spectator.version}</version>
+        <version>${netflix-spectator.version}</version>
       </dependency>
       <dependency>
         <groupId>com.netflix.spectator</groupId>
         <artifactId>spectator-reg-metrics3</artifactId>
-        <version>${netflix.spectator.version}</version>
+        <version>${netflix-spectator.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.dropwizard.metrics</groupId>
+        <artifactId>metrics-core</artifactId>
+        <version>${dropwizard-metrics.version}</version>
       </dependency>
       <dependency>
         <groupId>io.springfox</groupId>
         <artifactId>springfox-swagger2</artifactId>
-        <version>${swagger.version}</version>
+        <version>${springfox-swagger.version}</version>
       </dependency>
       <dependency>
         <groupId>io.springfox</groupId>
         <artifactId>springfox-swagger-ui</artifactId>
-        <version>${swagger.version}</version>
+        <version>${springfox-swagger.version}</version>
       </dependency>
       <dependency>
         <groupId>com.graphql-java</groupId>
         <artifactId>graphql-java</artifactId>
-        <version>${graphql.java.version}</version>
+        <version>${graphql-java.version}</version>
       </dependency>
       <dependency>
         <groupId>org.antlr</groupId>
         <artifactId>ST4</artifactId>
         <version>${stringtemplate.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.modelmapper</groupId>
+        <artifactId>modelmapper</artifactId>
+        <version>${modelmapper.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -200,6 +200,14 @@
       <name>CoreMedia CMS</name>
       <url>https://repository.coremedia.com/nexus/content/groups/cms/</url>
       <layout>default</layout>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+    <repository>
+      <id>jcenter-releases</id>
+      <name>jcenter</name>
+      <url>http://jcenter.bintray.com</url>
       <snapshots>
         <enabled>false</enabled>
       </snapshots>

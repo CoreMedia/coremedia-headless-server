@@ -36,4 +36,4 @@ customFields:
     fallbackSourceNames:
       - (title)
     targetType: String
-    dataFetcher: Property
+    dataFetcher: ContentProperty
