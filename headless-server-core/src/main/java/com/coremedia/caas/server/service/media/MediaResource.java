@@ -5,5 +5,7 @@ import org.springframework.http.MediaType;
 
 public interface MediaResource extends Resource {
 
+  String getETag();
+
   MediaType getMediaType();
 }

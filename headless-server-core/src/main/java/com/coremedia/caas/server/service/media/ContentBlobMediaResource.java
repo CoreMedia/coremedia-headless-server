@@ -7,6 +7,7 @@ import com.coremedia.cap.content.Content;
 import com.google.common.base.Objects;
 import org.springframework.core.io.AbstractResource;
 import org.springframework.http.MediaType;
+import org.springframework.lang.NonNull;
 
 import java.io.InputStream;
 
@@ -24,17 +25,24 @@ class ContentBlobMediaResource extends AbstractResource implements MediaResource
 
 
   @Override
+  public String getETag() {
+    return blob.getETag();
+  }
+
+  @Override
   public MediaType getMediaType() {
     return MediaType.parseMediaType(blob.getContentType().toString());
   }
 
 
   @Override
+  @NonNull
   public String getDescription() {
     return IdHelper.formatBlobId(content.getId(), propertyName) + "#" + blob.getETag();
   }
 
   @Override
+  @NonNull
   public InputStream getInputStream() {
     return blob.getInputStream();
   }

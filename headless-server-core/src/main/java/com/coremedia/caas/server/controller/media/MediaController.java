@@ -79,6 +79,7 @@ public class MediaController extends ControllerBase {
             return ResponseEntity.ok()
                     .cacheControl(CacheControl.maxAge(300, TimeUnit.SECONDS).noTransform())
                     .contentType(resource.getMediaType())
+                    .eTag(resource.getETag())
                     .body(resource);
           }
           throw new ResponseStatusException(HttpStatus.NOT_FOUND);
