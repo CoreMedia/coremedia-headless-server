@@ -1,9 +1,9 @@
 !ObjectType
 name: PageGrid
 fields:
-  - !Builtin
+  - !Property
     name: cssClassName
     typeName: String
-  - !Builtin
+  - !Property
     name: placements
     typeName: List:PageGridPlacement

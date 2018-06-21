@@ -1,6 +1,7 @@
 package com.coremedia.caas.generator.config;
 
 import com.coremedia.cap.content.ContentRepository;
+
 import com.google.common.collect.ImmutableList;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
@@ -55,6 +56,7 @@ public class ConfigReader {
     Constructor constructor = new Constructor();
     constructor.addTypeDescription(new TypeDescription(ConstantDefinition.class, new Tag("!Constant")));
     constructor.addTypeDescription(new TypeDescription(CustomFieldDefinition.class, new Tag("!CustomField")));
+    constructor.addTypeDescription(new TypeDescription(DirectiveDefinition.class, new Tag("!Directive")));
     Yaml yaml = new Yaml(constructor);
     ImmutableList.Builder<TypeCustomization> builder = ImmutableList.builder();
     if (resources != null) {

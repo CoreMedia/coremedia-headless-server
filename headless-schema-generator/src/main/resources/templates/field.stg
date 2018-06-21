@@ -4,37 +4,66 @@ field(fieldDefinition) ::= <<
 
 
 fallbackSources(fallbackSourceNames) ::= <<
-<if(!(fallbackSourceNames.empty))>
+<if(fallbackSourceNames)>
 fallbackSourceNames:
   - <fallbackSourceNames;separator="\n  - "><endif>
 >>
 
 
+directive(directiveDefinition) ::= <<
+- !Directive
+  name: <directiveDefinition.name>
+  <if(directiveDefinition.arguments)>
+  arguments:
+    <directiveDefinition.arguments.keys:{k | <k>: <directiveDefinition.arguments.(k)>};separator="\n"><endif>
+>>
+
+directives(directiveDefinitions) ::= <<
+<if(directiveDefinitions)>
+directives:
+  <directiveDefinitions:directive()><endif>
+>>
+
+
 property(fieldDefinition) ::= <<
-  - !Property
+  - !<fieldDefinition.dataFetcher>
+    name: <fieldDefinition.name>
+    <if(fieldDefinition.sourceName)>
+    sourceName: <fieldDefinition.sourceName>
+    <endif>
+    typeName: <fieldDefinition.targetType>
+    <if(fieldDefinition.nonNull)>nonNull: true<endif>
+    <directives(fieldDefinition.directives)>
+
+>>
+
+contentproperty(fieldDefinition) ::= <<
+  - !ContentProperty
     name: <fieldDefinition.name>
     sourceName: <fieldDefinition.sourceName>
     <fallbackSources(fieldDefinition.fallbackSourceNames)>
     typeName: <fieldDefinition.targetType>
     <if(fieldDefinition.nonNull)>nonNull: true<endif>
+    <directives(fieldDefinition.directives)>
 
 >>
 
 string(fieldDefinition) ::= <<
-<fieldDefinition:property()>
+<fieldDefinition:contentproperty()>
 >>
 
 integer(fieldDefinition) ::= <<
-<fieldDefinition:property()>
+<fieldDefinition:contentproperty()>
 >>
 
 date(fieldDefinition) ::= <<
-  - !Property
+  - !ContentProperty
     name: <fieldDefinition.name>
     sourceName: <fieldDefinition.sourceName>
     <fallbackSources(fieldDefinition.fallbackSourceNames)>
     typeName: String
     <if(fieldDefinition.nonNull)>nonNull: true<endif>
+    <directives(fieldDefinition.directives)>
 
 >>
 
@@ -45,6 +74,7 @@ link(fieldDefinition) ::= <<
     <fallbackSources(fieldDefinition.fallbackSourceNames)>
     typeName: <fieldDefinition.targetType>
     <if(fieldDefinition.nonNull)>nonNull: true<endif>
+    <directives(fieldDefinition.directives)>
 
 >>
 
@@ -55,6 +85,7 @@ linklist(fieldDefinition) ::= <<
     <fallbackSources(fieldDefinition.fallbackSourceNames)>
     typeName: List:<fieldDefinition.targetType>
     <if(fieldDefinition.nonNull)>nonNull: true<endif>
+    <directives(fieldDefinition.directives)>
 
 >>
 
@@ -64,6 +95,7 @@ struct(fieldDefinition) ::= <<
     sourceName: <fieldDefinition.sourceName>
     <if(fieldDefinition.typeName)>typeName: <fieldDefinition.targetType><endif>
     <if(fieldDefinition.nonNull)>nonNull: true<endif>
+    <directives(fieldDefinition.directives)>
 
 >>
 
@@ -74,6 +106,7 @@ richtext(fieldDefinition) ::= <<
     <fallbackSources(fieldDefinition.fallbackSourceNames)>
     typeName: String
     <if(fieldDefinition.nonNull)>nonNull: true<endif>
+    <directives(fieldDefinition.directives)>
 
 >>
 
@@ -83,37 +116,12 @@ markup(fieldDefinition) ::= <<
     sourceName: <fieldDefinition.sourceName>
     typeName: String
     <if(fieldDefinition.nonNull)>nonNull: true<endif>
+    <directives(fieldDefinition.directives)>
 
 >>
 
 blob(fieldDefinition) ::= <<
   - !Blob
-    name: <fieldDefinition.name>
-    sourceName: <fieldDefinition.sourceName>
-    <if(fieldDefinition.nonNull)>nonNull: true<endif>
-
->>
-
-builtin(fieldDefinition) ::= <<
-  - !<fieldDefinition.dataFetcher>
-    name: <fieldDefinition.name>
-    <if(fieldDefinition.sourceName)>
-    sourceName: <fieldDefinition.sourceName>
-    <endif>
-    typeName: <fieldDefinition.targetType>
-    <if(fieldDefinition.nonNull)>nonNull: true<endif>
-
->>
-
-settings(fieldDefinition) ::= <<
-  - !<fieldDefinition.dataFetcher>
-    name: <fieldDefinition.name>
-    <if(fieldDefinition.nonNull)>nonNull: true<endif>
-
->>
-
-pagegrid(fieldDefinition) ::= <<
-  - !<fieldDefinition.dataFetcher>
     name: <fieldDefinition.name>
     sourceName: <fieldDefinition.sourceName>
     <if(fieldDefinition.nonNull)>nonNull: true<endif>
@@ -126,6 +134,7 @@ uri(fieldDefinition) ::= <<
     sourceName: <fieldDefinition.sourceName>
     typeName: String
     <if(fieldDefinition.nonNull)>nonNull: true<endif>
+    <directives(fieldDefinition.directives)>
 
 >>
 
@@ -146,18 +155,30 @@ constant(fieldDefinition) ::= <<
 
 >>
 
-context(fieldDefinition) ::= <<
+navigation(fieldDefinition) ::= <<
   - !<fieldDefinition.dataFetcher>
     name: <fieldDefinition.name>
+    sourceName: <fieldDefinition.sourceName>
     typeName: <fieldDefinition.targetType>
     <if(fieldDefinition.nonNull)>nonNull: true<endif>
 
 >>
 
-navigationpath(fieldDefinition) ::= <<
+pagegrid(fieldDefinition) ::= <<
   - !<fieldDefinition.dataFetcher>
     name: <fieldDefinition.name>
+    sourceName: <fieldDefinition.sourceName>
     typeName: <fieldDefinition.targetType>
+    <if(fieldDefinition.nonNull)>nonNull: true<endif>
+
+>>
+
+setting(fieldDefinition) ::= <<
+  - !<fieldDefinition.dataFetcher>
+    name: <fieldDefinition.name>
+    sourceName: <fieldDefinition.sourceName>
+    typeName: <fieldDefinition.targetType>
+    <if(fieldDefinition.defaultValue)>defaultValue: <fieldDefinition.defaultValue><endif>
     <if(fieldDefinition.nonNull)>nonNull: true<endif>
 
 >>

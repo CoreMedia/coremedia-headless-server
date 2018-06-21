@@ -10,24 +10,16 @@ query NavigationQuery {
   root {
     ... NavigationEntry
     ... on CMNavigation {
-      hidden
-      hiddenInSitemap
-      children {
+      children @filter(test: "?[!navigation.hidden]") {
         ... NavigationEntry
         ... on CMNavigation {
-          hidden
-          hiddenInSitemap
-          children {
+          children @filter(test: "?[!navigation.hidden]") {
             ... NavigationEntry
             ... on CMNavigation {
-              hidden
-              hiddenInSitemap
-              children {
+              children @filter(test: "?[!navigation.hidden]") {
                 ... NavigationEntry
                 ... on CMNavigation {
-                  hidden
-                  hiddenInSitemap
-                  children {
+                  children @filter(test: "?[!navigation.hidden]") {
                     ... NavigationEntry
                   }
                 }

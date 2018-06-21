@@ -12,5 +12,7 @@ public interface FieldDefinition {
 
   List<String> getFallbackSourceNames();
 
+  List<DirectiveDefinition> getDirectives();
+
   String getTypeName();
 }

@@ -11,7 +11,9 @@ public class CustomFieldDefinition implements FieldDefinition {
   private String targetType;
   private String sourceName;
   private List<String> fallbackSourceNames;
+  private List<DirectiveDefinition> directives;
   private String dataFetcher;
+  private Object defaultValue;
 
 
   @Override
@@ -59,6 +61,15 @@ public class CustomFieldDefinition implements FieldDefinition {
     this.fallbackSourceNames = fallbackSourceNames;
   }
 
+  @Override
+  public List<DirectiveDefinition> getDirectives() {
+    return directives;
+  }
+
+  public void setDirectives(List<DirectiveDefinition> directives) {
+    this.directives = directives;
+  }
+
 
   public String getDataFetcher() {
     return dataFetcher;
@@ -66,6 +77,14 @@ public class CustomFieldDefinition implements FieldDefinition {
 
   public void setDataFetcher(String dataFetcher) {
     this.dataFetcher = dataFetcher;
+  }
+
+  public Object getDefaultValue() {
+    return defaultValue;
+  }
+
+  public void setDefaultValue(Object defaultValue) {
+    this.defaultValue = defaultValue;
   }
 
 

@@ -9,3 +9,8 @@ fields:
     name: sequences
     sourceName: (sequences)
     typeName: List:TimeLineEntry
+    directives:
+      - !Directive
+        name: filter
+        arguments:
+          test: ?[['link'] != null]

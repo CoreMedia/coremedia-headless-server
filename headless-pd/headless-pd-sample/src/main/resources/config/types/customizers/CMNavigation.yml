@@ -7,16 +7,22 @@ excludedProperties:
   - theme
 customFields:
   - !CustomField
+    name: children
+    sourceName: children
+    targetType: List:CMLinkable
+    dataFetcher: Navigation
+  - !CustomField
     name: grid
-    sourceName: (placement)
+    sourceName: placement
+    targetType: PageGrid
     dataFetcher: PageGrid
   - !CustomField
     name: hidden
     sourceName: (hidden)
     targetType: Boolean
-    dataFetcher: Property
+    dataFetcher: ContentProperty
   - !CustomField
     name: hiddenInSitemap
     sourceName: (hiddenInSitemap)
     targetType: Boolean
-    dataFetcher: Property
+    dataFetcher: ContentProperty

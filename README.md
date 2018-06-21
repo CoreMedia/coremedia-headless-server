@@ -1,6 +1,5 @@
 ![Status: Active](https://documentation.coremedia.com/badges/badge_status_active.png "Status: Active")
 ![For CoreMedia CMS](https://documentation.coremedia.com/badges/badge_coremedia_cms.png "For CoreMedia CMS")
-![Tested: 9.1707.4](https://documentation.coremedia.com/badges/badge_tested_coremedia_9-1707-4.png "Tested: 9.1707.4")
 ![Tested: 9.1710.1](https://documentation.coremedia.com/badges/badge_tested_coremedia_9-1710-1.png "Tested: 9.1710.1")
 ![Tested: 9.1801.1](https://documentation.coremedia.com/badges/badge_tested_coremedia_9-1801-1.png "Tested: 9.1801.1")
 
@@ -17,6 +16,12 @@ CoreMedia CaaS builds on the proven CoreMedia Unified API and leverages modern t
 Integrate ready-to-go content fragments and new dynamic client-side modules into your (non CMS) webpages, build Single-page applications using your favorite framework and seamlessly integrate and reuse content from your CoreMedia CMS or syndicate/publish content using the headless API.
 
 This README contains an overview of the code and how to start the server. For more detailed documentation, see the [wiki](https://github.com/CoreMedia/coremedia-headless-server/wiki). 
+
+
+## Versions in this Repository
+
+* **master**: This is the release branch.
+* **develop**: This is the branch for all current, unreleased work.
 
 
 ## Workspace Structure
@@ -66,6 +71,14 @@ or start the Tomcat Webapp
 
     mvn cargo:run -pl headless-server-webapp -Dinstallation.server.host=<CMS-SERVER-HOSTNAME> -Dinstallation.server.port=<CMS-SERVER-PORT>
 
+### Executable Jar
+
+A fully executable jar, which can be executed as binary or registered with `init.d` or `systemd`, can be created by adding the profile
+
+    -P executable-jar`
+    
+at build time. For more information see ["Installing Spring Boot Applications"](https://docs.spring.io/spring-boot/docs/current/reference/html/deployment-install.html).
+
 
 ## Testing the API
 
@@ -90,14 +103,29 @@ Run the headless server and try the following URLs:
    The value will be used for the `{siteId}` placeholder in the REST URLs
 
 3. Go to the system tab end expand the *Local Settings* property box.
-   Add a *String* property to it's root: 
+   1. Add a *String* property to it's root: 
 
-   *Property:* tenantId   
-   *Value:* your tenant identifier (only alphanumerical characters/lowercase)   
+      *Property:* tenantId   
+      *Value:* your tenant identifier (only alphanumerical characters/lowercase)   
 
-   This value will be used for the `{tenantId}` placeholder in the REST URLs
+      This value will be used for the `{tenantId}` placeholder in the REST URLs
 
-5. Try to fetch the JSON description of the enabled site:
+   2. Add a *Struct* property to it's root:
+   
+      *Property:* caasClients
+      
+      Add a sub *Struct* property (empty UUID):
+      
+      *Property*: 00000000-0000-0000-0000-000000000000
+      
+      Add a *String* property to the sub struct:
+      
+      *Property:* pd   
+      *value:* default
+      
+      This maps all 'unknown' clients to the processing definition named 'default'. See the [wiki](https://github.com/CoreMedia/coremedia-headless-server/wiki/Processing-Definitions) for more information.
+      
+4. Try to fetch the JSON description of the enabled site:
     
     `http://localhost:8080/caas/v1/{tenantId}/sites/{siteId}`
     
@@ -115,7 +143,7 @@ Run the headless server and try the following URLs:
     }
     ```
     
-6. Test your site with the Swagger UI.
+5. Test your site with the Swagger UI.
 
 ### Swagger
 

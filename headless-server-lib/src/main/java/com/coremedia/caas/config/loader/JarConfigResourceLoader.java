@@ -22,7 +22,7 @@ public class JarConfigResourceLoader implements ConfigResourceLoader {
     JarEntry jarEntry;
     while ((jarEntry = jarInputStream.getNextJarEntry()) != null) {
       if (!jarEntry.isDirectory()) {
-        resources.add(new BufferedJarResource(jarEntry.getName(), ByteStreams.toByteArray(jarInputStream)));
+        resources.add(new BufferedJarResource(jarEntry.getName(), ByteStreams.toByteArray(jarInputStream), this));
       }
     }
   }

@@ -1,6 +1,8 @@
 package com.coremedia.caas.schema;
 
-public abstract class InvalidDefinition extends Exception {
+import graphql.GraphQLException;
+
+public abstract class InvalidDefinition extends GraphQLException {
 
   public InvalidDefinition(String message) {
     super(message);

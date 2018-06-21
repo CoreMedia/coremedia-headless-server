@@ -1,0 +1,7 @@
+name: CMProduct
+customFields:
+  - !CustomField
+    name: price
+    sourceName: /price
+    targetType: Float
+    dataFetcher: Setting
