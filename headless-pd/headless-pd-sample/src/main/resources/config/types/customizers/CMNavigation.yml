@@ -8,6 +8,7 @@ excludedProperties:
 customFields:
   - !CustomField
     name: children
+    sourceName: children
     targetType: List:CMLinkable
     dataFetcher: Navigation
   - !CustomField

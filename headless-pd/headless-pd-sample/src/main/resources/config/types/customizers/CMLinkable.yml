@@ -23,6 +23,7 @@ customFields:
     dataFetcher: ContentProperty
   - !CustomField
     name: context
+    sourceName: context
     targetType: CMNavigation
     dataFetcher: Navigation
   - !CustomField
