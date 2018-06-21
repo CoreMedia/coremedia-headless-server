@@ -1,0 +1,5 @@
+name: CMCollectionImpl
+customFields:
+  - !Constant
+    name: teaserTarget
+    targetType: CMLinkable
