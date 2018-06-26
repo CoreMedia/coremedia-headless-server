@@ -21,7 +21,7 @@
 
     <coremedia.version>1801.1</coremedia.version>
     <dropwizard-metrics.version>3.1.4</dropwizard-metrics.version>
-    <graphql-java.version>7.0</graphql-java.version>
+    <graphql-java.version>9.0</graphql-java.version>
     <modelmapper.version>2.0.0</modelmapper.version>
     <netflix-spectator.version>0.58.2</netflix-spectator.version>
     <spring-boot.version>1.5.4.RELEASE</spring-boot.version>

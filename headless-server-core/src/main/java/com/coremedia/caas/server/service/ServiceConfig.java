@@ -35,7 +35,7 @@ public class ServiceConfig {
 
   @Bean("requestContext")
   @Scope(value = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.INTERFACES)
-  public RequestContext createReqCont() {
+  public RequestContext createRequestContext() {
     return new DefaultRequestContext();
   }
 
