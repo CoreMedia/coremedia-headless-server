@@ -6,6 +6,7 @@ import com.coremedia.caas.service.repository.RootContext;
 import com.coremedia.caas.service.repository.content.ContentProxy;
 import com.coremedia.cap.content.Content;
 
+import java.util.Collections;
 import java.util.List;
 
 public class NavigationAdapter {
@@ -34,9 +35,7 @@ public class NavigationAdapter {
 
 
   public ContentProxy getContext() {
-    Object currentContext = rootContext.getCurrentContext();
-    Content activeContext = (currentContext != null && currentContext instanceof Content) ? (Content) currentContext : rootContext.getSite().getSiteRootDocument();
-    return rootContext.getProxyFactory().makeContentProxy(contextStrategy.findAndSelectContextFor(content, activeContext));
+    return rootContext.getProxyFactory().makeContentProxy(findContext());
   }
 
   public List<ContentProxy> getChildren() {
@@ -44,6 +43,22 @@ public class NavigationAdapter {
   }
 
   public List<ContentProxy> getPathToRoot() {
-    return rootContext.getProxyFactory().makeContentProxyList(treeRelation.pathToRoot(content));
+    if (content.getType().isSubtypeOf("CMNavigation")) {
+      return rootContext.getProxyFactory().makeContentProxyList(treeRelation.pathToRoot(content));
+    }
+    else {
+      Content context = findContext();
+      if (context != null) {
+        return rootContext.getProxyFactory().makeContentProxyList(treeRelation.pathToRoot(context));
+      }
+    }
+    return Collections.emptyList();
+  }
+
+
+  private Content findContext() {
+    Object currentContext = rootContext.getCurrentContext();
+    Content activeContext = (currentContext != null && currentContext instanceof Content) ? (Content) currentContext : rootContext.getSite().getSiteRootDocument();
+    return contextStrategy.findAndSelectContextFor(content, activeContext);
   }
 }
