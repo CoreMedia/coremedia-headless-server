@@ -20,6 +20,7 @@ class ContentBlobMediaResource extends AbstractResource implements MediaResource
   ContentBlobMediaResource(Blob blob, Content content, String propertyName) {
     this.blob = blob;
     this.content = content;
+    this.propertyName = propertyName;
   }
 
 
