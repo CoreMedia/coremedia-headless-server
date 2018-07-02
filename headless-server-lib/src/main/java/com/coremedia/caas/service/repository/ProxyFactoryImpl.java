@@ -79,7 +79,7 @@ public class ProxyFactoryImpl implements ProxyFactory {
   }
 
   @Override
-  public ContentProxy makeContentProxy(@NotNull String id) {
+  public ContentProxy makeContentProxyFromId(@NotNull String id) {
     Content content = contentRepository.getContent(id);
     if (content != null) {
       return makeContentProxy(content);
@@ -90,6 +90,21 @@ public class ProxyFactoryImpl implements ProxyFactory {
   @Override
   public List<ContentProxy> makeContentProxyList(@NotNull Collection<Content> source) {
     return FluentIterable.from(source).transform(this::makeContentProxy).filter(Predicates.notNull()).toList();
+  }
+
+  @Override
+  public List<ContentProxy> makeContentProxyList(@NotNull Collection<Content> source, int limit) {
+    return FluentIterable.from(source).transform(this::makeContentProxy).filter(Predicates.notNull()).limit(limit).toList();
+  }
+
+  @Override
+  public List<ContentProxy> makeContentProxyListFromIds(@NotNull Collection<String> ids) {
+    return FluentIterable.from(ids).transform(this::makeContentProxyFromId).filter(Predicates.notNull()).toList();
+  }
+
+  @Override
+  public List<ContentProxy> makeContentProxyListFromIds(@NotNull Collection<String> ids, int limit) {
+    return FluentIterable.from(ids).transform(this::makeContentProxyFromId).filter(Predicates.notNull()).limit(limit).toList();
   }
 
 
