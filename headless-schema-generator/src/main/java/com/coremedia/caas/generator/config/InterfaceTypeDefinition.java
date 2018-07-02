@@ -2,6 +2,7 @@ package com.coremedia.caas.generator.config;
 
 import com.coremedia.cap.common.CapPropertyDescriptor;
 import com.coremedia.cap.content.ContentType;
+
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
@@ -45,12 +46,28 @@ public class InterfaceTypeDefinition extends AbstractTypeDefinition {
     for (String name : getFieldNames()) {
       if (typeCustomization != null && typeCustomization.hasCustomField(name)) {
         result.add(typeCustomization.getCustomField(name));
-      } else if (typeCustomization == null || !typeCustomization.getExcludedProperties().contains(name)) {
+      }
+      else if (typeCustomization == null || !typeCustomization.getExcludedProperties().contains(name)) {
         result.add(new DocumentFieldDefinition(getSchemaConfig(), getContentType().getDescriptor(name)));
       }
     }
     result.sort(Comparator.comparing(FieldDefinition::getName));
     return result;
+  }
+
+
+  private boolean isValidPropertyDescriptor(CapPropertyDescriptor descriptor) {
+    switch (descriptor.getType()) {
+      case BLOB:
+      case DATE:
+      case INTEGER:
+      case LINK:
+      case MARKUP:
+      case STRING:
+        return true;
+      default:
+        return false;
+    }
   }
 
 
@@ -78,7 +95,7 @@ public class InterfaceTypeDefinition extends AbstractTypeDefinition {
         throw new InvalidTypeDefinition("Cannot override field " + name + " for type " + getName());
       }
     }
-    Set<String> localNames = getContentType().getDescriptors().stream().map(CapPropertyDescriptor::getName).collect(Collectors.toSet());
+    Set<String> localNames = getContentType().getDescriptors().stream().filter(this::isValidPropertyDescriptor).map(CapPropertyDescriptor::getName).collect(Collectors.toSet());
     // remove all fields already defined by the parent
     localNames.removeAll(parentNames);
     // add custom fields
