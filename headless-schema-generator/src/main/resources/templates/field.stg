@@ -48,7 +48,7 @@ contentproperty(fieldDefinition) ::= <<
 
 >>
 
-string(fieldDefinition) ::= <<
+date(fieldDefinition) ::= <<
 <fieldDefinition:contentproperty()>
 >>
 
@@ -56,15 +56,8 @@ integer(fieldDefinition) ::= <<
 <fieldDefinition:contentproperty()>
 >>
 
-date(fieldDefinition) ::= <<
-  - !ContentProperty
-    name: <fieldDefinition.name>
-    sourceName: <fieldDefinition.sourceName>
-    <fallbackSources(fieldDefinition.fallbackSourceNames)>
-    typeName: String
-    <if(fieldDefinition.nonNull)>nonNull: true<endif>
-    <directives(fieldDefinition.directives)>
-
+string(fieldDefinition) ::= <<
+<fieldDefinition:contentproperty()>
 >>
 
 link(fieldDefinition) ::= <<
@@ -93,7 +86,7 @@ struct(fieldDefinition) ::= <<
   - !Struct
     name: <fieldDefinition.name>
     sourceName: <fieldDefinition.sourceName>
-    <if(fieldDefinition.typeName)>typeName: <fieldDefinition.targetType><endif>
+    typeName: <fieldDefinition.targetType>
     <if(fieldDefinition.nonNull)>nonNull: true<endif>
     <directives(fieldDefinition.directives)>
 
@@ -124,7 +117,9 @@ blob(fieldDefinition) ::= <<
   - !Blob
     name: <fieldDefinition.name>
     sourceName: <fieldDefinition.sourceName>
+    <fallbackSources(fieldDefinition.fallbackSourceNames)>
     <if(fieldDefinition.nonNull)>nonNull: true<endif>
+    <directives(fieldDefinition.directives)>
 
 >>
 

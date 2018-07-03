@@ -83,6 +83,9 @@ class ContentMediaResourceModel implements MediaResourceModel {
       else if (content.getType().isSubtypeOf("CMMedia")) {
         return blob;
       }
+      else if (content.getType().isSubtypeOf("CMDownload")) {
+        return blob;
+      }
       else {
         LOG.warn("Unsupported media type requested: {}", content.getType());
         return null;

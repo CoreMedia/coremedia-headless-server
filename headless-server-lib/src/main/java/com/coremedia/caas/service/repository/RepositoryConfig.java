@@ -21,13 +21,13 @@ import java.util.List;
 public class RepositoryConfig {
 
   @Bean("proxyFactory")
-  @Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
+  @Scope(BeanDefinition.SCOPE_PROTOTYPE)
   public ProxyFactory proxyFactory(ContentRepository contentRepository, RootContext rootContext) {
     return new ProxyFactoryImpl(contentRepository, rootContext);
   }
 
   @Bean("rootContext")
-  @Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
+  @Scope(BeanDefinition.SCOPE_PROTOTYPE)
   public RootContext rootContext(Site site, Object currentContext, Object target, RequestContext requestContext, List<AccessValidator> accessValidators, List<ProxyModelFactory> proxyModelFactories, ContentRepository contentRepository) {
     return new RootContextImpl(site, currentContext, target, requestContext, accessValidators, proxyModelFactories, contentRepository);
   }

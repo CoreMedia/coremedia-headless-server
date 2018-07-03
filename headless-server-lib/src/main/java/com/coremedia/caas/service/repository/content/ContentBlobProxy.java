@@ -10,10 +10,17 @@ import javax.activation.MimeType;
 class ContentBlobProxy implements Blob {
 
   private Blob delegate;
+  private ContentProxy content;
 
 
-  ContentBlobProxy(Blob delegate) {
+  ContentBlobProxy(Blob delegate, ContentProxy content) {
     this.delegate = delegate;
+    this.content = content;
+  }
+
+
+  public ContentProxy getContent() {
+    return content;
   }
 
 

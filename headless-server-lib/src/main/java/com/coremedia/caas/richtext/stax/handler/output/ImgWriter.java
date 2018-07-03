@@ -34,7 +34,7 @@ public class ImgWriter extends AbstractOutputHandler {
     if (href != null) {
       String value = href.getValue();
       if (value != null && IdHelper.isBlobId(value)) {
-        ContentProxy contentProxy = env.getProxyFactory().makeContentProxy(IdHelper.parseContentIdFromBlobId(value));
+        ContentProxy contentProxy = env.getProxyFactory().makeContentProxyFromId(IdHelper.parseContentIdFromBlobId(value));
         if (contentProxy != null) {
           Blob blob = contentProxy.getBlob(IdHelper.parsePropertyFromBlobId(value));
           if (blob != null) {

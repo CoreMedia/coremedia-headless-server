@@ -53,6 +53,10 @@ public class DocumentFieldDefinition implements FieldDefinition {
   @Override
   public String getTargetType() {
     switch (propertyDescriptor.getType()) {
+      case DATE:
+        return "String";
+      case INTEGER:
+        return "Int";
       case LINK:
         LinkPropertyDescriptor linkPropertyDescriptor = (LinkPropertyDescriptor) propertyDescriptor;
         InterfaceTypeDefinition targetType = schema.findInterface(linkPropertyDescriptor.getLinkType());
@@ -60,8 +64,6 @@ public class DocumentFieldDefinition implements FieldDefinition {
           return targetType.getName();
         }
         break;
-      case INTEGER:
-        return "Int";
       default:
         return getTypeName().substring(0, 1).toUpperCase() + getTypeName().substring(1).toLowerCase();
     }

@@ -32,6 +32,12 @@ public class SimpleLinkBuilder implements LinkBuilder {
       else if (content.isSubtypeOf("CMExternalLink")) {
         return content.getString("url");
       }
+      else if (content.isSubtypeOf("CMDownload")) {
+        Blob blob = content.getBlob("data");
+        if (blob != null) {
+          return "coremedia:///download/" + IdHelper.parseContentId(content.getId()) + "/data";
+        }
+      }
       else if (content.isSubtypeOf("CMVisual") || content.isSubtypeOf("CMAudio")) {
         Blob blob = content.getBlob("data");
         if (blob != null) {

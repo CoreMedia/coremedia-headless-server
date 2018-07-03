@@ -1,10 +1,10 @@
 package com.coremedia.caas.schema;
 
-import graphql.schema.GraphQLOutputType;
+import graphql.schema.GraphQLType;
 
 public interface TypeDefinition {
 
   String getName();
 
-  GraphQLOutputType build(SchemaService schemaService) throws InvalidTypeDefinition;
+  GraphQLType build(SchemaService schemaService) throws InvalidTypeDefinition;
 }

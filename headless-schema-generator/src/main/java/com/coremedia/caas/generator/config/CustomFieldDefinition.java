@@ -45,7 +45,10 @@ public class CustomFieldDefinition implements FieldDefinition {
 
   @Override
   public String getSourceName() {
-    return sourceName;
+    if (sourceName != null) {
+      return sourceName;
+    }
+    return getName();
   }
 
   public void setSourceName(String sourceName) {
