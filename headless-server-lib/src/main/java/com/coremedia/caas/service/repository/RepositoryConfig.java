@@ -1,8 +1,9 @@
 package com.coremedia.caas.service.repository;
 
+import com.coremedia.blueprint.base.settings.SettingsService;
+import com.coremedia.caas.service.ServiceConfig;
 import com.coremedia.caas.service.repository.content.ContentProxyModelAccessor;
 import com.coremedia.caas.service.request.RequestContext;
-import com.coremedia.caas.service.security.AccessValidator;
 import com.coremedia.cap.content.ContentRepository;
 import com.coremedia.cap.multisite.Site;
 
@@ -28,14 +29,14 @@ public class RepositoryConfig {
 
   @Bean("rootContext")
   @Scope(BeanDefinition.SCOPE_PROTOTYPE)
-  public RootContext rootContext(Site site, Object currentContext, Object target, RequestContext requestContext, List<AccessValidator> accessValidators, List<ProxyModelFactory> proxyModelFactories, ContentRepository contentRepository) {
-    return new RootContextImpl(site, currentContext, target, requestContext, accessValidators, proxyModelFactories, contentRepository);
+  public RootContext rootContext(Site site, Object currentContext, Object target, RequestContext requestContext, List<ProxyModelFactory> proxyModelFactories, ContentRepository contentRepository, SettingsService settingsService, ServiceConfig serviceConfig) {
+    return new RootContextImpl(site, currentContext, target, requestContext, proxyModelFactories, contentRepository, settingsService, serviceConfig);
   }
 
 
   @Bean("rootContextFactory")
-  public RootContextFactory rootContextFactory(List<AccessValidator> accessValidators, List<ProxyModelFactory> proxyModelFactories, ContentRepository contentRepository) {
-    return new RootContextFactoryImpl(accessValidators, proxyModelFactories, contentRepository);
+  public RootContextFactory rootContextFactory(List<ProxyModelFactory> proxyModelFactories, ContentRepository contentRepository, SettingsService settingsService, ServiceConfig serviceConfig) {
+    return new RootContextFactoryImpl(proxyModelFactories, contentRepository, settingsService, serviceConfig);
   }
 
 
