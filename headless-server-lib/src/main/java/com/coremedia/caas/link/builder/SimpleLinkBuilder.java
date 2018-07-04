@@ -7,11 +7,8 @@ import com.coremedia.cap.common.IdHelper;
 
 import org.springframework.stereotype.Component;
 
-@Component(SimpleLinkBuilder.NAME)
+@Component("simpleLinkBuilder")
 public class SimpleLinkBuilder implements LinkBuilder {
-
-  public static final String NAME = "SimpleLinkBuilder";
-
 
   @Override
   public String createLink(Object target) {
