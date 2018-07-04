@@ -78,6 +78,11 @@
         <version>${spring-cloud-spectator.version}</version>
       </dependency>
       <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-configuration-processor</artifactId>
+        <version>${spring-boot.version}</version>
+      </dependency>
+      <dependency>
         <groupId>com.netflix.spectator</groupId>
         <artifactId>spectator-api</artifactId>
         <version>${netflix-spectator.version}</version>
