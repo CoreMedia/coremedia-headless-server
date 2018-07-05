@@ -7,7 +7,6 @@ import com.coremedia.cache.CacheCapacityConfigurer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.google.common.collect.ImmutableMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -44,11 +43,13 @@ public class CaasConfig extends WebMvcConfigurerAdapter {
   private static final Logger LOG = LoggerFactory.getLogger(CaasConfig.class);
 
 
+  private CaasServiceConfig serviceConfig;
   private RequestDateInitializer requestDateInitializer;
   private ResponseHeaderInitializer responseHeaderInitializer;
 
 
-  public CaasConfig(RequestDateInitializer requestDateInitializer, ResponseHeaderInitializer responseHeaderInitializer) {
+  public CaasConfig(CaasServiceConfig serviceConfig, RequestDateInitializer requestDateInitializer, ResponseHeaderInitializer responseHeaderInitializer) {
+    this.serviceConfig = serviceConfig;
     this.requestDateInitializer = requestDateInitializer;
     this.responseHeaderInitializer = responseHeaderInitializer;
   }
@@ -86,7 +87,7 @@ public class CaasConfig extends WebMvcConfigurerAdapter {
 
 
   @Bean
-  @ConditionalOnProperty("logRequests")
+  @ConditionalOnProperty("caas.logRequests")
   public Filter logFilter() {
     CommonsRequestLoggingFilter filter = new CommonsRequestLoggingFilter() {
       @Override
@@ -108,7 +109,7 @@ public class CaasConfig extends WebMvcConfigurerAdapter {
 
 
   @Bean
-  @ConditionalOnProperty("prettyPrintOutput")
+  @ConditionalOnProperty("caas.prettyPrintOutput")
   public ObjectMapper objectMapper() {
     ObjectMapper mapper = new ObjectMapper();
     mapper.enable(SerializationFeature.INDENT_OUTPUT);
@@ -120,9 +121,7 @@ public class CaasConfig extends WebMvcConfigurerAdapter {
   public CacheCapacityConfigurer configureCache(Cache cache) {
     CacheCapacityConfigurer configurer = new CacheCapacityConfigurer();
     configurer.setCache(cache);
-    configurer.setCapacities(ImmutableMap.of(
-            "java.lang.Object", 10000L
-    ));
+    configurer.setCapacities(serviceConfig.getCacheCapacities());
     return configurer;
   }
 }

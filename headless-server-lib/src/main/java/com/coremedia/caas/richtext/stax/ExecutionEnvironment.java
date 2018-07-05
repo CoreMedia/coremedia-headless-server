@@ -156,7 +156,7 @@ public class ExecutionEnvironment<E> {
 
 
   public LinkBuilder getLinkBuilder() {
-    return executionContext.getProcessingDefinition().getLinkBuilderRegistry().getBuilder();
+    return executionContext.getProcessingDefinition().getLinkBuilder();
   }
 
   public RootContext getRootContext() {

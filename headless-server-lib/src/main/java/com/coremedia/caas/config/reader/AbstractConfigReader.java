@@ -1,6 +1,7 @@
 package com.coremedia.caas.config.reader;
 
 import com.coremedia.caas.config.loader.ConfigResourceLoader;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
@@ -21,6 +22,11 @@ public class AbstractConfigReader implements ConfigReader {
 
   protected AbstractConfigReader(ConfigResourceLoader resourceLoader) {
     this.resourceLoader = resourceLoader;
+  }
+
+
+  public ConfigResourceLoader getResourceLoader() {
+    return resourceLoader;
   }
 
 

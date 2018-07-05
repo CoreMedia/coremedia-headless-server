@@ -1,12 +1,16 @@
 package com.coremedia.caas.service.repository;
 
+import com.coremedia.blueprint.base.settings.SettingsService;
+import com.coremedia.caas.service.ServiceConfig;
 import com.coremedia.caas.service.request.RequestContext;
 import com.coremedia.caas.service.security.AccessControl;
 import com.coremedia.caas.service.security.AccessControlViolation;
 import com.coremedia.caas.service.security.AccessValidator;
 import com.coremedia.cap.content.ContentRepository;
 import com.coremedia.cap.multisite.Site;
+import com.coremedia.cap.struct.Struct;
 
+import com.google.common.collect.ImmutableList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -14,6 +18,8 @@ import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 
 public class RootContextImpl implements RootContext, BeanFactoryAware {
@@ -21,6 +27,9 @@ public class RootContextImpl implements RootContext, BeanFactoryAware {
   private BeanFactory beanFactory;
 
   private ContentRepository contentRepository;
+  private SettingsService settingsService;
+
+  private ServiceConfig serviceConfig;
 
   private Site site;
 
@@ -34,18 +43,18 @@ public class RootContextImpl implements RootContext, BeanFactoryAware {
   private ModelFactory modelFactory;
   private ProxyFactory proxyFactory;
 
-  private List<AccessValidator> accessValidators;
   private List<ProxyModelFactory> proxyModelFactories;
 
 
-  public RootContextImpl(Site site, Object currentContext, Object target, RequestContext requestContext, List<AccessValidator> accessValidators, List<ProxyModelFactory> proxyModelFactories, ContentRepository contentRepository) {
+  public RootContextImpl(Site site, Object currentContext, Object target, RequestContext requestContext, List<ProxyModelFactory> proxyModelFactories, ContentRepository contentRepository, SettingsService settingsService, ServiceConfig serviceConfig) {
     this.site = site;
     this.currentContext = currentContext;
     this.target = target;
     this.requestContext = requestContext;
-    this.accessValidators = accessValidators;
     this.proxyModelFactories = proxyModelFactories;
     this.contentRepository = contentRepository;
+    this.settingsService = settingsService;
+    this.serviceConfig = serviceConfig;
   }
 
 
@@ -57,9 +66,21 @@ public class RootContextImpl implements RootContext, BeanFactoryAware {
 
   @PostConstruct
   private void init() throws AccessControlViolation {
-    proxyFactory = beanFactory.getBean(ProxyFactory.class, contentRepository, this);
-    // init access control and model factory
+    // init access control
+    List<String> accessValidatorNames = null;
+    // fetch access control struct from site indicator settings
+    Struct accessSettings = settingsService.nestedSetting(ImmutableList.of("caasSettings", "accessControl", serviceConfig.isPreview() ? "preview" : "live"), Struct.class, site.getSiteIndicator());
+    if (accessSettings != null) {
+      accessValidatorNames = accessSettings.getStrings("validators");
+    }
+    if (accessValidatorNames == null || accessValidatorNames.isEmpty()) {
+      accessValidatorNames = serviceConfig.getDefaultValidators();
+    }
+    List<AccessValidator> accessValidators = accessValidatorNames.stream().filter(Objects::nonNull).map(e -> beanFactory.getBean(e, AccessValidator.class)).collect(Collectors.toList());
     accessControl = new CompoundAccessControl(accessValidators, this);
+    // init proxy factory
+    proxyFactory = beanFactory.getBean(ProxyFactory.class, contentRepository, this);
+    // init model factory
     modelFactory = new CompoundModelFactory(proxyModelFactories, this);
     // validate root object
     accessControl.checkAndThrow(target);

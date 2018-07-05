@@ -20,9 +20,9 @@ import java.io.InputStream;
 import java.util.Map;
 import java.util.jar.JarInputStream;
 
-public class CaasProcessingDefinitionCacheKey extends CacheKey<Map<String, CaasProcessingDefinition>> {
+public class ProcessingDefinitionCacheKey extends CacheKey<Map<String, ProcessingDefinition>> {
 
-  private static final Logger LOG = LoggerFactory.getLogger(CaasProcessingDefinitionCacheKey.class);
+  private static final Logger LOG = LoggerFactory.getLogger(ProcessingDefinitionCacheKey.class);
 
   private static final String KEY_DEFINITIONS = "caasDefinitions";
 
@@ -35,7 +35,7 @@ public class CaasProcessingDefinitionCacheKey extends CacheKey<Map<String, CaasP
   private ApplicationContext applicationContext;
 
 
-  public CaasProcessingDefinitionCacheKey(Content siteIndicator, SettingsService settingsService, ApplicationContext applicationContext) {
+  public ProcessingDefinitionCacheKey(Content siteIndicator, SettingsService settingsService, ApplicationContext applicationContext) {
     this.siteId = siteIndicator.getId();
     this.contentRepository = siteIndicator.getRepository();
     this.settingsService = settingsService;
@@ -44,11 +44,11 @@ public class CaasProcessingDefinitionCacheKey extends CacheKey<Map<String, CaasP
 
 
   @Override
-  public Map<String, CaasProcessingDefinition> evaluate(Cache cache) {
+  public Map<String, ProcessingDefinition> evaluate(Cache cache) {
     Content site = contentRepository.getContent(siteId);
     if (site != null) {
       Map<String, Content> caasDefinitions = settingsService.settingAsMap(KEY_DEFINITIONS, String.class, Content.class, site);
-      ImmutableMap.Builder<String, CaasProcessingDefinition> builder = ImmutableMap.builder();
+      ImmutableMap.Builder<String, ProcessingDefinition> builder = ImmutableMap.builder();
       for (Map.Entry<String, Content> entry : caasDefinitions.entrySet()) {
         String name = entry.getKey();
         Content content = entry.getValue();
@@ -57,7 +57,7 @@ public class CaasProcessingDefinitionCacheKey extends CacheKey<Map<String, CaasP
           if (data != null) {
             try (InputStream inputStream = data.getInputStream(); JarInputStream jarInputStream = new JarInputStream(inputStream)) {
               JarConfigResourceLoader resourceLoader = new JarConfigResourceLoader(jarInputStream);
-              builder.put(name, new CaasProcessingDefinitionLoader(name, resourceLoader, contentRepository, applicationContext).load());
+              builder.put(name, new ProcessingDefinitionLoader(name, resourceLoader, contentRepository, applicationContext).load());
             } catch (InvalidDefinition | IOException e) {
               LOG.error("Cannot load definition '{}'", name, e);
             }
@@ -83,7 +83,7 @@ public class CaasProcessingDefinitionCacheKey extends CacheKey<Map<String, CaasP
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    CaasProcessingDefinitionCacheKey definitionCacheKey = (CaasProcessingDefinitionCacheKey) o;
+    ProcessingDefinitionCacheKey definitionCacheKey = (ProcessingDefinitionCacheKey) o;
     return Objects.equal(siteId, definitionCacheKey.siteId) &&
            Objects.equal(contentRepository, definitionCacheKey.contentRepository);
   }

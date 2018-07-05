@@ -1,8 +1,8 @@
 package com.coremedia.caas.server.controller.base;
 
 import com.coremedia.blueprint.base.settings.SettingsService;
-import com.coremedia.caas.config.CaasProcessingDefinition;
-import com.coremedia.caas.config.CaasProcessingDefinitionCacheKey;
+import com.coremedia.caas.config.ProcessingDefinition;
+import com.coremedia.caas.config.ProcessingDefinitionCacheKey;
 import com.coremedia.caas.execution.ExecutionContext;
 import com.coremedia.caas.server.service.request.ClientIdentification;
 import com.coremedia.caas.service.ServiceRegistry;
@@ -46,7 +46,7 @@ public abstract class GraphQLControllerBase extends ControllerBase {
 
   @Autowired
   @Qualifier("staticProcessingDefinitions")
-  private Map<String, CaasProcessingDefinition> staticProcessingDefinitions;
+  private Map<String, ProcessingDefinition> staticProcessingDefinitions;
 
 
   public GraphQLControllerBase(String timerName) {
@@ -62,8 +62,8 @@ public abstract class GraphQLControllerBase extends ControllerBase {
   private Object runQuery(@NotNull RootContext rootContext, @NotNull ClientIdentification clientIdentification, @NotNull String queryName, @NotNull String viewName, Map<String, Object> queryArgs, HttpServletRequest request, HttpServletResponse response) {
     String definitionName = clientIdentification.getDefinitionName();
     // repository defined runtime definition
-    CaasProcessingDefinitionCacheKey processingDefinitionCacheKey = new CaasProcessingDefinitionCacheKey(rootContext.getSite().getSiteIndicator(), settingsService, applicationContext);
-    CaasProcessingDefinition resolvedDefinition = cache.get(processingDefinitionCacheKey).get(definitionName);
+    ProcessingDefinitionCacheKey processingDefinitionCacheKey = new ProcessingDefinitionCacheKey(rootContext.getSite().getSiteIndicator(), settingsService, applicationContext);
+    ProcessingDefinition resolvedDefinition = cache.get(processingDefinitionCacheKey).get(definitionName);
     // fallback executable static definition
     if (resolvedDefinition == null || !resolvedDefinition.hasQueryDefinition(queryName, viewName)) {
       resolvedDefinition = staticProcessingDefinitions.get(definitionName);
@@ -72,7 +72,7 @@ public abstract class GraphQLControllerBase extends ControllerBase {
       LOG.error("No processing definition found for name '{}' and query '{}#{}'", definitionName, queryName, viewName);
       throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
-    CaasProcessingDefinition processingDefinition = resolvedDefinition;
+    ProcessingDefinition processingDefinition = resolvedDefinition;
     // create new runtime context for capturing all required runtime services and state
     ExecutionContext context = new ExecutionContext(processingDefinition, serviceRegistry, rootContext);
     // run query
