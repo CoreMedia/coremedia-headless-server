@@ -10,18 +10,15 @@ public class SettingsAdapter {
 
   private static final Splitter PATH_SPLITTER = Splitter.on('/').omitEmptyStrings();
 
-
   private Content content;
   private SettingsService settingsService;
   private RootContext rootContext;
-
 
   public SettingsAdapter(Content content, SettingsService settingsService, RootContext rootContext) {
     this.content = content;
     this.settingsService = settingsService;
     this.rootContext = rootContext;
   }
-
 
   public Object getSetting(String sourceName, Object defaultValue) {
     Object value = settingsService.nestedSetting(PATH_SPLITTER.splitToList(sourceName), Object.class, content);

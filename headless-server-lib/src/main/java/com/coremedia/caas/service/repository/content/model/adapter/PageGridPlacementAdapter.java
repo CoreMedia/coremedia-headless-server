@@ -13,13 +13,11 @@ public class PageGridPlacementAdapter {
   private ContentBackedPageGridPlacement pageGridPlacement;
   private RootContext rootContext;
 
-
   public PageGridPlacementAdapter(String name, ContentBackedPageGridPlacement pageGridPlacement, RootContext rootContext) {
     this.name = name;
     this.pageGridPlacement = pageGridPlacement;
     this.rootContext = rootContext;
   }
-
 
   public String getName() {
     return name;
