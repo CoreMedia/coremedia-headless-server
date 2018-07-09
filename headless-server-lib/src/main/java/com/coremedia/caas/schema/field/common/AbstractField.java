@@ -25,6 +25,7 @@ public abstract class AbstractField implements FieldDefinition, FieldBuilder {
   private List<String> fallbackSourceNames;
   private List<DirectiveDefinition> directives;
   private String typeName;
+  private Object defaultValue;
 
 
   protected AbstractField(boolean convertible, boolean withDirectives) {
@@ -107,6 +108,15 @@ public abstract class AbstractField implements FieldDefinition, FieldBuilder {
     this.typeName = typeName;
   }
 
+  @Override
+  public Object getDefaultValue() {
+    return defaultValue;
+  }
+
+  public void setDefaultValue(Object defaultValue) {
+    this.defaultValue = defaultValue;
+  }
+
 
   @Override
   public String toString() {
@@ -116,6 +126,7 @@ public abstract class AbstractField implements FieldDefinition, FieldBuilder {
             .add("fallbackSourceNames", fallbackSourceNames)
             .add("directives", directives)
             .add("typeName", typeName)
+            .add("defaultValue", defaultValue)
             .add("nonNull", nonNull)
             .add("convertible", convertible)
             .add("withDirectives", withDirectives)
