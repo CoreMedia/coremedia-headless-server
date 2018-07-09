@@ -26,6 +26,7 @@ import com.coremedia.caas.schema.type.object.ContentBlob;
 import com.coremedia.cap.content.ContentRepository;
 
 import com.google.common.collect.ImmutableSet;
+import org.springframework.beans.factory.BeanFactory;
 import org.yaml.snakeyaml.TypeDescription;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
@@ -41,11 +42,11 @@ public class SchemaReader extends YamlConfigReader {
   }
 
 
-  public SchemaService read(ContentRepository contentRepository) throws IOException, InvalidTypeDefinition {
+  public SchemaService read(BeanFactory beanFactory, ContentRepository contentRepository) throws IOException, InvalidTypeDefinition {
     Set<CustomDirective> directiveDefinitions = readCustomDirectives();
     Set<TypeDefinition> typeDefinitions = readTypeDefinitions();
     // create schema registry for internal type building and public service
-    return new SchemaService(directiveDefinitions, typeDefinitions, contentRepository);
+    return new SchemaService(beanFactory, directiveDefinitions, typeDefinitions, contentRepository);
   }
 
 

@@ -1,5 +1,6 @@
 package com.coremedia.caas.schema.field.content.property;
 
+import com.coremedia.caas.schema.SchemaService;
 import com.coremedia.caas.schema.Types;
 import com.coremedia.caas.schema.datafetcher.content.property.BlobPropertyDataFetcher;
 import com.coremedia.caas.schema.field.common.AbstractField;
@@ -20,7 +21,7 @@ public class BlobPropertyField extends AbstractField {
 
 
   @Override
-  public Collection<GraphQLFieldDefinition> build() {
+  public Collection<GraphQLFieldDefinition> build(SchemaService schemaService) {
     return ImmutableList.of(newFieldDefinition()
             .name(getName())
             .type(Types.getType(ContentBlob.TYPENAME, isNonNull()))

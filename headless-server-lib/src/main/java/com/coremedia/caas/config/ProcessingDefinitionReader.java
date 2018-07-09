@@ -54,7 +54,7 @@ public class ProcessingDefinitionReader extends YamlConfigReader {
     // set requested name
     definition.setName(name);
     // add GraphQL schema
-    SchemaService schemaService = new SchemaReader(getResourceLoader()).read(contentRepository);
+    SchemaService schemaService = new SchemaReader(getResourceLoader()).read(applicationContext, contentRepository);
     definition.setSchemaService(schemaService);
     // add GraphQL queries
     QueryRegistry queryRegistry = new QueryReader(getResourceLoader()).read(schemaService);

@@ -5,9 +5,9 @@ import com.coremedia.caas.service.repository.content.ContentProxyImpl;
 import com.coremedia.cap.content.Content;
 import com.coremedia.cap.content.ContentRepository;
 import com.coremedia.cap.struct.Struct;
+
 import com.google.common.collect.Maps;
 
-import javax.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -15,16 +15,19 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.SortedMap;
 import java.util.stream.Collectors;
+import javax.validation.constraints.NotNull;
 
 public class ProxyFactoryImpl implements ProxyFactory {
 
   private ContentRepository contentRepository;
   private RootContext rootContext;
 
-  ProxyFactoryImpl(ContentRepository contentRepository, RootContext rootContext) {
+
+  public ProxyFactoryImpl(ContentRepository contentRepository, RootContext rootContext) {
     this.contentRepository = contentRepository;
     this.rootContext = rootContext;
   }
+
 
   @Override
   public RootContext getRootContext() {
@@ -41,6 +44,7 @@ public class ProxyFactoryImpl implements ProxyFactory {
       throw new IllegalArgumentException("Invalid root source " + source.getClass().getName());
     }
   }
+
 
   @Override
   public Object makeProxy(Object source) {
@@ -64,6 +68,7 @@ public class ProxyFactoryImpl implements ProxyFactory {
     }
     return source;
   }
+
 
   @Override
   public ContentProxy makeContentProxy(@NotNull Content source) {
@@ -89,11 +94,7 @@ public class ProxyFactoryImpl implements ProxyFactory {
 
   @Override
   public List<ContentProxy> makeContentProxyList(@NotNull Collection<Content> source, int limit) {
-    return source.stream()
-            .map(this::makeContentProxy)
-            .filter(Objects::nonNull)
-            .limit(limit)
-            .collect(Collectors.toList());
+    return source.stream().map(this::makeContentProxy).filter(Objects::nonNull).limit(limit).collect(Collectors.toList());
   }
 
   @Override
@@ -103,18 +104,12 @@ public class ProxyFactoryImpl implements ProxyFactory {
 
   @Override
   public List<ContentProxy> makeContentProxyListFromIds(@NotNull Collection<String> ids, int limit) {
-    return ids.stream()
-            .map(this::makeContentProxyFromId)
-            .filter(Objects::nonNull)
-            .limit(limit)
-            .collect(Collectors.toList());
+    return ids.stream().map(this::makeContentProxyFromId).filter(Objects::nonNull).limit(limit).collect(Collectors.toList());
   }
 
+
   private List<Object> makeList(Collection<?> source) {
-    return source.stream()
-            .map(this::makeProxy)
-            .filter(Objects::nonNull)
-            .collect(Collectors.toList());
+    return source.stream().map(this::makeProxy).filter(Objects::nonNull).collect(Collectors.toList());
   }
 
   private Map<?, ?> makeMap(Map<?, ?> source) {
