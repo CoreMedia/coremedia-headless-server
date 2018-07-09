@@ -72,7 +72,7 @@ public class ProxyFactoryImpl implements ProxyFactory {
 
   @Override
   public ContentProxy makeContentProxy(@NotNull Content source) {
-    if (rootContext.getAccessControl().check(source)) {
+    if (source.isInProduction() && rootContext.getAccessControl().check(source)) {
       return new ContentProxyImpl(source, this);
     }
     return null;
