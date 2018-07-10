@@ -22,6 +22,7 @@ import com.coremedia.caas.schema.field.content.property.MarkupPropertyField;
 import com.coremedia.caas.schema.field.content.property.RichtextPropertyField;
 import com.coremedia.caas.schema.field.content.property.StructPropertyField;
 import com.coremedia.caas.schema.field.content.property.UriPropertyField;
+import com.coremedia.caas.schema.field.delegate.BeanDelegatingField;
 import com.coremedia.caas.schema.type.object.ContentBlob;
 import com.coremedia.cap.content.ContentRepository;
 
@@ -78,6 +79,7 @@ public class SchemaReader extends YamlConfigReader {
     constructor.addTypeDescription(new TypeDescription(MetaPropertyField.class, new Tag("!Meta")));
     constructor.addTypeDescription(new TypeDescription(NavigationModelField.class, new Tag("!Navigation")));
     constructor.addTypeDescription(new TypeDescription(FieldDirective.class, new Tag("!Directive")));
+    constructor.addTypeDescription(new TypeDescription(BeanDelegatingField.class, new Tag("!Bean")));
     Yaml yaml = new Yaml(constructor);
 
     ImmutableSet.Builder<TypeDefinition> builder = ImmutableSet.builder();

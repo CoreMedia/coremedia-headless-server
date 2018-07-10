@@ -26,7 +26,7 @@ directives:
 
 
 property(fieldDefinition) ::= <<
-  - !<fieldDefinition.dataFetcher>
+  - !Property
     name: <fieldDefinition.name>
     <if(fieldDefinition.sourceName)>
     sourceName: <fieldDefinition.sourceName>
@@ -124,7 +124,7 @@ blob(fieldDefinition) ::= <<
 >>
 
 uri(fieldDefinition) ::= <<
-  - !<fieldDefinition.dataFetcher>
+  - !Uri
     name: <fieldDefinition.name>
     sourceName: <fieldDefinition.sourceName>
     typeName: String
@@ -134,7 +134,7 @@ uri(fieldDefinition) ::= <<
 >>
 
 meta(fieldDefinition) ::= <<
-  - !<fieldDefinition.dataFetcher>
+  - !Meta
     name: <fieldDefinition.name>
     typeName: <fieldDefinition.targetType>
     <if(fieldDefinition.nonNull)>nonNull: true<endif>
@@ -151,7 +151,7 @@ constant(fieldDefinition) ::= <<
 >>
 
 navigation(fieldDefinition) ::= <<
-  - !<fieldDefinition.dataFetcher>
+  - !Navigation
     name: <fieldDefinition.name>
     sourceName: <fieldDefinition.sourceName>
     typeName: <fieldDefinition.targetType>
@@ -160,7 +160,7 @@ navigation(fieldDefinition) ::= <<
 >>
 
 pagegrid(fieldDefinition) ::= <<
-  - !<fieldDefinition.dataFetcher>
+  - !PageGrid
     name: <fieldDefinition.name>
     sourceName: <fieldDefinition.sourceName>
     typeName: <fieldDefinition.targetType>
@@ -169,11 +169,21 @@ pagegrid(fieldDefinition) ::= <<
 >>
 
 setting(fieldDefinition) ::= <<
-  - !<fieldDefinition.dataFetcher>
+  - !Setting
     name: <fieldDefinition.name>
     sourceName: <fieldDefinition.sourceName>
     typeName: <fieldDefinition.targetType>
     <if(fieldDefinition.defaultValue)>defaultValue: <fieldDefinition.defaultValue><endif>
+    <if(fieldDefinition.nonNull)>nonNull: true<endif>
+
+>>
+
+bean(fieldDefinition) ::= <<
+  - !Bean
+    name: <fieldDefinition.name>
+    sourceName: <fieldDefinition.sourceName>
+    <fallbackSources(fieldDefinition.fallbackSourceNames)>
+    typeName: <fieldDefinition.targetType>
     <if(fieldDefinition.nonNull)>nonNull: true<endif>
 
 >>
