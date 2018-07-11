@@ -12,6 +12,7 @@ import graphql.schema.GraphQLObjectType;
 import graphql.schema.GraphQLOutputType;
 import graphql.schema.GraphQLType;
 import graphql.schema.TypeResolver;
+import org.springframework.beans.factory.BeanFactory;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,6 +25,8 @@ public class SchemaService {
   private static final String CONTENT_INTERFACE_TYPE_SUFFIX = "";
   private static final String CONTENT_OBJECT_TYPE_SUFFIX = "Impl";
 
+
+  private BeanFactory beanFactory;
 
   private Map<String, CustomDirective> customDirectives;
   private Map<String, TypeDefinition> typeDefinitions;
@@ -43,13 +46,19 @@ public class SchemaService {
   private HashMultimap<String, String> contentTypeInstanceNamesMapping;
 
 
-  public SchemaService(Set<CustomDirective> customDirectives, Set<TypeDefinition> typeDefinitions, ContentRepository contentRepository) {
+  public SchemaService(BeanFactory beanFactory, Set<CustomDirective> customDirectives, Set<TypeDefinition> typeDefinitions, ContentRepository contentRepository) {
+    this.beanFactory = beanFactory;
     this.customDirectives = customDirectives.stream().collect(Collectors.toMap(CustomDirective::getName, Function.identity()));
     this.typeDefinitions = typeDefinitions.stream().collect(Collectors.toMap(TypeDefinition::getName, Function.identity()));
     // create type resolver
     this.typeResolver = new ObjectTypeResolver(this);
     // build GraphQL types
     buildTypes(contentRepository);
+  }
+
+
+  public BeanFactory getBeanFactory() {
+    return beanFactory;
   }
 
 

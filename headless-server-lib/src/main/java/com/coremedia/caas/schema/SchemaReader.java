@@ -22,10 +22,12 @@ import com.coremedia.caas.schema.field.content.property.MarkupPropertyField;
 import com.coremedia.caas.schema.field.content.property.RichtextPropertyField;
 import com.coremedia.caas.schema.field.content.property.StructPropertyField;
 import com.coremedia.caas.schema.field.content.property.UriPropertyField;
+import com.coremedia.caas.schema.field.delegate.BeanDelegatingField;
 import com.coremedia.caas.schema.type.object.ContentBlob;
 import com.coremedia.cap.content.ContentRepository;
 
 import com.google.common.collect.ImmutableSet;
+import org.springframework.beans.factory.BeanFactory;
 import org.yaml.snakeyaml.TypeDescription;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
@@ -41,11 +43,11 @@ public class SchemaReader extends YamlConfigReader {
   }
 
 
-  public SchemaService read(ContentRepository contentRepository) throws IOException, InvalidTypeDefinition {
+  public SchemaService read(BeanFactory beanFactory, ContentRepository contentRepository) throws IOException, InvalidTypeDefinition {
     Set<CustomDirective> directiveDefinitions = readCustomDirectives();
     Set<TypeDefinition> typeDefinitions = readTypeDefinitions();
     // create schema registry for internal type building and public service
-    return new SchemaService(directiveDefinitions, typeDefinitions, contentRepository);
+    return new SchemaService(beanFactory, directiveDefinitions, typeDefinitions, contentRepository);
   }
 
 
@@ -77,6 +79,7 @@ public class SchemaReader extends YamlConfigReader {
     constructor.addTypeDescription(new TypeDescription(MetaPropertyField.class, new Tag("!Meta")));
     constructor.addTypeDescription(new TypeDescription(NavigationModelField.class, new Tag("!Navigation")));
     constructor.addTypeDescription(new TypeDescription(FieldDirective.class, new Tag("!Directive")));
+    constructor.addTypeDescription(new TypeDescription(BeanDelegatingField.class, new Tag("!Bean")));
     Yaml yaml = new Yaml(constructor);
 
     ImmutableSet.Builder<TypeDefinition> builder = ImmutableSet.builder();

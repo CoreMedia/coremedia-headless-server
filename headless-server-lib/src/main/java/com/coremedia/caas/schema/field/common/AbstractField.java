@@ -45,7 +45,7 @@ public abstract class AbstractField implements FieldDefinition, FieldBuilder {
 
   protected DataFetcherFactory decorate(DataFetcher dataFetcher) {
     if (isWithDirectives()) {
-      dataFetcher = new DirectiveEvaluatingDataFetcher(dataFetcher, directives);
+      dataFetcher = new DirectiveEvaluatingDataFetcher(dataFetcher, getDirectives());
     }
     if (isConvertible()) {
       dataFetcher = new ConvertingDataFetcher(getTypeName(), dataFetcher);

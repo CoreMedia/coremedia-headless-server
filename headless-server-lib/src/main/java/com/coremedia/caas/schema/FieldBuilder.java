@@ -8,5 +8,5 @@ public interface FieldBuilder {
 
   String getName();
 
-  Collection<GraphQLFieldDefinition> build();
+  Collection<GraphQLFieldDefinition> build(SchemaService schemaService);
 }

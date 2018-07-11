@@ -1,8 +1,9 @@
-package com.coremedia.caas.schema.field.content.property;
+package com.coremedia.caas.schema.field.delegate;
 
 import com.coremedia.caas.schema.SchemaService;
 import com.coremedia.caas.schema.Types;
-import com.coremedia.caas.schema.datafetcher.content.property.StructPropertyDataFetcher;
+import com.coremedia.caas.schema.datafetcher.delegate.BeanDelegatingDataFetcher;
+import com.coremedia.caas.schema.datafetcher.delegate.DataFetcherDelegateBean;
 import com.coremedia.caas.schema.field.common.AbstractField;
 
 import com.google.common.collect.ImmutableList;
@@ -12,19 +13,20 @@ import java.util.Collection;
 
 import static graphql.schema.GraphQLFieldDefinition.newFieldDefinition;
 
-public class StructPropertyField extends AbstractField {
+public class BeanDelegatingField extends AbstractField {
 
-  public StructPropertyField() {
-    super(true, true);
+  public BeanDelegatingField() {
+    super(false, false);
   }
 
 
   @Override
   public Collection<GraphQLFieldDefinition> build(SchemaService schemaService) {
+    DataFetcherDelegateBean delegateBean = schemaService.getBeanFactory().getBean(getSourceName(), DataFetcherDelegateBean.class);
     return ImmutableList.of(newFieldDefinition()
             .name(getName())
             .type(Types.getType(getTypeName(), isNonNull()))
-            .dataFetcherFactory(decorate(new StructPropertyDataFetcher(getSourceName())))
+            .dataFetcherFactory(decorate(new BeanDelegatingDataFetcher(delegateBean, getSourceName(), getFallbackSourceNames(), getTypeName())))
             .build());
   }
 }
