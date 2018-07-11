@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 public class ContentViewController extends GraphQLControllerBase {
 
   public ContentViewController() {
-    super("caas.content.timer");
+    super("caas.server.content.requests");
   }
 
 
