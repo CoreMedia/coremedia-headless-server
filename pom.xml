@@ -20,12 +20,10 @@
     <compile.target.jdk>1.8</compile.target.jdk>
 
     <coremedia.version>1801.1</coremedia.version>
-    <dropwizard-metrics.version>3.1.4</dropwizard-metrics.version>
     <graphql-java.version>9.0</graphql-java.version>
+    <micrometer.version>1.0.5</micrometer.version>
     <modelmapper.version>2.0.0</modelmapper.version>
-    <netflix-spectator.version>0.58.2</netflix-spectator.version>
     <spring-boot.version>1.5.4.RELEASE</spring-boot.version>
-    <spring-cloud-spectator.version>1.3.5.RELEASE</spring-cloud-spectator.version>
     <spring-restdocs.version>1.1.3.RELEASE</spring-restdocs.version>
     <stringtemplate.version>4.0.8</stringtemplate.version>
     <springfox-swagger.version>2.8.0</springfox-swagger.version>
@@ -73,34 +71,19 @@
         <scope>import</scope>
       </dependency>
       <dependency>
-        <groupId>org.springframework.cloud</groupId>
-        <artifactId>spring-cloud-starter-spectator</artifactId>
-        <version>${spring-cloud-spectator.version}</version>
-      </dependency>
-      <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-configuration-processor</artifactId>
         <version>${spring-boot.version}</version>
       </dependency>
       <dependency>
-        <groupId>com.netflix.spectator</groupId>
-        <artifactId>spectator-api</artifactId>
-        <version>${netflix-spectator.version}</version>
+        <groupId>io.micrometer</groupId>
+        <artifactId>micrometer-spring-legacy</artifactId>
+        <version>${micrometer.version}</version>
       </dependency>
       <dependency>
-        <groupId>com.netflix.spectator</groupId>
-        <artifactId>spectator-reg-servo</artifactId>
-        <version>${netflix-spectator.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.netflix.spectator</groupId>
-        <artifactId>spectator-reg-metrics3</artifactId>
-        <version>${netflix-spectator.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>io.dropwizard.metrics</groupId>
-        <artifactId>metrics-core</artifactId>
-        <version>${dropwizard-metrics.version}</version>
+        <groupId>io.micrometer</groupId>
+        <artifactId>micrometer-registry-jmx</artifactId>
+        <version>${micrometer.version}</version>
       </dependency>
       <dependency>
         <groupId>io.springfox</groupId>

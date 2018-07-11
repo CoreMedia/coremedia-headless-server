@@ -1,7 +1,7 @@
 package com.coremedia.caas.server.controller.base;
 
 import com.coremedia.blueprint.base.settings.SettingsService;
-import com.coremedia.caas.server.monitoring.Metrics;
+import com.coremedia.caas.server.monitoring.CaasMetrics;
 import com.coremedia.caas.server.resolver.TargetResolver;
 import com.coremedia.caas.server.service.request.ClientIdentification;
 import com.coremedia.caas.service.repository.RootContext;
@@ -35,7 +35,7 @@ public abstract class ControllerBase {
   private String timerName;
 
   @Autowired
-  private Metrics metrics;
+  private CaasMetrics metrics;
 
   @Autowired
   protected RequestContext requestContext;
