@@ -66,7 +66,7 @@ public class InterfaceType extends AbstractType {
     builder.name(getName());
     List<FieldBuilder> fieldBuilders = getFields(schemaService);
     for (FieldBuilder fieldBuilder : fieldBuilders) {
-      for (GraphQLFieldDefinition fieldDefinition : fieldBuilder.build()) {
+      for (GraphQLFieldDefinition fieldDefinition : fieldBuilder.build(schemaService)) {
         builder.field(fieldDefinition);
       }
     }

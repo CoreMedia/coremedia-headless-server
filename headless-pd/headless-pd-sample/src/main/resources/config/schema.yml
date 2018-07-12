@@ -2,6 +2,7 @@ includedTypes:
   - Content_
   - CMArticle
   - CMCollection
+  - CMDownload
   - CMImage
   - CMLinkable
   - CMLocalized

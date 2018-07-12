@@ -1,7 +1,7 @@
 package com.coremedia.caas.test.schema;
 
-import com.coremedia.caas.config.CaasProcessingDefinition;
-import com.coremedia.caas.config.CaasProcessingDefinitionLoader;
+import com.coremedia.caas.config.ProcessingDefinition;
+import com.coremedia.caas.config.ProcessingDefinitionLoader;
 import com.coremedia.caas.config.loader.ClasspathConfigResourceLoader;
 import com.coremedia.cap.content.ContentRepository;
 
@@ -43,7 +43,7 @@ public class SchemaTest {
 
     when(contentRepository.getContentTypes()).thenReturn(Collections.emptyList());
 
-    CaasProcessingDefinition minimal = new CaasProcessingDefinitionLoader("minimal", new ClasspathConfigResourceLoader("pd/test/minimal/"), contentRepository, applicationContext).load();
+    ProcessingDefinition minimal = new ProcessingDefinitionLoader("minimal", new ClasspathConfigResourceLoader("pd/test/minimal/"), contentRepository, applicationContext).load();
 
     assertTrue(minimal.getSchemaService().hasType("Content_"));
     assertTrue(minimal.getSchemaService().hasType("Content_Impl"));

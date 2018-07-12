@@ -14,6 +14,7 @@ import com.coremedia.caas.schema.field.content.model.NavigationModelField;
 import com.coremedia.caas.schema.field.content.model.PageGridModelField;
 import com.coremedia.caas.schema.field.content.model.SettingModelField;
 import com.coremedia.caas.schema.field.content.property.AbstractPropertyField;
+import com.coremedia.caas.schema.field.content.property.BlobPropertyField;
 import com.coremedia.caas.schema.field.content.property.ContentPropertyField;
 import com.coremedia.caas.schema.field.content.property.LinkPropertyField;
 import com.coremedia.caas.schema.field.content.property.LinklistPropertyField;
@@ -21,9 +22,12 @@ import com.coremedia.caas.schema.field.content.property.MarkupPropertyField;
 import com.coremedia.caas.schema.field.content.property.RichtextPropertyField;
 import com.coremedia.caas.schema.field.content.property.StructPropertyField;
 import com.coremedia.caas.schema.field.content.property.UriPropertyField;
+import com.coremedia.caas.schema.field.delegate.BeanDelegatingField;
+import com.coremedia.caas.schema.type.object.ContentBlob;
 import com.coremedia.cap.content.ContentRepository;
 
 import com.google.common.collect.ImmutableSet;
+import org.springframework.beans.factory.BeanFactory;
 import org.yaml.snakeyaml.TypeDescription;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
@@ -39,11 +43,11 @@ public class SchemaReader extends YamlConfigReader {
   }
 
 
-  public SchemaService read(ContentRepository contentRepository) throws IOException, InvalidTypeDefinition {
+  public SchemaService read(BeanFactory beanFactory, ContentRepository contentRepository) throws IOException, InvalidTypeDefinition {
     Set<CustomDirective> directiveDefinitions = readCustomDirectives();
     Set<TypeDefinition> typeDefinitions = readTypeDefinitions();
     // create schema registry for internal type building and public service
-    return new SchemaService(directiveDefinitions, typeDefinitions, contentRepository);
+    return new SchemaService(beanFactory, directiveDefinitions, typeDefinitions, contentRepository);
   }
 
 
@@ -71,15 +75,19 @@ public class SchemaReader extends YamlConfigReader {
     constructor.addTypeDescription(new TypeDescription(PageGridModelField.class, new Tag("!PageGrid")));
     constructor.addTypeDescription(new TypeDescription(LinkPropertyField.class, new Tag("!Link")));
     constructor.addTypeDescription(new TypeDescription(LinklistPropertyField.class, new Tag("!Linklist")));
+    constructor.addTypeDescription(new TypeDescription(BlobPropertyField.class, new Tag("!Blob")));
     constructor.addTypeDescription(new TypeDescription(MetaPropertyField.class, new Tag("!Meta")));
     constructor.addTypeDescription(new TypeDescription(NavigationModelField.class, new Tag("!Navigation")));
     constructor.addTypeDescription(new TypeDescription(FieldDirective.class, new Tag("!Directive")));
+    constructor.addTypeDescription(new TypeDescription(BeanDelegatingField.class, new Tag("!Bean")));
     Yaml yaml = new Yaml(constructor);
 
     ImmutableSet.Builder<TypeDefinition> builder = ImmutableSet.builder();
     for (ConfigResource resource : getResources("schema/*.yml")) {
       builder.add((TypeDefinition) yaml.load(resource.asString()));
     }
+    // add builtin types
+    builder.add(new ContentBlob());
     return builder.build();
   }
 }

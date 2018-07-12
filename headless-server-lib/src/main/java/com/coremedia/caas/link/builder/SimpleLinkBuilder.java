@@ -7,11 +7,8 @@ import com.coremedia.cap.common.IdHelper;
 
 import org.springframework.stereotype.Component;
 
-@Component(SimpleLinkBuilder.NAME)
+@Component("simpleLinkBuilder")
 public class SimpleLinkBuilder implements LinkBuilder {
-
-  public static final String NAME = "SimpleLinkBuilder";
-
 
   @Override
   public String createLink(Object target) {
@@ -31,6 +28,12 @@ public class SimpleLinkBuilder implements LinkBuilder {
       }
       else if (content.isSubtypeOf("CMExternalLink")) {
         return content.getString("url");
+      }
+      else if (content.isSubtypeOf("CMDownload")) {
+        Blob blob = content.getBlob("data");
+        if (blob != null) {
+          return "coremedia:///download/" + IdHelper.parseContentId(content.getId()) + "/data";
+        }
       }
       else if (content.isSubtypeOf("CMVisual") || content.isSubtypeOf("CMAudio")) {
         Blob blob = content.getBlob("data");

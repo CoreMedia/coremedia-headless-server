@@ -1,0 +1,3 @@
+description: "The sample schema used by the CaaS React fragments"
+linkBuilders:
+  default: !LinkBuilder "simpleLinkBuilder"

@@ -25,7 +25,7 @@ public class LinkWriter extends AbstractOutputHandler {
       String value = href.getValue();
       if (value != null) {
         if (IdHelper.isContentId(value)) {
-          ContentProxy contentProxy = env.getProxyFactory().makeContentProxy(value);
+          ContentProxy contentProxy = env.getProxyFactory().makeContentProxyFromId(value);
           if (contentProxy != null) {
             String link = env.getLinkBuilder().createLink(contentProxy);
             if (!Strings.isNullOrEmpty(link)) {

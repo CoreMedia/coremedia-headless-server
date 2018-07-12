@@ -101,7 +101,7 @@ public class ObjectType extends AbstractType {
     }
     List<FieldBuilder> fieldDefinitions = getFields(schemaService);
     for (FieldBuilder definition : fieldDefinitions) {
-      for (GraphQLFieldDefinition fieldDefinition : definition.build()) {
+      for (GraphQLFieldDefinition fieldDefinition : definition.build(schemaService)) {
         builder.field(fieldDefinition);
       }
     }

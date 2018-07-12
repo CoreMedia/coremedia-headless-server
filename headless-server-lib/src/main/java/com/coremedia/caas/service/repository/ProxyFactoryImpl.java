@@ -6,15 +6,15 @@ import com.coremedia.cap.content.Content;
 import com.coremedia.cap.content.ContentRepository;
 import com.coremedia.cap.struct.Struct;
 
-import com.google.common.base.Predicates;
-import com.google.common.collect.FluentIterable;
 import com.google.common.collect.Maps;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.SortedMap;
+import java.util.stream.Collectors;
 import javax.validation.constraints.NotNull;
 
 public class ProxyFactoryImpl implements ProxyFactory {
@@ -72,14 +72,14 @@ public class ProxyFactoryImpl implements ProxyFactory {
 
   @Override
   public ContentProxy makeContentProxy(@NotNull Content source) {
-    if (rootContext.getAccessControl().check(source)) {
+    if (source.isInProduction() && rootContext.getAccessControl().check(source)) {
       return new ContentProxyImpl(source, this);
     }
     return null;
   }
 
   @Override
-  public ContentProxy makeContentProxy(@NotNull String id) {
+  public ContentProxy makeContentProxyFromId(@NotNull String id) {
     Content content = contentRepository.getContent(id);
     if (content != null) {
       return makeContentProxy(content);
@@ -89,12 +89,27 @@ public class ProxyFactoryImpl implements ProxyFactory {
 
   @Override
   public List<ContentProxy> makeContentProxyList(@NotNull Collection<Content> source) {
-    return FluentIterable.from(source).transform(this::makeContentProxy).filter(Predicates.notNull()).toList();
+    return makeContentProxyList(source, Integer.MAX_VALUE);
+  }
+
+  @Override
+  public List<ContentProxy> makeContentProxyList(@NotNull Collection<Content> source, int limit) {
+    return source.stream().map(this::makeContentProxy).filter(Objects::nonNull).limit(limit).collect(Collectors.toList());
+  }
+
+  @Override
+  public List<ContentProxy> makeContentProxyListFromIds(@NotNull Collection<String> ids) {
+    return makeContentProxyListFromIds(ids, Integer.MAX_VALUE);
+  }
+
+  @Override
+  public List<ContentProxy> makeContentProxyListFromIds(@NotNull Collection<String> ids, int limit) {
+    return ids.stream().map(this::makeContentProxyFromId).filter(Objects::nonNull).limit(limit).collect(Collectors.toList());
   }
 
 
   private List<Object> makeList(Collection<?> source) {
-    return FluentIterable.from(source).transform(this::makeProxy).filter(Predicates.notNull()).toList();
+    return source.stream().map(this::makeProxy).filter(Objects::nonNull).collect(Collectors.toList());
   }
 
   private Map<?, ?> makeMap(Map<?, ?> source) {

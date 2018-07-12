@@ -1,7 +1,7 @@
 package com.coremedia.caas.server.controller.base;
 
 import com.coremedia.blueprint.base.settings.SettingsService;
-import com.coremedia.caas.server.monitoring.Metrics;
+import com.coremedia.caas.server.monitoring.CaasMetrics;
 import com.coremedia.caas.server.resolver.TargetResolver;
 import com.coremedia.caas.server.service.request.ClientIdentification;
 import com.coremedia.caas.service.repository.RootContext;
@@ -12,6 +12,8 @@ import com.coremedia.cap.content.Content;
 import com.coremedia.cap.multisite.Site;
 import com.coremedia.cap.multisite.SitesService;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -25,13 +27,15 @@ import javax.servlet.http.HttpServletResponse;
 
 public abstract class ControllerBase {
 
+  private static final Logger LOG = LoggerFactory.getLogger(ControllerBase.class);
+
   private static final String TENANT_ID = "tenantId";
 
 
   private String timerName;
 
   @Autowired
-  private Metrics metrics;
+  private CaasMetrics metrics;
 
   @Autowired
   protected RequestContext requestContext;
@@ -119,10 +123,13 @@ public abstract class ControllerBase {
 
 
   protected <T> ResponseEntity<T> handleError(Exception error, HttpServletRequest request, HttpServletResponse response) {
+    // unexpected error, log with stacktrace
+    LOG.warn("Request failed with unexpected error: {}", error.getMessage(), error);
     return new ResponseEntity<T>(HttpStatus.BAD_REQUEST);
   }
 
   protected <T> ResponseEntity<T> handleError(AccessControlViolation error, HttpServletRequest request, HttpServletResponse response) {
+    LOG.debug("Access forbidden: {}", error.getMessage());
     switch (error.getErrorCode()) {
       case INVALID_OBJECT:
         return new ResponseEntity<T>(HttpStatus.NOT_FOUND);
@@ -134,6 +141,7 @@ public abstract class ControllerBase {
   }
 
   protected <T> ResponseEntity<T> handleError(ResponseStatusException error, HttpServletRequest request, HttpServletResponse response) {
+    LOG.debug("Request failed: {}", error.getMessage());
     return new ResponseEntity<T>(error.getStatus());
   }
 }

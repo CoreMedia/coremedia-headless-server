@@ -15,4 +15,6 @@ public interface FieldDefinition {
   List<DirectiveDefinition> getDirectives();
 
   String getTypeName();
+
+  Object getDefaultValue();
 }

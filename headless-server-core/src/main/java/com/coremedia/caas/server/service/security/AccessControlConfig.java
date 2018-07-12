@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Profile;
 @Configuration
 public class AccessControlConfig {
 
-  @Bean
+  @Bean("validityDateValidator")
   public ValidityDateValidator validityDateValidator() {
     return new ValidityDateValidator();
   }

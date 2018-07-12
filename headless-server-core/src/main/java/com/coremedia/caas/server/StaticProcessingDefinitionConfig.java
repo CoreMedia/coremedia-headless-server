@@ -1,7 +1,7 @@
 package com.coremedia.caas.server;
 
-import com.coremedia.caas.config.CaasProcessingDefinition;
-import com.coremedia.caas.config.CaasProcessingDefinitionLoader;
+import com.coremedia.caas.config.ProcessingDefinition;
+import com.coremedia.caas.config.ProcessingDefinitionLoader;
 import com.coremedia.caas.config.loader.ClasspathConfigResourceLoader;
 import com.coremedia.caas.schema.InvalidDefinition;
 import com.coremedia.cap.content.ContentRepository;
@@ -29,8 +29,8 @@ public class StaticProcessingDefinitionConfig {
 
 
   @Bean("staticProcessingDefinitions")
-  public Map<String, CaasProcessingDefinition> loadStaticDefinitions(ContentRepository contentRepository, ApplicationContext applicationContext) throws InvalidDefinition, IOException {
-    ImmutableMap.Builder<String, CaasProcessingDefinition> builder = ImmutableMap.builder();
+  public Map<String, ProcessingDefinition> loadStaticDefinitions(ContentRepository contentRepository, ApplicationContext applicationContext) throws InvalidDefinition, IOException {
+    ImmutableMap.Builder<String, ProcessingDefinition> builder = ImmutableMap.builder();
     // find all deployed definitions
     PathMatchingResourcePatternResolver loader = new PathMatchingResourcePatternResolver();
     for (Resource resource : loader.getResources("classpath:" + PD_PATH + "/**/" + PD_DEFINITION)) {
@@ -41,8 +41,8 @@ public class StaticProcessingDefinitionConfig {
         String resourceName = classPathResource.getFilename();
         String definitionPath = resourcePath.substring(0, resourcePath.length() - resourceName.length());
         String definitionName = definitionPath.substring(PD_PATH.length() + 1, definitionPath.length() - 1);
-        LOG.info("Registering processing definition '{}'", definitionName);
-        CaasProcessingDefinition definition = new CaasProcessingDefinitionLoader(definitionName, new ClasspathConfigResourceLoader(definitionPath), contentRepository, applicationContext).load();
+        LOG.info("Registering static processing definition '{}'", definitionName);
+        ProcessingDefinition definition = new ProcessingDefinitionLoader(definitionName, new ClasspathConfigResourceLoader(definitionPath), contentRepository, applicationContext).load();
         builder.put(definitionName, definition);
       }
     }

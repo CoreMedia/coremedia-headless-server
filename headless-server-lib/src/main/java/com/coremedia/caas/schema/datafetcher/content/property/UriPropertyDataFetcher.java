@@ -17,7 +17,7 @@ public class UriPropertyDataFetcher extends AbstractPropertyDataFetcher {
   @Override
   protected Object getData(ContentProxy contentProxy, String sourceName, DataFetchingEnvironment environment) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
     Object target = getProperty(contentProxy, sourceName);
-    LinkBuilder linkBuilder = getContext(environment).getProcessingDefinition().getLinkBuilderRegistry().getBuilder();
+    LinkBuilder linkBuilder = getContext(environment).getProcessingDefinition().getLinkBuilder();
     return linkBuilder.createLink(target);
   }
 }

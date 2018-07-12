@@ -39,7 +39,7 @@ public class MediaController extends ControllerBase {
 
 
   public MediaController(ImageVariantsResolver imageVariantsResolver) {
-    super("caas.media.timer");
+    super("caas.server.media.requests");
     this.imageVariantsResolver = imageVariantsResolver;
   }
 

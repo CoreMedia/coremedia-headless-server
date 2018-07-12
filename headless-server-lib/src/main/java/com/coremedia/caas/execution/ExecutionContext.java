@@ -1,24 +1,24 @@
 package com.coremedia.caas.execution;
 
-import com.coremedia.caas.config.CaasProcessingDefinition;
+import com.coremedia.caas.config.ProcessingDefinition;
 import com.coremedia.caas.service.ServiceRegistry;
 import com.coremedia.caas.service.repository.RootContext;
 
 public class ExecutionContext {
 
-  private CaasProcessingDefinition processingDefinition;
+  private ProcessingDefinition processingDefinition;
   private ServiceRegistry serviceRegistry;
   private RootContext rootContext;
 
 
-  public ExecutionContext(CaasProcessingDefinition processingDefinition, ServiceRegistry serviceRegistry, RootContext rootContext) {
+  public ExecutionContext(ProcessingDefinition processingDefinition, ServiceRegistry serviceRegistry, RootContext rootContext) {
     this.processingDefinition = processingDefinition;
     this.serviceRegistry = serviceRegistry;
     this.rootContext = rootContext;
   }
 
 
-  public CaasProcessingDefinition getProcessingDefinition() {
+  public ProcessingDefinition getProcessingDefinition() {
     return processingDefinition;
   }
 

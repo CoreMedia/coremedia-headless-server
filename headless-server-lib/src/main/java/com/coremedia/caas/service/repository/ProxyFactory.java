@@ -20,7 +20,13 @@ public interface ProxyFactory {
 
   ContentProxy makeContentProxy(@NotNull Content source);
 
-  ContentProxy makeContentProxy(@NotNull String id);
+  ContentProxy makeContentProxyFromId(@NotNull String id);
 
   List<ContentProxy> makeContentProxyList(@NotNull Collection<Content> source);
+
+  List<ContentProxy> makeContentProxyList(@NotNull Collection<Content> source, int limit);
+
+  List<ContentProxy> makeContentProxyListFromIds(@NotNull Collection<String> ids);
+
+  List<ContentProxy> makeContentProxyListFromIds(@NotNull Collection<String> ids, int limit);
 }
