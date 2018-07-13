@@ -5,6 +5,7 @@ import com.coremedia.caas.config.ProcessingDefinition;
 import com.coremedia.caas.config.ProcessingDefinitionCacheKey;
 import com.coremedia.caas.execution.ExecutionContext;
 import com.coremedia.caas.server.service.request.ClientIdentification;
+import com.coremedia.caas.server.service.request.GlobalParameters;
 import com.coremedia.caas.service.ServiceRegistry;
 import com.coremedia.caas.service.repository.RootContext;
 import com.coremedia.caas.service.security.AccessControlViolation;
@@ -22,8 +23,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.context.request.ServletWebRequest;
 
-import java.util.Collections;
 import java.util.Map;
+import java.util.stream.Collectors;
 import javax.validation.constraints.NotNull;
 
 public abstract class GraphQLControllerBase extends ControllerBase {
@@ -54,7 +55,13 @@ public abstract class GraphQLControllerBase extends ControllerBase {
 
 
   private Map<String, Object> getQueryArgs(ServletWebRequest request) {
-    return Collections.emptyMap();
+    return request.getParameterMap().entrySet().stream()
+            .filter(e -> !GlobalParameters.GLOBAL_BLACKLIST.contains(e.getKey()))
+            .filter(e -> {
+              String[] v = e.getValue();
+              return v != null && v.length > 0 && v[0] != null;
+            })
+            .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue()[0]));
   }
 
 
