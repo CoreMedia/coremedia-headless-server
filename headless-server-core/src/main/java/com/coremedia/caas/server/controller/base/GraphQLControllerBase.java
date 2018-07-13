@@ -20,11 +20,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.context.request.ServletWebRequest;
 
 import java.util.Collections;
 import java.util.Map;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotNull;
 
 public abstract class GraphQLControllerBase extends ControllerBase {
@@ -54,12 +53,12 @@ public abstract class GraphQLControllerBase extends ControllerBase {
   }
 
 
-  private Map<String, Object> getQueryArgs(HttpServletRequest request, HttpServletResponse response) {
+  private Map<String, Object> getQueryArgs(ServletWebRequest request) {
     return Collections.emptyMap();
   }
 
 
-  private Object runQuery(@NotNull RootContext rootContext, @NotNull ClientIdentification clientIdentification, @NotNull String queryName, @NotNull String viewName, Map<String, Object> queryArgs, HttpServletRequest request, HttpServletResponse response) {
+  private Object runQuery(@NotNull RootContext rootContext, @NotNull ClientIdentification clientIdentification, @NotNull String queryName, @NotNull String viewName, Map<String, Object> queryArgs, ServletWebRequest request) {
     String definitionName = clientIdentification.getDefinitionName();
     // repository defined runtime definition
     ProcessingDefinitionCacheKey processingDefinitionCacheKey = new ProcessingDefinitionCacheKey(rootContext.getSite().getSiteIndicator(), settingsService, applicationContext);
@@ -95,31 +94,31 @@ public abstract class GraphQLControllerBase extends ControllerBase {
   }
 
 
-  protected Object execute(String tenantId, String siteId, String queryName, String targetId, String viewName, HttpServletRequest request, HttpServletResponse response) {
+  protected Object execute(String tenantId, String siteId, String queryName, String targetId, String viewName, ServletWebRequest request) {
     try {
       RootContext rootContext;
       if (targetId == null) {
-        rootContext = resolveRootContext(tenantId, siteId, request, response);
+        rootContext = resolveRootContext(tenantId, siteId, request);
       }
       else {
-        rootContext = resolveRootContext(tenantId, siteId, targetId, request, response);
+        rootContext = resolveRootContext(tenantId, siteId, targetId, request);
       }
       // determine client
-      ClientIdentification clientIdentification = resolveClient(rootContext, request, response);
+      ClientIdentification clientIdentification = resolveClient(rootContext, request);
       String clientId = clientIdentification.getId().toString();
       String definitionName = clientIdentification.getDefinitionName();
       // determine query arguments
-      Map<String, Object> queryArgs = getQueryArgs(request, response);
+      Map<String, Object> queryArgs = getQueryArgs(request);
       // initialize expression evaluator
       serviceRegistry.getExpressionEvaluator().init(queryArgs);
       // run query
-      return execute(() -> runQuery(rootContext, clientIdentification, queryName, viewName, queryArgs, request, response), "tenant", tenantId, "site", siteId, "client", clientId, "pd", definitionName, "query", queryName, "view", viewName);
+      return execute(() -> runQuery(rootContext, clientIdentification, queryName, viewName, queryArgs, request), "tenant", tenantId, "site", siteId, "client", clientId, "pd", definitionName, "query", queryName, "view", viewName);
     } catch (AccessControlViolation e) {
-      return handleError(e, request, response);
+      return handleError(e, request);
     } catch (ResponseStatusException e) {
-      return handleError(e, request, response);
+      return handleError(e, request);
     } catch (Exception e) {
-      return handleError(e, request, response);
+      return handleError(e, request);
     }
   }
 }

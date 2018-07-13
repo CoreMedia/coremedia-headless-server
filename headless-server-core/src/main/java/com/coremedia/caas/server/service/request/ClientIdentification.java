@@ -8,9 +8,9 @@ import com.coremedia.cap.struct.Struct;
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableList;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.context.request.ServletWebRequest;
 
 import java.util.UUID;
-import javax.servlet.http.HttpServletRequest;
 
 import static com.coremedia.caas.server.service.request.ApplicationHeaders.CLIENTID;
 
@@ -21,7 +21,7 @@ public class ClientIdentification {
   private static final String UNDEFINED_CLIENTID = "00000000-0000-0000-0000-000000000000";
 
 
-  public static ClientIdentification from(RootContext rootContext, SettingsService settingsService, HttpServletRequest request) {
+  public static ClientIdentification from(RootContext rootContext, SettingsService settingsService, ServletWebRequest request) {
     String clientId = request.getHeader(CLIENTID);
     if (clientId == null) {
       // generic client identifier

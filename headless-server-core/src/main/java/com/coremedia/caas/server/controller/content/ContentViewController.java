@@ -12,9 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import org.springframework.web.context.request.ServletWebRequest;
 
 @RestController
 @RequestMapping("/caas/v1/{tenantId}/sites/{siteId}")
@@ -39,9 +37,8 @@ public class ContentViewController extends GraphQLControllerBase {
   })
   public Object getContent(@ApiParam(value = "The tenant's unique ID", required = true) @PathVariable String tenantId,
                            @ApiParam(value = "The site's unique ID", required = true) @PathVariable String siteId,
-                           HttpServletRequest request,
-                           HttpServletResponse response) {
-    return execute(tenantId, siteId, "sites", null, "default", request, response);
+                           ServletWebRequest request) {
+    return execute(tenantId, siteId, "sites", null, "default", request);
   }
 
   @RequestMapping(value = "/{viewName}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -58,9 +55,8 @@ public class ContentViewController extends GraphQLControllerBase {
   public Object getContent(@ApiParam(value = "The tenant's unique ID", required = true) @PathVariable String tenantId,
                            @ApiParam(value = "The site's unique ID", required = true) @PathVariable String siteId,
                            @ApiParam(value = "The requested query view", required = true) @PathVariable String viewName,
-                           HttpServletRequest request,
-                           HttpServletResponse response) {
-    return execute(tenantId, siteId, "sites", null, viewName, request, response);
+                           ServletWebRequest request) {
+    return execute(tenantId, siteId, "sites", null, viewName, request);
   }
 
   @RequestMapping(value = "/{queryName}/{targetId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -78,9 +74,8 @@ public class ContentViewController extends GraphQLControllerBase {
                            @ApiParam(value = "The site's unique ID", required = true) @PathVariable String siteId,
                            @ApiParam(value = "The requested query name", required = true) @PathVariable String queryName,
                            @ApiParam(value = "The content's numeric ID or alias", required = true) @PathVariable String targetId,
-                           HttpServletRequest request,
-                           HttpServletResponse response) {
-    return execute(tenantId, siteId, queryName, targetId, "default", request, response);
+                           ServletWebRequest request) {
+    return execute(tenantId, siteId, queryName, targetId, "default", request);
   }
 
   @RequestMapping(value = "/{queryName}/{targetId}/{viewName}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -99,8 +94,7 @@ public class ContentViewController extends GraphQLControllerBase {
                            @ApiParam(value = "The requested query name", required = true) @PathVariable String queryName,
                            @ApiParam(value = "The content's numeric ID or alias", required = true) @PathVariable String targetId,
                            @ApiParam(value = "The requested query view", required = true) @PathVariable String viewName,
-                           HttpServletRequest request,
-                           HttpServletResponse response) {
-    return execute(tenantId, siteId, queryName, targetId, viewName, request, response);
+                           ServletWebRequest request) {
+    return execute(tenantId, siteId, queryName, targetId, viewName, request);
   }
 }

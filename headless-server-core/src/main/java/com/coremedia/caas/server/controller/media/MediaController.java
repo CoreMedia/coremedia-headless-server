@@ -25,10 +25,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.ServletWebRequest;
 
 import java.util.concurrent.TimeUnit;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("/caas/v1/{tenantId}/sites/{siteId}/media")
@@ -64,10 +63,9 @@ public class MediaController extends ControllerBase {
                                  @ApiParam(value = "The required ratio if requesting an image") @RequestParam(required = false) String ratio,
                                  @ApiParam(value = "The required minimum width if requesting an image") @RequestParam(required = false, defaultValue = "-1") int minWidth,
                                  @ApiParam(value = "The required minimum height if requesting an image") @RequestParam(required = false, defaultValue = "-1") int minHeight,
-                                 HttpServletRequest request,
-                                 HttpServletResponse response) {
+                                 ServletWebRequest request) {
     try {
-      RootContext rootContext = resolveRootContext(tenantId, siteId, mediaId, request, response);
+      RootContext rootContext = resolveRootContext(tenantId, siteId, mediaId, request);
       // create model for media data
       MediaResourceModel resourceModel = rootContext.getModelFactory().createModel(MediaResourceModelFactory.MODEL_NAME, propertyName, rootContext.getTarget());
       if (resourceModel != null) {
@@ -87,11 +85,11 @@ public class MediaController extends ControllerBase {
       }
       return null;
     } catch (AccessControlViolation e) {
-      return handleError(e, request, response);
+      return handleError(e, request);
     } catch (ResponseStatusException e) {
-      return handleError(e, request, response);
+      return handleError(e, request);
     } catch (Exception e) {
-      return handleError(e, request, response);
+      return handleError(e, request);
     }
   }
 
@@ -110,19 +108,18 @@ public class MediaController extends ControllerBase {
   })
   public ResponseEntity<ImageVariantsDescriptor> getMediaVariants(@ApiParam(value = "The tenant's unique ID", required = true) @PathVariable String tenantId,
                                                                   @ApiParam(value = "The site's unique ID", required = true) @PathVariable String siteId,
-                                                                  HttpServletRequest request,
-                                                                  HttpServletResponse response) {
+                                                                  ServletWebRequest request) {
     try {
-      RootContext rootContext = resolveRootContext(tenantId, siteId, request, response);
+      RootContext rootContext = resolveRootContext(tenantId, siteId, request);
       return ResponseEntity.ok()
               .cacheControl(CacheControl.maxAge(300, TimeUnit.SECONDS))
               .body(imageVariantsResolver.getVariantsDescriptor(rootContext.getSite()));
     } catch (AccessControlViolation e) {
-      return handleError(e, request, response);
+      return handleError(e, request);
     } catch (ResponseStatusException e) {
-      return handleError(e, request, response);
+      return handleError(e, request);
     } catch (Exception e) {
-      return handleError(e, request, response);
+      return handleError(e, request);
     }
   }
 }
