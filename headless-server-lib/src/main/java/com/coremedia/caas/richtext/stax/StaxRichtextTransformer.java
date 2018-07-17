@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 
 import java.io.StringReader;
 import javax.xml.stream.XMLEventReader;
-import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.events.Characters;
 import javax.xml.stream.events.EndElement;
 import javax.xml.stream.events.StartElement;
@@ -51,9 +50,7 @@ public class StaxRichtextTransformer implements RichtextTransformer {
   private <E> E transformInternal(Markup markup, OutputFactory<E> outputFactory, ExecutionContext executionContext) throws Exception {
     ExecutionEnvironment<E> env = new ExecutionEnvironment<>(config, outputFactory, executionContext);
 
-    XMLInputFactory inputFactory = env.getInputFactory();
-    XMLEventReader eventReader = inputFactory.createXMLEventReader(new StringReader(markup.asXml()));
-
+    XMLEventReader eventReader = StaxFactory.createXMLEventReader(new StringReader(markup.asXml()));
     while (eventReader.hasNext()) {
       XMLEvent event = eventReader.nextEvent();
 

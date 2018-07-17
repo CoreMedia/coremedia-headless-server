@@ -15,9 +15,6 @@ import com.coremedia.caas.service.repository.RootContext;
 
 import java.util.Map;
 import java.util.Stack;
-import javax.xml.stream.XMLEventFactory;
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 import javax.xml.stream.events.Characters;
@@ -25,11 +22,6 @@ import javax.xml.stream.events.EndElement;
 import javax.xml.stream.events.StartElement;
 
 public class ExecutionEnvironment<E> {
-
-  private XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
-  private XMLOutputFactory xmlOutputFactory = XMLOutputFactory.newInstance();
-  private XMLEventFactory xmlEventFactory = XMLEventFactory.newInstance();
-
 
   private OutputFactory<E> outputFactory;
   private ExecutionContext executionContext;
@@ -51,19 +43,6 @@ public class ExecutionEnvironment<E> {
 
   private boolean isTraceEnabled() {
     return false;
-  }
-
-
-  public XMLInputFactory getInputFactory() {
-    return xmlInputFactory;
-  }
-
-  public XMLOutputFactory getOutputFactory() {
-    return xmlOutputFactory;
-  }
-
-  public XMLEventFactory getEventFactory() {
-    return xmlEventFactory;
   }
 
 
