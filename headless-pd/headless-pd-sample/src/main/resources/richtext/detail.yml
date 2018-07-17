@@ -4,8 +4,6 @@
 
 name: detail
 
-writerFactory: !StringWriterFactory {}
-
 handlerSets:
   text: &text_handlers
     - !Handler
