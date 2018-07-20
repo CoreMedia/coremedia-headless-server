@@ -8,8 +8,16 @@ name: <type.name>
 parents:
   - <type.parent.name>
 <endif>
+<options(type.options)>
 <if(type.fieldDefinitions)>
 fields:
 <type.fieldDefinitions:field()>
 <endif>
+>>
+
+
+options(options) ::=<<
+<if(options)>
+options:
+  <options.keys:{key | <key>: <options.(key)>};separator="\n"><endif>
 >>

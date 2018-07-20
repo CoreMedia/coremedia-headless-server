@@ -17,6 +17,9 @@ public class IfDirective implements CustomDirective {
 
   private static final String NAME = "if";
 
+  private static final String ARGUMENT_TEST = "test";
+  private static final String ARGUMENT_ELSE = "else";
+
 
   @Override
   public String getName() {
@@ -29,8 +32,8 @@ public class IfDirective implements CustomDirective {
     return newDirective()
             .name(NAME)
             .description("A directive evaluating a boolean expression on the current root object and returning a default value if the expression is evaluated to false")
-            .argument(GraphQLArgument.newArgument().name("test").type(Scalars.GraphQLString).description("The boolean expression"))
-            .argument(GraphQLArgument.newArgument().name("else").type(Scalars.GraphQLString).description("The default return value"))
+            .argument(GraphQLArgument.newArgument().name(ARGUMENT_TEST).type(Scalars.GraphQLString).description("The boolean expression"))
+            .argument(GraphQLArgument.newArgument().name(ARGUMENT_ELSE).type(Scalars.GraphQLString).description("The default return value"))
             .validLocations(Introspection.DirectiveLocation.FIELD)
             .build();
   }
@@ -58,7 +61,7 @@ public class IfDirective implements CustomDirective {
       ExpressionEvaluator evaluator = getContext(environment).getServiceRegistry().getExpressionEvaluator();
       // if expression evaluates to true do nothing, that is fetch the field if no other directive says otherwise
       // else the field value is replaced with null or the result of an optional 'else' expression
-      if (evaluator.evaluate(getArgument("test", String.class), source, Boolean.class)) {
+      if (evaluator.evaluate(getArgument(ARGUMENT_TEST, String.class), source, Boolean.class)) {
         return EvaluationResult.NOOP;
       }
       else {
@@ -70,7 +73,7 @@ public class IfDirective implements CustomDirective {
 
           @Override
           public Object getValue() {
-            String elseExpression = getArgument("else", String.class);
+            String elseExpression = getArgument(ARGUMENT_ELSE, String.class);
             if (!Strings.isNullOrEmpty(elseExpression)) {
               return evaluator.evaluate(elseExpression, source, Object.class);
             }

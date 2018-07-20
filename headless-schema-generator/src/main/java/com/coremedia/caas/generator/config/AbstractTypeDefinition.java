@@ -1,7 +1,10 @@
 package com.coremedia.caas.generator.config;
 
 import com.coremedia.cap.content.ContentType;
+
 import com.google.common.base.Strings;
+
+import java.util.Map;
 
 public abstract class AbstractTypeDefinition implements TypeDefinition {
 
@@ -12,6 +15,16 @@ public abstract class AbstractTypeDefinition implements TypeDefinition {
   public AbstractTypeDefinition(ContentType contentType, SchemaConfig schemaConfig) {
     this.contentType = contentType;
     this.schemaConfig = schemaConfig;
+  }
+
+
+  @Override
+  public Map<String, String> getOptions() {
+    TypeCustomization customization = getTypeCustomization();
+    if (customization != null) {
+      return customization.getOptions();
+    }
+    return null;
   }
 
 

@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 public class TypeCustomization {
 
   private String name;
+  private Map<String, String> options;
   private List<String> excludedProperties = ImmutableList.of();
   private Map<String, FieldDefinition> customFieldDefinitions = ImmutableMap.of();
 
@@ -21,6 +22,14 @@ public class TypeCustomization {
 
   public void setName(String name) {
     this.name = name;
+  }
+
+  public Map<String, String> getOptions() {
+    return options;
+  }
+
+  public void setOptions(Map<String, String> options) {
+    this.options = options;
   }
 
   public List<String> getExcludedProperties() {

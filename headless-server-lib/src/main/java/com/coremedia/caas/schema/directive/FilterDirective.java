@@ -14,6 +14,8 @@ public class FilterDirective implements CustomDirective {
 
   private static final String NAME = "filter";
 
+  private static final String ARGUMENT_TEST = "test";
+
 
   @Override
   public String getName() {
@@ -26,7 +28,7 @@ public class FilterDirective implements CustomDirective {
     return newDirective()
             .name(NAME)
             .description("A directive evaluating an expression on a field's value and replacing it with the expressions return value")
-            .argument(GraphQLArgument.newArgument().name("test").type(Scalars.GraphQLString).description("The filter expression"))
+            .argument(GraphQLArgument.newArgument().name(ARGUMENT_TEST).type(Scalars.GraphQLString).description("The filter expression"))
             .validLocations(Introspection.DirectiveLocation.FIELD)
             .build();
   }
@@ -59,7 +61,7 @@ public class FilterDirective implements CustomDirective {
 
         @Override
         public Object getValue() {
-          return getContext(environment).getServiceRegistry().getExpressionEvaluator().evaluate(getArgument("test", String.class), source, Object.class);
+          return getContext(environment).getServiceRegistry().getExpressionEvaluator().evaluate(getArgument(ARGUMENT_TEST, String.class), source, Object.class);
         }
       };
     }
