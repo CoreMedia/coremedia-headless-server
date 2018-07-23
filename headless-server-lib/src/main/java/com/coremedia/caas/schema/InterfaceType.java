@@ -1,6 +1,7 @@
 package com.coremedia.caas.schema;
 
 import com.coremedia.caas.schema.type.field.LiteralFields;
+import com.coremedia.caas.schema.type.field.ThisField;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableList;
@@ -47,7 +48,7 @@ public class InterfaceType extends AbstractType {
   @Override
   public List<FieldBuilder> getFields(SchemaService schemaService) throws InvalidTypeDefinition {
     Map<String, FieldBuilder> builderMap = Maps.newHashMap();
-    // add all parent fields
+    // add fields from all parent interfaces
     for (String name : getParents()) {
       for (FieldBuilder builder : getType(name, schemaService).getFields(schemaService)) {
         builderMap.put(builder.getName(), builder);
@@ -58,7 +59,10 @@ public class InterfaceType extends AbstractType {
       LiteralFields literalFields = new LiteralFields();
       builderMap.put(literalFields.getName(), literalFields);
     }
-    // add all direct fields
+    // create correctly typed 'this' field
+    FieldBuilder thisField = new ThisField(getName());
+    builderMap.put(thisField.getName(), thisField);
+    // add direct fields
     for (FieldBuilder builder : getFields()) {
       if (builderMap.containsKey(builder.getName())) {
         throw new InvalidTypeDefinition("Cannot override field " + builder.getName() + " for type " + getName());

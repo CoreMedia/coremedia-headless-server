@@ -17,12 +17,14 @@ import static graphql.schema.GraphQLFieldDefinition.newFieldDefinition;
 
 public class LiteralFields implements FieldBuilder {
 
+  public static final String NAME = "literals";
+
   public static final String ARGUMENT_VALUE = "value";
 
 
   @Override
   public String getName() {
-    return "literals";
+    return NAME;
   }
 
 

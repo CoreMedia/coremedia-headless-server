@@ -11,11 +11,6 @@ customFields:
     nonNull: true
     dataFetcher: Meta
   - !CustomField
-    name: this
-    targetType: Content_
-    nonNull: true
-    dataFetcher: Property
-  - !CustomField
     name: _id
     sourceName: id
     targetType: String
