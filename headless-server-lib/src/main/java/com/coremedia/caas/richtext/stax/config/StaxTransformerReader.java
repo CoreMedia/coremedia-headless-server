@@ -3,6 +3,7 @@ package com.coremedia.caas.richtext.stax.config;
 import com.coremedia.caas.config.loader.ConfigResourceLoader;
 import com.coremedia.caas.config.reader.ConfigResource;
 import com.coremedia.caas.config.reader.YamlConfigReader;
+import com.coremedia.caas.richtext.stax.StaxRichtextTransformer;
 import com.coremedia.caas.richtext.stax.context.RootContext;
 import com.coremedia.caas.richtext.stax.context.SimpleContext;
 import com.coremedia.caas.richtext.stax.handler.context.PushContext;
@@ -16,27 +17,26 @@ import com.coremedia.caas.richtext.stax.handler.output.ImgWriter;
 import com.coremedia.caas.richtext.stax.handler.output.LinkWriter;
 import com.coremedia.caas.richtext.stax.transformer.attribute.PassStyles;
 import com.coremedia.caas.richtext.stax.transformer.element.ElementFromClass;
-import com.coremedia.caas.richtext.stax.writer.StringWriterFactory;
+
 import com.google.common.collect.ImmutableList;
 import org.yaml.snakeyaml.TypeDescription;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 import org.yaml.snakeyaml.nodes.Tag;
 
-import javax.xml.namespace.QName;
 import java.io.IOException;
 import java.util.List;
+import javax.xml.namespace.QName;
 
-public class StaxConfigReader extends YamlConfigReader {
+public class StaxTransformerReader extends YamlConfigReader {
 
-  public StaxConfigReader(ConfigResourceLoader resourceLoader) {
+  public StaxTransformerReader(ConfigResourceLoader resourceLoader) {
     super(resourceLoader);
   }
 
 
-  public List<StaxTransformationConfig<?>> readTransformationConfigs() throws IOException {
+  public List<StaxRichtextTransformer> readTransformationConfigs() throws IOException {
     Constructor constructor = new Constructor();
-    constructor.addTypeDescription(new TypeDescription(StringWriterFactory.class, new Tag("!StringWriterFactory")));
     constructor.addTypeDescription(new TypeDescription(RootContext.class, new Tag("!RootContext")));
     constructor.addTypeDescription(new TypeDescription(SimpleContext.class, new Tag("!Context")));
     constructor.addTypeDescription(new TypeDescription(DefaultEventHandler.class, new Tag("!Handler")));
@@ -53,9 +53,10 @@ public class StaxConfigReader extends YamlConfigReader {
     constructor.addTypeDescription(new TypeDescription(SimpleTagMatcher.class, new Tag("!Matcher")));
     Yaml yaml = new Yaml(constructor);
 
-    ImmutableList.Builder<StaxTransformationConfig<?>> builder = ImmutableList.builder();
+    ImmutableList.Builder<StaxRichtextTransformer> builder = ImmutableList.builder();
     for (ConfigResource resource : getResources("richtext/*.yml")) {
-      builder.add(yaml.loadAs(resource.asString(), StaxTransformationConfig.class).resolve());
+      StaxTransformationConfig config = yaml.loadAs(resource.asString(), StaxTransformationConfig.class).resolve();
+      builder.add(new StaxRichtextTransformer(config));
     }
     return builder.build();
   }

@@ -2,13 +2,12 @@ package com.coremedia.caas.richtext.stax.config;
 
 import com.coremedia.caas.richtext.stax.context.ParseContext;
 import com.coremedia.caas.richtext.stax.handler.event.EventHandler;
-import com.coremedia.caas.richtext.stax.writer.XMLStreamWriterFactory;
 
-import javax.xml.namespace.QName;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import javax.xml.namespace.QName;
 
 public class StaxTransformationConfig<E> {
 
@@ -19,7 +18,6 @@ public class StaxTransformationConfig<E> {
   private List<ParseContext> contexts;
   private Map<String, ParseContext> contextMapping;
   private Map<String, List<EventHandler>> handlerSets;
-  private XMLStreamWriterFactory<E> writerFactory;
 
 
   public String getName() {
@@ -77,14 +75,6 @@ public class StaxTransformationConfig<E> {
 
   public void setHandlerSets(Map<String, List<EventHandler>> handlerSets) {
     this.handlerSets = handlerSets;
-  }
-
-  public XMLStreamWriterFactory<E> getWriterFactory() {
-    return writerFactory;
-  }
-
-  public void setWriterFactory(XMLStreamWriterFactory<E> writerFactory) {
-    this.writerFactory = writerFactory;
   }
 
 

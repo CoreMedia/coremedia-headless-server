@@ -2,6 +2,7 @@ package com.coremedia.caas.richtext.stax;
 
 import com.coremedia.caas.execution.ExecutionContext;
 import com.coremedia.caas.link.LinkBuilder;
+import com.coremedia.caas.richtext.output.OutputFactory;
 import com.coremedia.caas.richtext.stax.config.StaxTransformationConfig;
 import com.coremedia.caas.richtext.stax.context.ParseContext;
 import com.coremedia.caas.richtext.stax.handler.context.ContextHandler;
@@ -9,15 +10,11 @@ import com.coremedia.caas.richtext.stax.handler.context.ContextTracer;
 import com.coremedia.caas.richtext.stax.handler.event.EventHandler;
 import com.coremedia.caas.richtext.stax.handler.output.OutputHandler;
 import com.coremedia.caas.richtext.stax.handler.output.OutputTracer;
-import com.coremedia.caas.richtext.stax.writer.XMLStreamWriterFactory;
 import com.coremedia.caas.service.repository.ProxyFactory;
 import com.coremedia.caas.service.repository.RootContext;
 
 import java.util.Map;
 import java.util.Stack;
-import javax.xml.stream.XMLEventFactory;
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 import javax.xml.stream.events.Characters;
@@ -26,14 +23,7 @@ import javax.xml.stream.events.StartElement;
 
 public class ExecutionEnvironment<E> {
 
-  private XMLInputFactory inputFactory = XMLInputFactory.newInstance();
-  private XMLOutputFactory outputFactory = XMLOutputFactory.newInstance();
-  private XMLEventFactory eventFactory = XMLEventFactory.newInstance();
-
-
-  private XMLStreamWriterFactory<E> writerFactory;
-
-  private StaxTransformationConfig<E> config;
+  private OutputFactory<E> outputFactory;
   private ExecutionContext executionContext;
 
   private E output;
@@ -43,35 +33,16 @@ public class ExecutionEnvironment<E> {
   private Stack<ExecutionState<E>> states = new Stack<>();
 
 
-  public ExecutionEnvironment(StaxTransformationConfig<E> config, ExecutionContext executionContext) throws XMLStreamException {
-    this.config = config;
+  public ExecutionEnvironment(StaxTransformationConfig config, OutputFactory<E> outputFactory, ExecutionContext executionContext) throws XMLStreamException {
+    this.outputFactory = outputFactory;
     this.executionContext = executionContext;
-    init();
-  }
-
-
-  protected void init() throws XMLStreamException {
-    this.writerFactory = config.getWriterFactory();
-    this.states.push(new ExecutionState<>(writerFactory.createWriter(this)));
+    this.states.push(new ExecutionState<>(outputFactory.createXMLWriter(this)));
     this.contexts.push(config.getInitialContext());
   }
 
 
-  public boolean isTraceEnabled() {
+  private boolean isTraceEnabled() {
     return false;
-  }
-
-
-  public XMLInputFactory getInputFactory() {
-    return inputFactory;
-  }
-
-  public XMLOutputFactory getOutputFactory() {
-    return outputFactory;
-  }
-
-  public XMLEventFactory getEventFactory() {
-    return eventFactory;
   }
 
 

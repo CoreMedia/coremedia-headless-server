@@ -4,8 +4,6 @@
 
 name: teaser
 
-writerFactory: !StringWriterFactory {}
-
 contexts:
   - !RootContext
     name: ignoreall

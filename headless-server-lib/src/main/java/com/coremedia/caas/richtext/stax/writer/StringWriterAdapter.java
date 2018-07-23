@@ -1,11 +1,12 @@
 package com.coremedia.caas.richtext.stax.writer;
 
 import com.coremedia.caas.richtext.stax.ExecutionEnvironment;
+import com.coremedia.caas.richtext.stax.StaxFactory;
 
+import java.io.StringWriter;
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
-import java.io.StringWriter;
 
 public class StringWriterAdapter implements XMLStreamWriterAdapter<String> {
 
@@ -15,7 +16,7 @@ public class StringWriterAdapter implements XMLStreamWriterAdapter<String> {
 
   public StringWriterAdapter(ExecutionEnvironment env) throws XMLStreamException {
     writer = new StringWriter();
-    delegate = env.getOutputFactory().createXMLStreamWriter(writer);
+    delegate = StaxFactory.createXMLStreamWriter(writer);
   }
 
 

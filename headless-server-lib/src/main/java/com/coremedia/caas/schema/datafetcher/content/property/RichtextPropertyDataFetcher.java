@@ -3,6 +3,7 @@ package com.coremedia.caas.schema.datafetcher.content.property;
 import com.coremedia.caas.execution.ExecutionContext;
 import com.coremedia.caas.richtext.RichtextTransformer;
 import com.coremedia.caas.richtext.RichtextTransformerRegistry;
+import com.coremedia.caas.richtext.output.StringOutputFactory;
 import com.coremedia.caas.service.repository.content.ContentProxy;
 import com.coremedia.xml.Markup;
 
@@ -34,7 +35,7 @@ public class RichtextPropertyDataFetcher extends AbstractPropertyDataFetcher {
       RichtextTransformer transformer = registry.getTransformer(view);
       if (transformer != null) {
         try {
-          return transformer.transform(markup, context);
+          return transformer.transform(markup, new StringOutputFactory(), context);
         } catch (Exception e) {
           LOG.error("Richtext transformation failed:", e);
         }
