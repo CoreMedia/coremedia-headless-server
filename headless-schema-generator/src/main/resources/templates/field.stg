@@ -156,6 +156,7 @@ navigation(fieldDefinition) ::= <<
     sourceName: <fieldDefinition.sourceName>
     typeName: <fieldDefinition.targetType>
     <if(fieldDefinition.nonNull)>nonNull: true<endif>
+    <directives(fieldDefinition.directives)>
 
 >>
 
@@ -165,6 +166,7 @@ pagegrid(fieldDefinition) ::= <<
     sourceName: <fieldDefinition.sourceName>
     typeName: <fieldDefinition.targetType>
     <if(fieldDefinition.nonNull)>nonNull: true<endif>
+    <directives(fieldDefinition.directives)>
 
 >>
 
@@ -175,6 +177,7 @@ setting(fieldDefinition) ::= <<
     typeName: <fieldDefinition.targetType>
     <if(fieldDefinition.defaultValue)>defaultValue: <fieldDefinition.defaultValue><endif>
     <if(fieldDefinition.nonNull)>nonNull: true<endif>
+    <directives(fieldDefinition.directives)>
 
 >>
 
