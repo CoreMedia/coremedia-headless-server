@@ -73,7 +73,7 @@ public class ServiceConfig {
     // richtext cache
     if (serviceConfig.getCacheSpecs().containsKey(CacheInstances.RICHTEXT)) {
       Cache cache = Caffeine.from(serviceConfig.getCacheSpecs().get(CacheInstances.RICHTEXT))
-              .weigher((Weigher<Object, Weighted>) (key, value) -> value.weight())
+              .weigher((Weigher<Object, Weighted>) (key, value) -> value.getWeight())
               .build();
       CaffeineCacheMetrics.monitor(registry, cache, CacheInstances.RICHTEXT);
       builder.add(new CaffeineCache(CacheInstances.RICHTEXT, cache));
