@@ -1,6 +1,7 @@
 package com.coremedia.caas.schema;
 
 import com.coremedia.caas.schema.type.scalar.MapOfScalars;
+import com.coremedia.caas.schema.type.scalar.RichtextTree;
 
 import graphql.Scalars;
 import graphql.schema.GraphQLList;
@@ -39,7 +40,8 @@ public class Types {
   public static String getBaseTypeName(String typeName) {
     if (isList(typeName)) {
       return typeName.substring(LIST_PREFIX.length());
-    } else if (isMap(typeName)) {
+    }
+    else if (isMap(typeName)) {
       return typeName.substring(MAP_PREFIX.length());
     }
     return typeName;
@@ -50,7 +52,15 @@ public class Types {
     if (isMap(typeName)) {
       GraphQLScalarType baseType = MapOfScalars.getType(getBaseTypeName(typeName));
       return isNonNull ? new GraphQLNonNull(baseType) : baseType;
-    } else {
+    }
+    else if (RichtextTree.RICHTEXT_TREE.getName().equals(getBaseTypeName(typeName))) {
+      GraphQLOutputType baseType = RichtextTree.RICHTEXT_TREE;
+      if (isList(typeName)) {
+        baseType = new GraphQLList(baseType);
+      }
+      return isNonNull ? new GraphQLNonNull(baseType) : baseType;
+    }
+    else {
       GraphQLOutputType baseType = getBaseType(getBaseTypeName(typeName));
       if (isList(typeName)) {
         baseType = new GraphQLList(baseType);

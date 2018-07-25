@@ -2,6 +2,7 @@ package com.coremedia.caas.schema;
 
 import com.coremedia.caas.schema.datafetcher.converter.DataFetcherConverter;
 import com.coremedia.caas.schema.type.scalar.MapOfScalars;
+import com.coremedia.caas.schema.type.scalar.RichtextTree;
 
 import com.google.common.collect.ImmutableSet;
 import graphql.schema.GraphQLScalarType;
@@ -32,6 +33,7 @@ public class SchemaConfig {
   public Set<GraphQLScalarType> builtinScalars(@Qualifier(CONVERSION_SERVICE) ConversionService conversionService) {
     ImmutableSet.Builder<GraphQLScalarType> builder = ImmutableSet.builder();
     builder.addAll(new MapOfScalars(conversionService).getTypes().values());
+    builder.add(RichtextTree.RICHTEXT_TREE);
     return builder.build();
   }
 }
