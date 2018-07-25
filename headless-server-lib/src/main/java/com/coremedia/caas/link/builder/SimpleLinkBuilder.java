@@ -1,8 +1,8 @@
 package com.coremedia.caas.link.builder;
 
 import com.coremedia.caas.link.LinkBuilder;
+import com.coremedia.caas.service.repository.content.BlobProxy;
 import com.coremedia.caas.service.repository.content.ContentProxy;
-import com.coremedia.cap.common.Blob;
 import com.coremedia.cap.common.IdHelper;
 
 import org.springframework.stereotype.Component;
@@ -30,13 +30,13 @@ public class SimpleLinkBuilder implements LinkBuilder {
         return content.getString("url");
       }
       else if (content.isSubtypeOf("CMDownload")) {
-        Blob blob = content.getBlob("data");
+        BlobProxy blob = content.getBlob("data");
         if (blob != null) {
           return "coremedia:///download/" + IdHelper.parseContentId(content.getId()) + "/data";
         }
       }
       else if (content.isSubtypeOf("CMVisual") || content.isSubtypeOf("CMAudio")) {
-        Blob blob = content.getBlob("data");
+        BlobProxy blob = content.getBlob("data");
         if (blob != null) {
           return "coremedia:///media/" + IdHelper.parseContentId(content.getId()) + "/data";
         }

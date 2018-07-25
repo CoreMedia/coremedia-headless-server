@@ -1,7 +1,6 @@
 package com.coremedia.caas.service.repository.content;
 
-import com.coremedia.cap.common.Blob;
-
+import java.util.Calendar;
 import java.util.List;
 
 public interface ContentProxy {
@@ -16,10 +15,15 @@ public interface ContentProxy {
   String getType();
 
 
+  Calendar getCreationDate();
+
+  Calendar getModificationDate();
+
+
   Object get(String propertyName);
 
 
-  Blob getBlob(String propertyName);
+  BlobProxy getBlob(String propertyName);
 
   Boolean getBoolean(String propertyName);
 
@@ -28,6 +32,8 @@ public interface ContentProxy {
   ContentProxy getLink(String propertyName);
 
   List<ContentProxy> getLinks(String propertyName);
+
+  MarkupProxy getMarkup(String propertyName);
 
   String getString(String propertyName);
 }
