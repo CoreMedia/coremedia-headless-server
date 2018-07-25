@@ -20,6 +20,7 @@
     <compile.target.jdk>1.8</compile.target.jdk>
 
     <coremedia.version>1801.1</coremedia.version>
+    <caffeine.version>2.6.2</caffeine.version>
     <graphql-java.version>9.0</graphql-java.version>
     <micrometer.version>1.0.5</micrometer.version>
     <modelmapper.version>2.0.0</modelmapper.version>
@@ -74,6 +75,11 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-configuration-processor</artifactId>
         <version>${spring-boot.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.github.ben-manes.caffeine</groupId>
+        <artifactId>caffeine</artifactId>
+        <version>${caffeine.version}</version>
       </dependency>
       <dependency>
         <groupId>io.micrometer</groupId>
