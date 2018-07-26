@@ -35,7 +35,7 @@ public class ReplaceAndPushContext extends ReplaceContext {
 
   @Override
   public void endElement(EndElement endElement, ExecutionEnvironment env) {
-    env.popContext(getContext());
+    env.popContext();
   }
 
 

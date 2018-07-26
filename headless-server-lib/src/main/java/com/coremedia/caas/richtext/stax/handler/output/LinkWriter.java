@@ -2,6 +2,10 @@ package com.coremedia.caas.richtext.stax.handler.output;
 
 import com.coremedia.caas.richtext.common.RTAttributes;
 import com.coremedia.caas.richtext.stax.ExecutionEnvironment;
+import com.coremedia.caas.richtext.stax.writer.intermediate.eval.EvaluationAction;
+import com.coremedia.caas.richtext.stax.writer.intermediate.eval.EvaluationContext;
+import com.coremedia.caas.richtext.stax.writer.intermediate.eval.Evaluator;
+import com.coremedia.caas.richtext.stax.writer.intermediate.eval.FunctionEvaluator;
 import com.coremedia.caas.service.repository.content.ContentProxy;
 import com.coremedia.cap.common.IdHelper;
 
@@ -15,7 +19,10 @@ import javax.xml.stream.events.StartElement;
 
 public class LinkWriter extends AbstractOutputHandler {
 
-  private static final String LINK_GENERATED = "link-generated";
+  private static final String LINK_GENERATED_KEY = "link-generated";
+
+  private static final String LINK_GENERATED_INTERNAL = "internal";
+  private static final String LINK_GENERATED_EXTERNAL = "external";
 
 
   @Override
@@ -25,23 +32,35 @@ public class LinkWriter extends AbstractOutputHandler {
       String value = href.getValue();
       if (value != null) {
         if (IdHelper.isContentId(value)) {
-          ContentProxy contentProxy = env.getProxyFactory().makeContentProxyFromId(value);
-          if (contentProxy != null) {
-            String link = env.getLinkBuilder().createLink(contentProxy);
-            if (!Strings.isNullOrEmpty(link)) {
-              env.getWriter().writeStartElement("a");
-              env.getWriter().writeAttribute("href", "#none");
-              env.getWriter().writeAttribute("cms-href", link);
-              // mark link generated for closing tag
-              env.setAttribute(LINK_GENERATED, true);
+          Evaluator evaluator = new FunctionEvaluator((context) -> {
+            ContentProxy contentProxy = context.getProxyFactory().makeContentProxyFromId(value);
+            if (contentProxy == null) {
+              // don't output link tag but all nested nodes
+              return EvaluationAction.INCLUDE_INNER;
             }
-          }
+            else {
+              String link = context.getLinkBuilder().createLink(contentProxy);
+              if (Strings.isNullOrEmpty(link)) {
+                // don't output link tag but all nested nodes
+                return EvaluationAction.INCLUDE_INNER;
+              }
+              // add properties to context
+              context.add("link", link);
+              return EvaluationAction.INCLUDE;
+            }
+          });
+          env.getWriter().writeStartBlock(evaluator);
+          env.getWriter().writeStartElement("a");
+          env.getWriter().writeAttribute("data-href", EvaluationContext.source("link"));
+          // mark link generated for closing tag
+          env.setAttribute(LINK_GENERATED_KEY, LINK_GENERATED_INTERNAL);
         }
         else {
           // assume external link
           env.getWriter().writeStartElement("a");
           env.getWriter().writeAttribute("href", value);
-          env.setAttribute(LINK_GENERATED, true);
+          // mark link generated for closing tag
+          env.setAttribute(LINK_GENERATED_KEY, LINK_GENERATED_EXTERNAL);
         }
       }
     }
@@ -49,8 +68,12 @@ public class LinkWriter extends AbstractOutputHandler {
 
   @Override
   public void endElement(EndElement endElement, ExecutionEnvironment env) throws XMLStreamException {
-    Boolean linkGenerated = (Boolean) env.removeAttribute(LINK_GENERATED, Boolean.FALSE);
-    if (linkGenerated) {
+    String linkType = (String) env.removeAttribute(LINK_GENERATED_KEY, "");
+    if (LINK_GENERATED_INTERNAL.equals(linkType)) {
+      env.getWriter().writeEndElement();
+      env.getWriter().writeEndBlock();
+    }
+    else if (LINK_GENERATED_EXTERNAL.equals(linkType)) {
       env.getWriter().writeEndElement();
     }
   }

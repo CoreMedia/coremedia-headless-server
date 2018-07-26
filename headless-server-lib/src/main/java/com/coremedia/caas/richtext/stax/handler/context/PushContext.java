@@ -34,7 +34,7 @@ public class PushContext extends AbstractContextHandler {
 
   @Override
   public void endElement(EndElement endElement, ExecutionEnvironment env) {
-    env.popContext(getContext());
+    env.popContext();
   }
 
 
