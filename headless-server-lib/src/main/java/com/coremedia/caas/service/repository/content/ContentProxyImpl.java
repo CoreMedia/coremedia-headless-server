@@ -1,9 +1,11 @@
 package com.coremedia.caas.service.repository.content;
 
 import com.coremedia.caas.service.repository.ProxyFactory;
-import com.coremedia.cap.common.Blob;
 import com.coremedia.cap.content.Content;
 
+import com.google.common.base.Objects;
+
+import java.util.Calendar;
 import java.util.List;
 
 public class ContentProxyImpl implements ContentProxy {
@@ -41,14 +43,25 @@ public class ContentProxyImpl implements ContentProxy {
 
 
   @Override
+  public Calendar getCreationDate() {
+    return content.getCreationDate();
+  }
+
+  @Override
+  public Calendar getModificationDate() {
+    return content.getModificationDate();
+  }
+
+
+  @Override
   public Object get(String propertyName) {
     return proxyFactory.makeProxy(content.get(propertyName));
   }
 
 
   @Override
-  public Blob getBlob(String propertyName) {
-    return new ContentBlobProxy(content.getBlob(propertyName), this);
+  public BlobProxy getBlob(String propertyName) {
+    return proxyFactory.makeBlobProxy(content.getBlob(propertyName));
   }
 
   @Override
@@ -76,6 +89,11 @@ public class ContentProxyImpl implements ContentProxy {
   }
 
   @Override
+  public MarkupProxy getMarkup(String propertyName) {
+    return proxyFactory.makeMarkupProxy(content.getMarkup(propertyName));
+  }
+
+  @Override
   public String getString(String propertyName) {
     return content.getString(propertyName);
   }
@@ -91,5 +109,23 @@ public class ContentProxyImpl implements ContentProxy {
 
   Object getModel(String modelName) {
     return proxyFactory.getRootContext().getModelFactory().createModel(modelName, null, this);
+  }
+
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    ContentProxyImpl that = (ContentProxyImpl) o;
+    return Objects.equal(content, that.content);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hashCode(content);
   }
 }

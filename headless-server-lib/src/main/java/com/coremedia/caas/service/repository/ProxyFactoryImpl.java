@@ -1,10 +1,14 @@
 package com.coremedia.caas.service.repository;
 
+import com.coremedia.caas.service.repository.content.BlobProxy;
 import com.coremedia.caas.service.repository.content.ContentProxy;
 import com.coremedia.caas.service.repository.content.ContentProxyImpl;
+import com.coremedia.caas.service.repository.content.MarkupProxy;
+import com.coremedia.cap.common.Blob;
 import com.coremedia.cap.content.Content;
 import com.coremedia.cap.content.ContentRepository;
 import com.coremedia.cap.struct.Struct;
+import com.coremedia.xml.Markup;
 
 import com.google.common.collect.Maps;
 
@@ -66,7 +70,24 @@ public class ProxyFactoryImpl implements ProxyFactory {
     if (source instanceof Collection) {
       return makeList((Collection) source);
     }
+    if (source instanceof Blob) {
+      return makeBlobProxy((Blob) source);
+    }
+    if (source instanceof Markup) {
+      return makeMarkupProxy((Markup) source);
+    }
     return source;
+  }
+
+
+  @Override
+  public BlobProxy makeBlobProxy(Blob source) {
+    return new BlobProxy(source);
+  }
+
+  @Override
+  public MarkupProxy makeMarkupProxy(Markup source) {
+    return new MarkupProxy(source);
   }
 
 
