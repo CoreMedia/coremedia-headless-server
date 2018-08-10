@@ -6,6 +6,7 @@ import com.coremedia.caas.config.loader.ClasspathConfigResourceLoader;
 import com.coremedia.cap.content.ContentRepository;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -39,6 +40,7 @@ public class SchemaTest {
 
 
   @Test
+  @Ignore
   public void loadMinimalSchema() throws IOException {
 
     when(contentRepository.getContentTypes()).thenReturn(Collections.emptyList());
