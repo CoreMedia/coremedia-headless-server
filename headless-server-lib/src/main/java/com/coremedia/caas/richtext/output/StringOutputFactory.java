@@ -1,15 +1,13 @@
 package com.coremedia.caas.richtext.output;
 
-import com.coremedia.caas.richtext.stax.ExecutionEnvironment;
-import com.coremedia.caas.richtext.stax.writer.StringWriterAdapter;
-import com.coremedia.caas.richtext.stax.writer.XMLStreamWriterAdapter;
-
-import javax.xml.stream.XMLStreamException;
+import com.coremedia.caas.execution.ExecutionContext;
+import com.coremedia.caas.richtext.stax.writer.intermediate.IntermediateTree;
+import com.coremedia.caas.richtext.stax.writer.intermediate.TreeToStringVisitor;
 
 public class StringOutputFactory implements OutputFactory<String> {
 
   @Override
-  public XMLStreamWriterAdapter<String> createXMLWriter(ExecutionEnvironment<String> environment) throws XMLStreamException {
-    return new StringWriterAdapter(environment);
+  public String transform(IntermediateTree tree, ExecutionContext executionContext) {
+    return tree.accept(new TreeToStringVisitor(), executionContext);
   }
 }

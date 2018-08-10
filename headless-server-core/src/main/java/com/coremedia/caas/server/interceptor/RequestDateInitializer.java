@@ -1,16 +1,17 @@
 package com.coremedia.caas.server.interceptor;
 
 import com.coremedia.caas.service.request.RequestContext;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.GregorianCalendar;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import static com.coremedia.caas.server.service.request.ContextProperties.REQUEST_DATE;
 import static com.coremedia.caas.server.service.request.GlobalParameters.PREVIEW_DATE;
@@ -19,7 +20,7 @@ public class RequestDateInitializer extends HandlerInterceptorAdapter {
 
   private static final Logger LOG = LoggerFactory.getLogger(RequestDateInitializer.class);
 
-  public static final String PREVIEW_DATE_FORMAT = "dd-MM-yyyy mm:HH VV";
+  public static final String PREVIEW_DATE_FORMAT = "dd-MM-yyyy HH:mm VV";
   public static final DateTimeFormatter PREVIEW_DATE_FORMATTER = DateTimeFormatter.ofPattern(PREVIEW_DATE_FORMAT);
 
 
@@ -42,10 +43,12 @@ public class RequestDateInitializer extends HandlerInterceptorAdapter {
       response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
       return false;
     }
-    if (isPreview && previewDate != null) {
+    if (!isPreview || previewDate == null) {
+      requestContext.setProperty(REQUEST_DATE, ZonedDateTime.now(ZoneId.systemDefault()));
+    }
+    else {
       try {
-        ZonedDateTime zonedDateTime = ZonedDateTime.parse(previewDate, PREVIEW_DATE_FORMATTER);
-        requestContext.setProperty(REQUEST_DATE, GregorianCalendar.from(zonedDateTime));
+        requestContext.setProperty(REQUEST_DATE, ZonedDateTime.parse(previewDate, PREVIEW_DATE_FORMATTER));
       } catch (DateTimeParseException e) {
         LOG.warn("Cannot parse preview date '{}'", previewDate);
         response.setStatus(HttpServletResponse.SC_BAD_REQUEST);

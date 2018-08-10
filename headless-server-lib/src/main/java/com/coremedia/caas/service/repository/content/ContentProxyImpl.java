@@ -1,9 +1,11 @@
 package com.coremedia.caas.service.repository.content;
 
 import com.coremedia.caas.service.repository.ProxyFactory;
-import com.coremedia.cap.common.Blob;
 import com.coremedia.cap.content.Content;
 
+import com.google.common.base.Objects;
+
+import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
 
@@ -40,13 +42,24 @@ public class ContentProxyImpl implements ContentProxy {
 
 
   @Override
+  public Calendar getCreationDate() {
+    return content.getCreationDate();
+  }
+
+  @Override
+  public Calendar getModificationDate() {
+    return content.getModificationDate();
+  }
+
+
+  @Override
   public Object get(String propertyName) {
     return proxyFactory.makeProxy(content.get(propertyName));
   }
 
   @Override
-  public Blob getBlob(String propertyName) {
-    return new ContentBlobProxy(content.getBlob(propertyName), this);
+  public BlobProxy getBlob(String propertyName) {
+    return proxyFactory.makeBlobProxy(content.getBlob(propertyName));
   }
 
   @Override
@@ -71,6 +84,11 @@ public class ContentProxyImpl implements ContentProxy {
   @Override
   public List<ContentProxy> getLinks(String propertyName) {
     return proxyFactory.makeContentProxyList(content.getLinks(propertyName));
+  }
+
+  @Override
+  public MarkupProxy getMarkup(String propertyName) {
+    return proxyFactory.makeMarkupProxy(content.getMarkup(propertyName));
   }
 
   @Override
@@ -110,6 +128,6 @@ public class ContentProxyImpl implements ContentProxy {
 
   @Override
   public int hashCode() {
-    return content.hashCode();
+    return com.google.common.base.Objects.hashCode(content);
   }
 }

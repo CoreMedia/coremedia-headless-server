@@ -3,8 +3,11 @@ package com.coremedia.caas.richtext.stax.handler.output;
 import com.coremedia.caas.richtext.common.RTAttributes;
 import com.coremedia.caas.richtext.stax.ExecutionEnvironment;
 import com.coremedia.caas.richtext.stax.transformer.attribute.AttributeTransformer;
+import com.coremedia.caas.richtext.stax.writer.intermediate.eval.EvaluationAction;
+import com.coremedia.caas.richtext.stax.writer.intermediate.eval.EvaluationContext;
+import com.coremedia.caas.richtext.stax.writer.intermediate.eval.Evaluator;
+import com.coremedia.caas.richtext.stax.writer.intermediate.eval.FunctionEvaluator;
 import com.coremedia.caas.service.repository.content.ContentProxy;
-import com.coremedia.cap.common.Blob;
 import com.coremedia.cap.common.IdHelper;
 
 import com.google.common.base.Strings;
@@ -34,32 +37,36 @@ public class ImgWriter extends AbstractOutputHandler {
     if (href != null) {
       String value = href.getValue();
       if (value != null && IdHelper.isBlobId(value)) {
-        ContentProxy contentProxy = env.getProxyFactory().makeContentProxyFromId(IdHelper.parseContentIdFromBlobId(value));
-        if (contentProxy != null) {
-          Blob blob = contentProxy.getBlob(IdHelper.parsePropertyFromBlobId(value));
-          if (blob != null) {
-            String link = env.getLinkBuilder().createLink(contentProxy);
-            String alt = null;
-            if (contentProxy.isSubtypeOf("CMMedia")) {
-              alt = contentProxy.getString("alt");
+        Evaluator evaluator = new FunctionEvaluator((context) -> {
+          ContentProxy contentProxy = context.getProxyFactory().makeContentProxyFromId(IdHelper.parseContentIdFromBlobId(value));
+          if (contentProxy == null) {
+            return EvaluationAction.DROP;
+          }
+          else {
+            String link = context.getLinkBuilder().createLink(contentProxy);
+            if (Strings.isNullOrEmpty(link)) {
+              return EvaluationAction.DROP;
             }
-            if (!Strings.isNullOrEmpty(link)) {
-              env.getWriter().writeEmptyElement("img");
-              env.getWriter().writeAttribute("cms-src", link);
-              if (!Strings.isNullOrEmpty(alt)) {
-                env.getWriter().writeAttribute("alt", alt);
-              }
-              if (attributeTransformers != null) {
-                for (AttributeTransformer transformer : attributeTransformers) {
-                  Attribute attribute = transformer.getAttribute(startElement, env);
-                  if (attribute != null) {
-                    env.getWriter().writeAttribute(attribute.getName().getLocalPart(), attribute.getValue());
-                  }
-                }
-              }
+            String alt = contentProxy.isSubtypeOf("CMMedia") ? contentProxy.getString("alt") : "";
+            // add properties to context
+            context.add("link", link);
+            context.add("alt", alt);
+            return EvaluationAction.INCLUDE;
+          }
+        });
+        env.getWriter().writeStartBlock(evaluator);
+        env.getWriter().writeEmptyElement("img");
+        env.getWriter().writeAttribute("data-src", EvaluationContext.source("link"));
+        env.getWriter().writeAttribute("alt", EvaluationContext.source("alt"));
+        if (attributeTransformers != null) {
+          for (AttributeTransformer transformer : attributeTransformers) {
+            Attribute attribute = transformer.getAttribute(startElement, env);
+            if (attribute != null) {
+              env.getWriter().writeAttribute(attribute.getName().getLocalPart(), attribute.getValue());
             }
           }
         }
+        env.getWriter().writeEndBlock();
       }
     }
   }

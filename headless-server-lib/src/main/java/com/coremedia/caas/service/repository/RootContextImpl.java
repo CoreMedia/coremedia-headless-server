@@ -13,29 +13,24 @@ import com.coremedia.cap.struct.Struct;
 import com.google.common.collect.ImmutableList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
-import org.springframework.beans.factory.BeanFactoryAware;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
-import javax.annotation.PostConstruct;
 
-public class RootContextImpl implements RootContext, BeanFactoryAware {
-
-  private BeanFactory beanFactory;
-
-  private ContentRepository contentRepository;
-  private SettingsService settingsService;
-
-  private ServiceConfig serviceConfig;
+public class RootContextImpl implements RootContext {
 
   private Site site;
 
   private Object currentContext;
   private Object target;
   private Object proxyTarget;
+
+  private ContentRepository contentRepository;
+  private SettingsService settingsService;
+
+  private ServiceConfig serviceConfig;
 
   private RequestContext requestContext;
 
@@ -46,7 +41,7 @@ public class RootContextImpl implements RootContext, BeanFactoryAware {
   private List<ProxyModelFactory> proxyModelFactories;
 
 
-  public RootContextImpl(Site site, Object currentContext, Object target, RequestContext requestContext, List<ProxyModelFactory> proxyModelFactories, ContentRepository contentRepository, SettingsService settingsService, ServiceConfig serviceConfig) {
+  public RootContextImpl(Site site, Object currentContext, Object target, RequestContext requestContext, List<ProxyModelFactory> proxyModelFactories, ContentRepository contentRepository, SettingsService settingsService, ServiceConfig serviceConfig, BeanFactory beanFactory) throws AccessControlViolation {
     this.site = site;
     this.currentContext = currentContext;
     this.target = target;
@@ -55,17 +50,11 @@ public class RootContextImpl implements RootContext, BeanFactoryAware {
     this.contentRepository = contentRepository;
     this.settingsService = settingsService;
     this.serviceConfig = serviceConfig;
+    init(beanFactory);
   }
 
 
-  @Override
-  public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
-    this.beanFactory = beanFactory;
-  }
-
-
-  @PostConstruct
-  private void init() throws AccessControlViolation {
+  private void init(BeanFactory beanFactory) throws AccessControlViolation {
     // init access control
     List<String> accessValidatorNames = null;
     // fetch access control struct from site indicator settings

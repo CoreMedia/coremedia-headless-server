@@ -24,8 +24,3 @@ fields:
     sourceName: type
     typeName: String
     nonNull: true
-  - !Property
-    name: this
-    typeName: Content_
-    nonNull: true
-

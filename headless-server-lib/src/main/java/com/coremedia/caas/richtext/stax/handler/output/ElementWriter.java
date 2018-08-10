@@ -4,12 +4,12 @@ import com.coremedia.caas.richtext.stax.ExecutionEnvironment;
 import com.coremedia.caas.richtext.stax.transformer.attribute.AttributeTransformer;
 import com.coremedia.caas.richtext.stax.transformer.element.ElementTransformer;
 
+import java.util.List;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.Characters;
 import javax.xml.stream.events.EndElement;
 import javax.xml.stream.events.StartElement;
-import java.util.List;
 
 public class ElementWriter extends AbstractOutputHandler {
 
@@ -60,15 +60,16 @@ public class ElementWriter extends AbstractOutputHandler {
     if (writeElement) {
       if (elementTransformer != null) {
         env.getWriter().writeStartElement(elementTransformer.getName(startElement, env).getLocalPart());
-      } else {
+      }
+      else {
         env.getWriter().writeStartElement(startElement.getName().getLocalPart());
       }
-    }
-    if (attributeTransformers != null) {
-      for (AttributeTransformer transformer : attributeTransformers) {
-        Attribute attribute = transformer.getAttribute(startElement, env);
-        if (attribute != null) {
-          env.getWriter().writeAttribute(attribute.getName().getLocalPart(), attribute.getValue());
+      if (attributeTransformers != null) {
+        for (AttributeTransformer transformer : attributeTransformers) {
+          Attribute attribute = transformer.getAttribute(startElement, env);
+          if (attribute != null) {
+            env.getWriter().writeAttribute(attribute.getName().getLocalPart(), attribute.getValue());
+          }
         }
       }
     }

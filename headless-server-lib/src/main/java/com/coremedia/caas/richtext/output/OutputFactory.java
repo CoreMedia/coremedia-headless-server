@@ -1,11 +1,9 @@
 package com.coremedia.caas.richtext.output;
 
-import com.coremedia.caas.richtext.stax.ExecutionEnvironment;
-import com.coremedia.caas.richtext.stax.writer.XMLStreamWriterAdapter;
-
-import javax.xml.stream.XMLStreamException;
+import com.coremedia.caas.execution.ExecutionContext;
+import com.coremedia.caas.richtext.stax.writer.intermediate.IntermediateTree;
 
 public interface OutputFactory<E> {
 
-  XMLStreamWriterAdapter<E> createXMLWriter(ExecutionEnvironment<E> environment) throws XMLStreamException;
+  E transform(IntermediateTree tree, ExecutionContext executionContext);
 }

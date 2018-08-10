@@ -13,11 +13,11 @@ public interface EventHandler {
   boolean matches(StartElement startElement);
 
 
-  void startElement(StartElement startElement, ExecutionEnvironment<?> env) throws XMLStreamException;
+  void startElement(StartElement startElement, ExecutionEnvironment env) throws XMLStreamException;
 
-  void endElement(EndElement endElement, ExecutionEnvironment<?> env) throws XMLStreamException;
+  void endElement(EndElement endElement, ExecutionEnvironment env) throws XMLStreamException;
 
-  void characters(Characters characters, ExecutionEnvironment<?> env) throws XMLStreamException;
+  void characters(Characters characters, ExecutionEnvironment env) throws XMLStreamException;
 
 
   void resolve(StaxTransformationConfig config);
