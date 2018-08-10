@@ -5,18 +5,17 @@ import com.coremedia.cap.common.Blob;
 import com.coremedia.cap.content.Content;
 
 import java.util.List;
+import java.util.Objects;
 
 public class ContentProxyImpl implements ContentProxy {
 
   private final Content content;
   private final ProxyFactory proxyFactory;
 
-
   public ContentProxyImpl(Content content, ProxyFactory proxyFactory) {
     this.content = content;
     this.proxyFactory = proxyFactory;
   }
-
 
   @Override
   public boolean isSubtypeOf(String typeName) {
@@ -44,7 +43,6 @@ public class ContentProxyImpl implements ContentProxy {
   public Object get(String propertyName) {
     return proxyFactory.makeProxy(content.get(propertyName));
   }
-
 
   @Override
   public Blob getBlob(String propertyName) {
@@ -91,5 +89,27 @@ public class ContentProxyImpl implements ContentProxy {
 
   Object getModel(String modelName) {
     return proxyFactory.getRootContext().getModelFactory().createModel(modelName, null, this);
+  }
+
+  @Override
+  public String toString() {
+    return "ContentProxy(" + content.toString() + ")";
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    ContentProxyImpl that = (ContentProxyImpl) o;
+    return Objects.equals(content, that.content);
+  }
+
+  @Override
+  public int hashCode() {
+    return content.hashCode();
   }
 }

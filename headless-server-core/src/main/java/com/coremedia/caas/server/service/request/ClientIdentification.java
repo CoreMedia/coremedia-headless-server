@@ -10,6 +10,7 @@ import com.google.common.collect.ImmutableList;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.context.request.ServletWebRequest;
 
+import java.util.Objects;
 import java.util.UUID;
 
 import static com.coremedia.caas.server.service.request.ApplicationHeaders.CLIENTID;
@@ -44,7 +45,7 @@ public class ClientIdentification {
   private String definitionName;
 
 
-  ClientIdentification(UUID uuid, String definitionName) {
+  private ClientIdentification(UUID uuid, String definitionName) {
     this.uuid = uuid;
     this.definitionName = definitionName;
   }
@@ -65,5 +66,22 @@ public class ClientIdentification {
             .add("id", getId())
             .add("definitionName", getDefinitionName())
             .toString();
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    ClientIdentification that = (ClientIdentification) o;
+    return Objects.equals(uuid, that.uuid);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(uuid);
   }
 }
