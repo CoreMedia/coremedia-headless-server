@@ -3,8 +3,6 @@ package com.coremedia.caas.service.repository.content;
 import com.coremedia.caas.service.repository.ProxyFactory;
 import com.coremedia.cap.content.Content;
 
-import com.google.common.base.Objects;
-
 import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
