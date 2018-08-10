@@ -19,7 +19,7 @@
     <compile.source.jdk>1.8</compile.source.jdk>
     <compile.target.jdk>1.8</compile.target.jdk>
 
-    <coremedia.version>1801.1</coremedia.version>
+    <coremedia.version>1807.1</coremedia.version>
     <caffeine.version>2.6.2</caffeine.version>
     <graphql-java.version>9.0</graphql-java.version>
     <micrometer.version>1.0.5</micrometer.version>
@@ -28,6 +28,9 @@
     <spring-restdocs.version>1.1.3.RELEASE</spring-restdocs.version>
     <stringtemplate.version>4.0.8</stringtemplate.version>
     <springfox-swagger.version>2.8.0</springfox-swagger.version>
+
+    <!-- todo has been replaced by Spring PropertyAccessorFactory in CMS thirdparty bom (should we do the same here?): -->
+    <commons.beanutils.version>1.9.2</commons.beanutils.version>
 
     <maven.dependency.plugin.version>3.0.0</maven.dependency.plugin.version>
     <maven.surefire.plugin.version>2.19.1</maven.surefire.plugin.version>
