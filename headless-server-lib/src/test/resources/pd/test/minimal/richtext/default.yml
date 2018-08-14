@@ -1,7 +1,5 @@
 name: default
 
-writerFactory: !StringWriterFactory {}
-
 elements:
   - &p !QName [ "http://www.coremedia.com/2003/richtext-1.0" , "p" ]
 
