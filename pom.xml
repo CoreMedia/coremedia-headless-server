@@ -85,6 +85,11 @@
         <version>${caffeine.version}</version>
       </dependency>
       <dependency>
+        <groupId>commons-beanutils</groupId>
+        <artifactId>commons-beanutils</artifactId>
+        <version>${commons.beanutils.version}</version>
+      </dependency>
+      <dependency>
         <groupId>io.micrometer</groupId>
         <artifactId>micrometer-spring-legacy</artifactId>
         <version>${micrometer.version}</version>
