@@ -3,6 +3,8 @@ package com.coremedia.caas.service.repository.content;
 import com.coremedia.caas.service.repository.ProxyFactory;
 import com.coremedia.cap.content.Content;
 
+import com.google.common.base.MoreObjects;
+
 import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
@@ -12,10 +14,12 @@ public class ContentProxyImpl implements ContentProxy {
   private final Content content;
   private final ProxyFactory proxyFactory;
 
+
   public ContentProxyImpl(Content content, ProxyFactory proxyFactory) {
     this.content = content;
     this.proxyFactory = proxyFactory;
   }
+
 
   @Override
   public boolean isSubtypeOf(String typeName) {
@@ -54,6 +58,7 @@ public class ContentProxyImpl implements ContentProxy {
   public Object get(String propertyName) {
     return proxyFactory.makeProxy(content.get(propertyName));
   }
+
 
   @Override
   public BlobProxy getBlob(String propertyName) {
@@ -95,23 +100,6 @@ public class ContentProxyImpl implements ContentProxy {
   }
 
 
-  /*
-   * Package private area for model creation
-   */
-
-  Content getContent() {
-    return content;
-  }
-
-  Object getModel(String modelName) {
-    return proxyFactory.getRootContext().getModelFactory().createModel(modelName, null, this);
-  }
-
-  @Override
-  public String toString() {
-    return "ContentProxy(" + content.toString() + ")";
-  }
-
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -126,6 +114,26 @@ public class ContentProxyImpl implements ContentProxy {
 
   @Override
   public int hashCode() {
-    return com.google.common.base.Objects.hashCode(content);
+    return Objects.hash(content);
+  }
+
+  @Override
+  public String toString() {
+    return MoreObjects.toStringHelper(this)
+            .add("content", content)
+            .toString();
+  }
+
+
+  /*
+   * Package private area for model creation
+   */
+
+  Content getContent() {
+    return content;
+  }
+
+  Object getModel(String modelName) {
+    return proxyFactory.getRootContext().getModelFactory().createModel(modelName, null, this);
   }
 }

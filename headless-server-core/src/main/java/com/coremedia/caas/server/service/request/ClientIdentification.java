@@ -61,14 +61,6 @@ public class ClientIdentification {
 
 
   @Override
-  public String toString() {
-    return MoreObjects.toStringHelper(this)
-            .add("id", getId())
-            .add("definitionName", getDefinitionName())
-            .toString();
-  }
-
-  @Override
   public boolean equals(Object o) {
     if (this == o) {
       return true;
@@ -83,5 +75,13 @@ public class ClientIdentification {
   @Override
   public int hashCode() {
     return Objects.hash(uuid);
+  }
+
+  @Override
+  public String toString() {
+    return MoreObjects.toStringHelper(this)
+            .add("id", getId())
+            .add("definitionName", getDefinitionName())
+            .toString();
   }
 }
