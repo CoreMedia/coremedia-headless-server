@@ -40,14 +40,8 @@
     <maven.resources.plugin.version>3.0.2</maven.resources.plugin.version>
     <maven.cargo.plugin.version>1.6.5</maven.cargo.plugin.version>
 
-    <!-- run with CoreMedia default Tomcat version -->
-    <tomcat.id>tomcat7x</tomcat.id>
-    <tomcat.version>7.0.79</tomcat.version>
-    <!-- run with Spring Boot default Tomcat version, also remove the dependency on tomcat-juli from the headless-server-app module -->
-    <!--
     <tomcat.id>tomcat8x</tomcat.id>
     <tomcat.version>8.5.15</tomcat.version>
-    -->
   </properties>
 
   <prerequisites>
