@@ -75,6 +75,17 @@
         <scope>import</scope>
       </dependency>
       <dependency>
+        <groupId>com.coremedia.cms</groupId>
+        <artifactId>cap-client</artifactId>
+        <version>${coremedia.version}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-configuration-processor</artifactId>
         <version>${spring-boot.version}</version>
