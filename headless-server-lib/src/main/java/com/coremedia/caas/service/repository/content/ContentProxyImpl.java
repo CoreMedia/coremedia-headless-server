@@ -3,10 +3,11 @@ package com.coremedia.caas.service.repository.content;
 import com.coremedia.caas.service.repository.ProxyFactory;
 import com.coremedia.cap.content.Content;
 
-import com.google.common.base.Objects;
+import com.google.common.base.MoreObjects;
 
 import java.util.Calendar;
 import java.util.List;
+import java.util.Objects;
 
 public class ContentProxyImpl implements ContentProxy {
 
@@ -99,6 +100,31 @@ public class ContentProxyImpl implements ContentProxy {
   }
 
 
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    ContentProxyImpl that = (ContentProxyImpl) o;
+    return Objects.equals(content, that.content);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(content);
+  }
+
+  @Override
+  public String toString() {
+    return MoreObjects.toStringHelper(this)
+            .add("content", content)
+            .toString();
+  }
+
+
   /*
    * Package private area for model creation
    */
@@ -109,23 +135,5 @@ public class ContentProxyImpl implements ContentProxy {
 
   Object getModel(String modelName) {
     return proxyFactory.getRootContext().getModelFactory().createModel(modelName, null, this);
-  }
-
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    ContentProxyImpl that = (ContentProxyImpl) o;
-    return Objects.equal(content, that.content);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hashCode(content);
   }
 }
