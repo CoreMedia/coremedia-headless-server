@@ -1,4 +1,4 @@
-package com.coremedia.caas.server.service.request;
+package com.coremedia.caas.service.request;
 
 public final class ContextProperties {
 

@@ -1,20 +1,18 @@
 package com.coremedia.caas.server.interceptor;
 
 import com.coremedia.caas.service.request.RequestContext;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
-import java.time.ZoneId;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
-import static com.coremedia.caas.server.service.request.ContextProperties.REQUEST_DATE;
 import static com.coremedia.caas.server.service.request.GlobalParameters.PREVIEW_DATE;
+import static com.coremedia.caas.service.request.ContextProperties.REQUEST_DATE;
 
 public class RequestDateInitializer extends HandlerInterceptorAdapter {
 
@@ -43,10 +41,7 @@ public class RequestDateInitializer extends HandlerInterceptorAdapter {
       response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
       return false;
     }
-    if (!isPreview || previewDate == null) {
-      requestContext.setProperty(REQUEST_DATE, ZonedDateTime.now(ZoneId.systemDefault()));
-    }
-    else {
+    if (isPreview && previewDate != null) {
       try {
         requestContext.setProperty(REQUEST_DATE, ZonedDateTime.parse(previewDate, PREVIEW_DATE_FORMATTER));
       } catch (DateTimeParseException e) {

@@ -71,6 +71,11 @@
       <groupId>javax.validation</groupId>
       <artifactId>validation-api</artifactId>
     </dependency>
+    <dependency>
+      <groupId>com.github.spotbugs</groupId>
+      <artifactId>spotbugs-annotations</artifactId>
+      <scope>provided</scope>
+    </dependency>
     <!-- scope test -->
     <dependency>
       <groupId>org.springframework</groupId>
