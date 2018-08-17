@@ -7,12 +7,12 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
 import static com.coremedia.caas.server.service.request.GlobalParameters.PREVIEW_DATE;
-import static com.coremedia.caas.service.request.ContextProperties.REQUEST_DATE;
 
 public class RequestDateInitializer extends HandlerInterceptorAdapter {
 
@@ -21,35 +21,32 @@ public class RequestDateInitializer extends HandlerInterceptorAdapter {
   public static final String PREVIEW_DATE_FORMAT = "dd-MM-yyyy HH:mm VV";
   public static final DateTimeFormatter PREVIEW_DATE_FORMATTER = DateTimeFormatter.ofPattern(PREVIEW_DATE_FORMAT);
 
-
-  private boolean isPreview;
   private RequestContext requestContext;
 
-
-  public RequestDateInitializer(boolean isPreview, RequestContext requestContext) {
-    this.isPreview = isPreview;
+  public RequestDateInitializer(RequestContext requestContext) {
     this.requestContext = requestContext;
   }
-
 
   @Override
   public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
     String previewDate = request.getParameter(PREVIEW_DATE);
     // fail if illegal header is sent
-    if (!isPreview && previewDate != null) {
+    if (previewDate == null) {
+      requestContext.setRequestTime(ZonedDateTime.now(ZoneId.systemDefault()));
+      return true;
+    }
+    if (!requestContext.isPreview()) {
       LOG.warn("Must not pass preview date in live mode");
       response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
       return false;
     }
-    if (isPreview && previewDate != null) {
-      try {
-        requestContext.setProperty(REQUEST_DATE, ZonedDateTime.parse(previewDate, PREVIEW_DATE_FORMATTER));
-      } catch (DateTimeParseException e) {
-        LOG.warn("Cannot parse preview date '{}'", previewDate);
-        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-        return false;
-      }
+    try {
+      requestContext.setRequestTime(ZonedDateTime.parse(previewDate, PREVIEW_DATE_FORMATTER));
+      return true;
+    } catch (DateTimeParseException e) {
+      LOG.warn("Cannot parse preview date '{}'", previewDate);
+      response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+      return false;
     }
-    return true;
   }
 }

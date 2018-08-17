@@ -23,6 +23,7 @@ import org.springframework.cache.caffeine.CaffeineCache;
 import org.springframework.cache.support.SimpleCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.core.convert.ConversionService;
@@ -52,12 +53,19 @@ public class ServiceConfig {
   }
 
 
+  @Profile("preview")
   @Bean("requestContext")
   @Scope(value = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.INTERFACES)
-  public RequestContext createRequestContext() {
-    return new DefaultRequestContext();
+  public RequestContext createPreviewRequestContext() {
+    return new DefaultRequestContext(true);
   }
 
+  @Profile("!preview")
+  @Bean("requestContext")
+  @Scope(value = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.INTERFACES)
+  public RequestContext createLiveRequestContext() {
+    return new DefaultRequestContext(false);
+  }
 
   @Bean("spelEvaluator")
   @Scope(value = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.INTERFACES)

@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.coremedia.caas.schema.util.ContentUtil.toZonedDateTime;
-import static com.coremedia.caas.service.request.ContextProperties.REQUEST_DATE;
 
 public class PageGridPlacementAdapter {
 
@@ -24,34 +23,32 @@ public class PageGridPlacementAdapter {
   private RootContext rootContext;
 
 
+  @SuppressWarnings("WeakerAccess")
   public PageGridPlacementAdapter(String name, ContentBackedPageGridPlacement pageGridPlacement, RootContext rootContext) {
     this.name = name;
     this.pageGridPlacement = pageGridPlacement;
     this.rootContext = rootContext;
   }
 
-
   public String getName() {
     return name;
   }
 
+  @SuppressWarnings("unused")
   public String getViewtype() {
     Content viewtype = pageGridPlacement.getViewtype();
     return viewtype != null ? viewtype.getString("layout") : "default";
   }
 
+  @SuppressWarnings("unused")
   public List<ContentProxy> getItems() {
-    ZonedDateTime now = rootContext.getRequestContext().getProperty(REQUEST_DATE, ZonedDateTime.class);
-    if (now == null) {
-      now = ZonedDateTime.now();
-    }
-    ZonedDateTime finalNow = now;
+    ZonedDateTime requestDate = rootContext.getRequestContext().getRequestTime();
     List<Struct> extendedItems = pageGridPlacement.getExtendedItems();
     List<Content> items = extendedItems.stream()
             .map(AnnotatedLinkWrapper::new)
             .filter(al -> al.getTarget() != null)
             .filter(al -> al.getTarget().isInProduction())
-            .filter(al -> isVisible(al, finalNow))
+            .filter(al -> isVisible(al, requestDate))
             .map(AnnotatedLinkWrapper::getTarget)
             .collect(Collectors.toList());
     return rootContext.getProxyFactory().makeContentProxyList(items);
