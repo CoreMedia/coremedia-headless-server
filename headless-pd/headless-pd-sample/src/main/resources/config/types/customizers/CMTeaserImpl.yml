@@ -2,32 +2,32 @@ name: CMTeaserImpl
 customFields:
   - !CustomField
     name: link
-    sourceName: (target)
+    sourceName: "target"
     targetType: String
     dataFetcher: Uri
   - !CustomField
     name: segment
-    sourceName: (target)[0].(segment)
+    sourceName: "getLink('target')?.segment"
     targetType: String
     dataFetcher: ContentProperty
   - !CustomField
     name: teaserTarget
-    sourceName: (target)
+    sourceName: "target"
     targetType: CMLinkable
     dataFetcher: Link
   - !CustomField
     name: teaserText
-    sourceName: (teaserText)
+    sourceName: "teaserText"
     fallbackSourceNames:
-      - (target)[0].(teaserText)
-      - (target)[0].(detailText)
+      - "getLink('target')?.teaserText"
+      - "getLink('target')?.detailText"
     targetType: String
     dataFetcher: Richtext
   - !CustomField
     name: teaserTitle
-    sourceName: (teaserTitle)
+    sourceName: "teaserTitle"
     fallbackSourceNames:
-      - (target)[0].(teaserTitle)
-      - (target)[0].(title)
+      - "getLink('target')?.teaserTitle"
+      - "getLink('target')?.title"
     targetType: String
     dataFetcher: ContentProperty

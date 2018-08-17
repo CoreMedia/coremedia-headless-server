@@ -36,7 +36,7 @@ public class DocumentFieldDefinition implements FieldDefinition {
 
   @Override
   public String getSourceName() {
-    return "(" + getName() + ")";
+    return getName();
   }
 
   @Override

@@ -6,11 +6,6 @@ excludedProperties:
 customFields:
   - !CustomField
     name: timeLine
-    sourceName: (timeLine)
+    sourceName: "getLink('viewtype')?.layout == 'shoppable'? timeLine : null"
     targetType: TimeLine
     dataFetcher: Struct
-    directives:
-      - !Directive
-        name: if
-        arguments:
-          test: getLink('viewtype')?.getString('layout') == 'shoppable'

@@ -13,21 +13,21 @@ excludedProperties:
 customFields:
   - !CustomField
     name: link
-    sourceName: this
+    sourceName: "this"
     targetType: String
     dataFetcher: Uri
   - !CustomField
     name: viewtype
-    sourceName: (viewtype)[0].(layout)
+    sourceName: "getLink('viewtype')?.layout"
     targetType: String
     dataFetcher: ContentProperty
   - !CustomField
     name: context
-    sourceName: context
+    sourceName: "context"
     targetType: CMNavigation
     dataFetcher: Navigation
   - !CustomField
     name: navigationPath
-    sourceName: pathToRoot
+    sourceName: "pathToRoot"
     targetType: List:CMNavigation
     dataFetcher: Navigation
