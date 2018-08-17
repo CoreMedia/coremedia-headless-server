@@ -1,28 +1,42 @@
 package com.coremedia.caas.schema.datafetcher.content.model;
 
-import com.coremedia.caas.schema.datafetcher.content.AbstractContentDataFetcher;
+import com.coremedia.caas.schema.datafetcher.common.AbstractDataFetcher;
 import com.coremedia.caas.service.repository.content.ContentProxy;
 
 import graphql.schema.DataFetchingEnvironment;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.lang.reflect.InvocationTargetException;
+public abstract class AbstractModelDataFetcher extends AbstractDataFetcher {
 
-public abstract class AbstractModelDataFetcher extends AbstractContentDataFetcher {
+  private static final Logger LOG = LoggerFactory.getLogger(AbstractModelDataFetcher.class);
 
+
+  private String sourceName;
   private String modelName;
 
 
-  public AbstractModelDataFetcher(String sourceName, String modelName) {
-    super(sourceName);
+  AbstractModelDataFetcher(String sourceName, String modelName) {
+    this.sourceName = sourceName;
     this.modelName = modelName;
   }
 
 
   @Override
-  protected final Object getData(ContentProxy contentProxy, String sourceName, DataFetchingEnvironment environment) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
-    return getData(contentProxy, modelName, sourceName, environment);
+  public final Object get(DataFetchingEnvironment environment) {
+    try {
+      Object source = environment.getSource();
+      // hard validation to ensure access layer control is not accidentally violated
+      if (!(source instanceof ContentProxy)) {
+        throw new IllegalArgumentException("Not a ContentProxy: " + source);
+      }
+      return getData((ContentProxy) source, modelName, sourceName, environment);
+    } catch (Exception e) {
+      LOG.error("DataFetcher access failed:", e);
+    }
+    return null;
   }
 
 
-  protected abstract Object getData(ContentProxy contentProxy, String modelName, String sourceName, DataFetchingEnvironment environment) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException;
+  protected abstract Object getData(ContentProxy contentProxy, String modelName, String sourceName, DataFetchingEnvironment environment);
 }

@@ -11,9 +11,8 @@ import java.util.stream.Collectors;
 
 public class ContentProxyModelFactory implements ProxyModelFactory {
 
-  private static final Class<ContentProxyImpl> targetClass = ContentProxyImpl.class;
-
-  private static final Class[] targetClasses = new Class[]{targetClass};
+  private static final Class<ContentProxyImpl> TARGET_CLASS = ContentProxyImpl.class;
+  private static final Class[] TARGET_CLASSES = new Class[]{TARGET_CLASS};
 
 
   private Map<String, ContentModelFactory> modelFactories;
@@ -21,6 +20,11 @@ public class ContentProxyModelFactory implements ProxyModelFactory {
 
   public ContentProxyModelFactory(List<ContentModelFactory> modelFactories) {
     this.modelFactories = modelFactories.stream().collect(Collectors.toMap(ContentModelFactory::getModelName, Function.identity()));
+  }
+
+
+  private boolean isTargetClass(Object source) {
+    return TARGET_CLASS.isInstance(source);
   }
 
 
@@ -32,7 +36,7 @@ public class ContentProxyModelFactory implements ProxyModelFactory {
   @Override
   @SuppressWarnings("unchecked")
   public <T> T createModel(String modelName, String propertyPath, Object source, RootContext rootContext) {
-    return (T) modelFactories.get(modelName).createModel(targetClass.cast(source).getContent(), propertyPath, rootContext);
+    return (T) modelFactories.get(modelName).createModel(TARGET_CLASS.cast(source).getContent(), propertyPath, rootContext);
   }
 
 
@@ -40,20 +44,16 @@ public class ContentProxyModelFactory implements ProxyModelFactory {
    * Accessor support
    */
 
-  boolean isTargetClass(Object source) {
-    return targetClass.isInstance(source);
-  }
-
   boolean isExpressionModel(Object source, String modelName) {
     return isTargetClass(source) && modelFactories.containsKey(modelName) && modelFactories.get(modelName).isExpressionModel();
   }
 
 
   Object getModel(Object source, String modelName) {
-    return targetClass.cast(source).getModel(modelName);
+    return TARGET_CLASS.cast(source).getModel(modelName);
   }
 
   Class<?>[] getTargetClasses() {
-    return targetClasses;
+    return TARGET_CLASSES;
   }
 }

@@ -1,24 +1,24 @@
 package com.coremedia.caas.schema.datafetcher.content;
 
 import com.coremedia.caas.schema.datafetcher.common.AbstractDataFetcher;
+import com.coremedia.caas.schema.util.FieldExpressionEvaluator;
 import com.coremedia.caas.service.repository.content.ContentProxy;
 
 import graphql.schema.DataFetchingEnvironment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.lang.reflect.InvocationTargetException;
+import org.springframework.expression.Expression;
 
 public abstract class AbstractContentDataFetcher extends AbstractDataFetcher {
 
   private static final Logger LOG = LoggerFactory.getLogger(AbstractContentDataFetcher.class);
 
 
-  private String sourceName;
+  private Expression expression;
 
 
   public AbstractContentDataFetcher(String sourceName) {
-    this.sourceName = sourceName;
+    this.expression = FieldExpressionEvaluator.compile(sourceName);
   }
 
 
@@ -30,7 +30,7 @@ public abstract class AbstractContentDataFetcher extends AbstractDataFetcher {
       if (!(source instanceof ContentProxy)) {
         throw new IllegalArgumentException("Not a ContentProxy: " + source);
       }
-      return getData((ContentProxy) source, sourceName, environment);
+      return getData((ContentProxy) source, expression, environment);
     } catch (Exception e) {
       LOG.error("DataFetcher access failed:", e);
     }
@@ -38,5 +38,5 @@ public abstract class AbstractContentDataFetcher extends AbstractDataFetcher {
   }
 
 
-  protected abstract Object getData(ContentProxy contentProxy, String sourceName, DataFetchingEnvironment environment) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException;
+  protected abstract Object getData(ContentProxy contentProxy, Expression expression, DataFetchingEnvironment environment);
 }

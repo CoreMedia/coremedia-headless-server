@@ -3,8 +3,7 @@ package com.coremedia.caas.schema.datafetcher.content.property;
 import com.coremedia.caas.service.repository.content.ContentProxy;
 
 import graphql.schema.DataFetchingEnvironment;
-
-import java.lang.reflect.InvocationTargetException;
+import org.springframework.expression.Expression;
 
 public class StructPropertyDataFetcher extends AbstractPropertyDataFetcher {
 
@@ -14,7 +13,7 @@ public class StructPropertyDataFetcher extends AbstractPropertyDataFetcher {
 
 
   @Override
-  protected Object getData(ContentProxy contentProxy, String sourceName, DataFetchingEnvironment environment) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
-    return getProperty(contentProxy, sourceName);
+  protected Object getData(ContentProxy contentProxy, Expression expression, DataFetchingEnvironment environment) {
+    return getProperty(contentProxy, expression, Object.class);
   }
 }

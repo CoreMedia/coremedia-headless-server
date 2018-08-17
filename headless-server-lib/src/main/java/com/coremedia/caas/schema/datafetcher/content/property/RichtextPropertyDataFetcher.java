@@ -14,8 +14,8 @@ import graphql.schema.DataFetchingEnvironment;
 import graphql.schema.GraphQLOutputType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.expression.Expression;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 public class RichtextPropertyDataFetcher extends AbstractPropertyDataFetcher {
@@ -29,9 +29,9 @@ public class RichtextPropertyDataFetcher extends AbstractPropertyDataFetcher {
 
 
   @Override
-  protected Object getData(ContentProxy contentProxy, String sourceName, DataFetchingEnvironment environment) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+  protected Object getData(ContentProxy contentProxy, Expression expression, DataFetchingEnvironment environment) {
     ExecutionContext context = getContext(environment);
-    MarkupProxy markup = getProperty(contentProxy, sourceName);
+    MarkupProxy markup = getProperty(contentProxy, expression, MarkupProxy.class);
     if (markup != null) {
       String view = getArgumentWithDefault("view", "default", environment);
       // get matching transformer and convert markup

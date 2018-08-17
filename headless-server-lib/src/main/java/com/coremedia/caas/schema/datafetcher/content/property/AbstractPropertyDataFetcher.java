@@ -1,35 +1,37 @@
 package com.coremedia.caas.schema.datafetcher.content.property;
 
 import com.coremedia.caas.schema.datafetcher.content.AbstractContentDataFetcher;
+import com.coremedia.caas.schema.util.FieldExpressionEvaluator;
 import com.coremedia.caas.schema.util.PropertyUtil;
 import com.coremedia.caas.service.repository.content.ContentProxy;
 
-import java.lang.reflect.InvocationTargetException;
+import org.springframework.expression.Expression;
+
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public abstract class AbstractPropertyDataFetcher extends AbstractContentDataFetcher {
 
-  private List<String> fallbackSourceNames;
+  private List<Expression> fallbackExpressions;
 
 
-  public AbstractPropertyDataFetcher(String sourceName, List<String> fallbackSourceNames) {
+  AbstractPropertyDataFetcher(String sourceName, List<String> fallbackSourceNames) {
     super(sourceName);
-    this.fallbackSourceNames = fallbackSourceNames;
+    this.fallbackExpressions = fallbackSourceNames != null ? fallbackSourceNames.stream().map(FieldExpressionEvaluator::compile).collect(Collectors.toList()) : Collections.emptyList();
   }
 
 
-  protected <E> E getProperty(ContentProxy contentProxy, String sourceName) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
-    // source name is a bean property/path expression
-    E result = PropertyUtil.get(contentProxy, sourceName);
-    // check for fallback sources if result is empty
-    if (fallbackSourceNames != null && PropertyUtil.isNullOrEmpty(result)) {
-      // iterate manually to skip possibly costly 'isNullOrEmpty' check on last element
-      for (int i = 0, c = fallbackSourceNames.size() - 1; i <= c; i++) {
-        result = PropertyUtil.get(contentProxy, fallbackSourceNames.get(i));
-        if (i == c || !PropertyUtil.isNullOrEmpty(result)) {
-          break;
+  protected <E> E getProperty(ContentProxy contentProxy, Expression expression, Class<E> targetClass) {
+    E result = FieldExpressionEvaluator.fetch(expression, contentProxy, targetClass);
+    if (PropertyUtil.isNullOrEmpty(result)) {
+      for (Expression fallbackExpression : fallbackExpressions) {
+        result = FieldExpressionEvaluator.fetch(fallbackExpression, contentProxy, targetClass);
+        if (!PropertyUtil.isNullOrEmpty(result)) {
+          return result;
         }
       }
+      return null;
     }
     return result;
   }
