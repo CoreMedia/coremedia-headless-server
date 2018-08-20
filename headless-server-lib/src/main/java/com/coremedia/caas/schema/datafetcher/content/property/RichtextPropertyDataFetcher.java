@@ -31,8 +31,8 @@ public class RichtextPropertyDataFetcher extends AbstractPropertyDataFetcher {
   @Override
   protected Object getData(ContentProxy contentProxy, Expression expression, DataFetchingEnvironment environment) {
     ExecutionContext context = getContext(environment);
-    MarkupProxy markup = getProperty(contentProxy, expression, MarkupProxy.class);
-    if (markup != null) {
+    MarkupProxy markupProxy = getProperty(contentProxy, expression, MarkupProxy.class);
+    if (!markupProxy.isEmpty()) {
       String view = getArgumentWithDefault("view", "default", environment);
       // get matching transformer and convert markup
       RichtextTransformerRegistry registry = context.getProcessingDefinition().getRichtextTransformerRegistry();
@@ -41,10 +41,10 @@ public class RichtextPropertyDataFetcher extends AbstractPropertyDataFetcher {
         try {
           GraphQLOutputType outputType = environment.getFieldType();
           if (RichtextTree.RICHTEXT_TREE.getName().equals(outputType.getName())) {
-            return transformer.transform(markup, new TreeOutputFactory(), context);
+            return transformer.transform(markupProxy, new TreeOutputFactory(), context);
           }
           else if (Scalars.GraphQLString.getName().equals(outputType.getName())) {
-            return transformer.transform(markup, new StringOutputFactory(), context);
+            return transformer.transform(markupProxy, new StringOutputFactory(), context);
           }
           else {
             LOG.error("Unsupported richtext field type: {}", outputType.getName());
