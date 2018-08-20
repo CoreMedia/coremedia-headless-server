@@ -5,11 +5,9 @@ import org.springframework.expression.EvaluationContext;
 import org.springframework.expression.PropertyAccessor;
 import org.springframework.expression.TypedValue;
 
+import static com.coremedia.caas.service.repository.content.ContentProxyImpl.TARGET_CLASSES;
+
 public class ContentProxyPropertyAccessor implements PropertyAccessor {
-
-  private static final Class<ContentProxyImpl> TARGET_CLASS = ContentProxyImpl.class;
-  private static final Class[] TARGET_CLASSES = new Class[]{TARGET_CLASS};
-
 
   @Override
   public Class<?>[] getSpecificTargetClasses() {

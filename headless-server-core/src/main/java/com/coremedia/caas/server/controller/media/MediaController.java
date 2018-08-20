@@ -67,7 +67,7 @@ public class MediaController extends ControllerBase {
     try {
       RootContext rootContext = resolveRootContext(tenantId, siteId, mediaId, request);
       // create model for media data
-      MediaResourceModel resourceModel = rootContext.getModelFactory().createModel(MediaResourceModelFactory.MODEL_NAME, propertyName, rootContext.getTarget());
+      MediaResourceModel resourceModel = rootContext.getModelFactory().createModel(MediaResourceModelFactory.MODEL_NAME, rootContext.getTarget(), propertyName);
       if (resourceModel != null) {
         String contentType = resourceModel.getType();
         String requestedRatio = ratio != null ? ratio : "none";

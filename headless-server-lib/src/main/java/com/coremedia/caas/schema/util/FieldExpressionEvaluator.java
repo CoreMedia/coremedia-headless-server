@@ -1,21 +1,16 @@
 package com.coremedia.caas.schema.util;
 
-import com.coremedia.caas.service.repository.content.ContentProxyPropertyAccessor;
-
-import com.google.common.collect.ImmutableList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.expression.MapAccessor;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.expression.EvaluationContext;
 import org.springframework.expression.Expression;
-import org.springframework.expression.PropertyAccessor;
 import org.springframework.expression.spel.SpelCompilerMode;
 import org.springframework.expression.spel.SpelParserConfiguration;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
-import org.springframework.expression.spel.support.ReflectivePropertyAccessor;
-import org.springframework.expression.spel.support.StandardEvaluationContext;
+import org.springframework.stereotype.Component;
 
-import java.util.List;
-
+@Component
 public class FieldExpressionEvaluator {
 
   private static final Logger LOG = LoggerFactory.getLogger(FieldExpressionEvaluator.class);
@@ -25,16 +20,7 @@ public class FieldExpressionEvaluator {
 
   private static final SpelExpressionParser EXPRESSION_PARSER = new SpelExpressionParser(PARSER_CONFIGURATION);
 
-  private static final StandardEvaluationContext EVALUATION_CONTEXT = new StandardEvaluationContext();
-
-  static {
-    List<PropertyAccessor> propertyAccessors = ImmutableList.of(
-            new ContentProxyPropertyAccessor(),
-            new MapAccessor(),
-            new ReflectivePropertyAccessor());
-    // customize evaluation context
-    EVALUATION_CONTEXT.setPropertyAccessors(propertyAccessors);
-  }
+  private static EvaluationContext EVALUATION_CONTEXT;
 
 
   public static Expression compile(String pathExpression) {
@@ -46,12 +32,16 @@ public class FieldExpressionEvaluator {
     }
   }
 
-
   public static Object fetch(Expression expression, Object source) {
     return expression.getValue(EVALUATION_CONTEXT, source);
   }
 
   public static <E> E fetch(Expression expression, Object source, Class<E> targetClass) {
     return expression.getValue(EVALUATION_CONTEXT, source, targetClass);
+  }
+
+
+  public FieldExpressionEvaluator(@Qualifier("schemaEvaluationContext") EvaluationContext evaluationContext) {
+    EVALUATION_CONTEXT = evaluationContext;
   }
 }

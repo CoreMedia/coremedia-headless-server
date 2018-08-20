@@ -18,7 +18,7 @@ public class ContentSettingsModelFactory implements ContentModelFactory<Settings
 
 
   @Override
-  public boolean isExpressionModel() {
+  public boolean isQueryModel() {
     return false;
   }
 
@@ -28,7 +28,7 @@ public class ContentSettingsModelFactory implements ContentModelFactory<Settings
   }
 
   @Override
-  public SettingsAdapter createModel(Content content, String propertyPath, RootContext rootContext) {
+  public SettingsAdapter createModel(RootContext rootContext, Content content, Object... arguments) {
     return new SettingsAdapter(content, settingsService, rootContext);
   }
 }

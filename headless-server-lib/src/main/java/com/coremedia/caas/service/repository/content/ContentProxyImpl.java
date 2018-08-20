@@ -11,6 +11,10 @@ import java.util.Objects;
 
 public class ContentProxyImpl implements ContentProxy {
 
+  public static final Class<ContentProxyImpl> TARGET_CLASS = ContentProxyImpl.class;
+  public static final Class[] TARGET_CLASSES = new Class[]{TARGET_CLASS};
+
+
   private final Content content;
   private final ProxyFactory proxyFactory;
 
@@ -133,7 +137,7 @@ public class ContentProxyImpl implements ContentProxy {
     return content;
   }
 
-  Object getModel(String modelName) {
-    return proxyFactory.getRootContext().getModelFactory().createModel(modelName, null, this);
+  Object getModel(String modelName, Object... arguments) {
+    return proxyFactory.getRootContext().getModelFactory().createModel(modelName, this, arguments);
   }
 }

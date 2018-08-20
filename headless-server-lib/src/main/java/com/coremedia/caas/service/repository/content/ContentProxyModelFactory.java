@@ -9,11 +9,9 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static com.coremedia.caas.service.repository.content.ContentProxyImpl.TARGET_CLASS;
+
 public class ContentProxyModelFactory implements ProxyModelFactory {
-
-  private static final Class<ContentProxyImpl> TARGET_CLASS = ContentProxyImpl.class;
-  private static final Class[] TARGET_CLASSES = new Class[]{TARGET_CLASS};
-
 
   private Map<String, ContentModelFactory> modelFactories;
 
@@ -23,20 +21,15 @@ public class ContentProxyModelFactory implements ProxyModelFactory {
   }
 
 
-  private boolean isTargetClass(Object source) {
-    return TARGET_CLASS.isInstance(source);
-  }
-
-
   @Override
-  public boolean appliesTo(String modelName, String propertyPath, Object source, RootContext rootContext) {
-    return isTargetClass(source) && modelFactories.containsKey(modelName);
+  public boolean appliesTo(RootContext rootContext, String modelName, Object source) {
+    return TARGET_CLASS.isInstance(source) && modelFactories.containsKey(modelName);
   }
 
   @Override
   @SuppressWarnings("unchecked")
-  public <T> T createModel(String modelName, String propertyPath, Object source, RootContext rootContext) {
-    return (T) modelFactories.get(modelName).createModel(TARGET_CLASS.cast(source).getContent(), propertyPath, rootContext);
+  public <T> T createModel(RootContext rootContext, String modelName, Object source, Object... arguments) {
+    return (T) modelFactories.get(modelName).createModel(rootContext, TARGET_CLASS.cast(source).getContent(), arguments);
   }
 
 
@@ -44,16 +37,11 @@ public class ContentProxyModelFactory implements ProxyModelFactory {
    * Accessor support
    */
 
-  boolean isExpressionModel(Object source, String modelName) {
-    return isTargetClass(source) && modelFactories.containsKey(modelName) && modelFactories.get(modelName).isExpressionModel();
+  boolean isValidModel(Object source, String modelName, boolean isQuery) {
+    return TARGET_CLASS.isInstance(source) && modelFactories.containsKey(modelName) && (!isQuery || modelFactories.get(modelName).isQueryModel());
   }
 
-
-  Object getModel(Object source, String modelName) {
-    return TARGET_CLASS.cast(source).getModel(modelName);
-  }
-
-  Class<?>[] getTargetClasses() {
-    return TARGET_CLASSES;
+  Object getModel(Object source, String modelName, Object... arguments) {
+    return TARGET_CLASS.cast(source).getModel(modelName, arguments);
   }
 }

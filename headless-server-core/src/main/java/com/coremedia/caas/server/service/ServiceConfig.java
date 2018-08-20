@@ -7,6 +7,7 @@ import com.coremedia.caas.service.ServiceRegistry;
 import com.coremedia.caas.service.cache.CacheInstances;
 import com.coremedia.caas.service.cache.Weighted;
 import com.coremedia.caas.service.expression.ExpressionEvaluator;
+import com.coremedia.caas.service.repository.content.ContentProxyPropertyAccessor;
 import com.coremedia.caas.service.request.RequestContext;
 
 import com.github.benmanes.caffeine.cache.Cache;
@@ -25,8 +26,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.context.expression.MapAccessor;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.expression.MethodResolver;
 import org.springframework.expression.PropertyAccessor;
+import org.springframework.expression.spel.support.ReflectivePropertyAccessor;
+import org.springframework.expression.spel.support.StandardEvaluationContext;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.util.List;
@@ -61,8 +66,16 @@ public class ServiceConfig {
 
   @Bean("spelEvaluator")
   @Scope(value = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.INTERFACES)
-  public ExpressionEvaluator createSpelExpressionEvaluator(@Qualifier("spelPropertyAccessors") List<PropertyAccessor> propertyAccessors) {
-    return new SpelExpressionEvaluator(propertyAccessors);
+  public ExpressionEvaluator createSpelExpressionEvaluator(ContentProxyPropertyAccessor contentPropertyAccessor, @Qualifier("queryContentModelMethodResolver") MethodResolver contentMethodResolver) {
+    List<PropertyAccessor> propertyAccessors = ImmutableList.of(
+            contentPropertyAccessor,
+            new MapAccessor(),
+            new ReflectivePropertyAccessor());
+    // customize evaluation context
+    StandardEvaluationContext context = new StandardEvaluationContext();
+    context.setPropertyAccessors(propertyAccessors);
+    context.addMethodResolver(contentMethodResolver);
+    return new SpelExpressionEvaluator(context);
   }
 
 
