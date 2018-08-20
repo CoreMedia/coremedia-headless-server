@@ -150,37 +150,6 @@ constant(fieldDefinition) ::= <<
 
 >>
 
-navigation(fieldDefinition) ::= <<
-  - !Navigation
-    name: <fieldDefinition.name>
-    sourceName: "<fieldDefinition.sourceName>"
-    typeName: <fieldDefinition.targetType>
-    <if(fieldDefinition.nonNull)>nonNull: true<endif>
-    <directives(fieldDefinition.directives)>
-
->>
-
-pagegrid(fieldDefinition) ::= <<
-  - !PageGrid
-    name: <fieldDefinition.name>
-    sourceName: "<fieldDefinition.sourceName>"
-    typeName: <fieldDefinition.targetType>
-    <if(fieldDefinition.nonNull)>nonNull: true<endif>
-    <directives(fieldDefinition.directives)>
-
->>
-
-setting(fieldDefinition) ::= <<
-  - !Setting
-    name: <fieldDefinition.name>
-    sourceName: "<fieldDefinition.sourceName>"
-    typeName: <fieldDefinition.targetType>
-    <if(fieldDefinition.defaultValue)>defaultValue: <fieldDefinition.defaultValue><endif>
-    <if(fieldDefinition.nonNull)>nonNull: true<endif>
-    <directives(fieldDefinition.directives)>
-
->>
-
 bean(fieldDefinition) ::= <<
   - !Bean
     name: <fieldDefinition.name>
