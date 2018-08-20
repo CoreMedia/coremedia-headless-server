@@ -23,11 +23,11 @@ customFields:
     dataFetcher: ContentProperty
   - !CustomField
     name: context
-    sourceName: "context"
+    sourceName: "$navigation().context"
     targetType: CMNavigation
-    dataFetcher: Navigation
+    dataFetcher: ContentProperty
   - !CustomField
     name: navigationPath
-    sourceName: "pathToRoot"
+    sourceName: "$navigation().pathToRoot"
     targetType: List:CMNavigation
-    dataFetcher: Navigation
+    dataFetcher: ContentProperty

@@ -8,14 +8,14 @@ excludedProperties:
 customFields:
   - !CustomField
     name: children
-    sourceName: "children"
+    sourceName: "$navigation().children"
     targetType: List:CMLinkable
-    dataFetcher: Navigation
+    dataFetcher: ContentProperty
   - !CustomField
     name: grid
-    sourceName: "placement"
+    sourceName: "$pageGrid('placement')"
     targetType: PageGrid
-    dataFetcher: PageGrid
+    dataFetcher: ContentProperty
   - !CustomField
     name: hidden
     sourceName: "hidden"
