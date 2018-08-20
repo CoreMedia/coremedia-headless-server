@@ -1,6 +1,8 @@
 package com.coremedia.caas.service.repository.content;
 
+import com.coremedia.dtd.RichtextDtd;
 import com.coremedia.xml.Markup;
+import com.coremedia.xml.MarkupUtil;
 
 import com.google.common.base.Objects;
 
@@ -11,6 +13,11 @@ public class MarkupProxy {
 
   public MarkupProxy(Markup delegate) {
     this.delegate = delegate;
+  }
+
+
+  public boolean isEmpty() {
+    return !RichtextDtd.GRAMMAR_NAME.equals(delegate.getGrammar()) || MarkupUtil.isEmptyRichtext(delegate, true);
   }
 
 
