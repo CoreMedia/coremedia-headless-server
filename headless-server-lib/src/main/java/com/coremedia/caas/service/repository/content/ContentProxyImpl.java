@@ -1,7 +1,10 @@
 package com.coremedia.caas.service.repository.content;
 
 import com.coremedia.caas.service.repository.ProxyFactory;
+import com.coremedia.cap.common.Blob;
 import com.coremedia.cap.content.Content;
+import com.coremedia.cap.struct.Struct;
+import com.coremedia.xml.Markup;
 
 import com.google.common.base.MoreObjects;
 
@@ -66,7 +69,11 @@ public class ContentProxyImpl implements ContentProxy {
 
   @Override
   public BlobProxy getBlob(String propertyName) {
-    return proxyFactory.makeBlobProxy(content.getBlob(propertyName));
+    Blob source = content.getBlob(propertyName);
+    if (source != null) {
+      return proxyFactory.makeBlobProxy(source);
+    }
+    return null;
   }
 
   @Override
@@ -95,12 +102,25 @@ public class ContentProxyImpl implements ContentProxy {
 
   @Override
   public MarkupProxy getMarkup(String propertyName) {
-    return proxyFactory.makeMarkupProxy(content.getMarkup(propertyName));
+    Markup source = content.getMarkup(propertyName);
+    if (source != null) {
+      return proxyFactory.makeMarkupProxy(source);
+    }
+    return null;
   }
 
   @Override
   public String getString(String propertyName) {
     return content.getString(propertyName);
+  }
+
+  @Override
+  public StructProxy getStruct(String propertyName) {
+    Struct source = content.getStruct(propertyName);
+    if (source != null) {
+      return proxyFactory.makeStructProxy(source);
+    }
+    return null;
   }
 
 

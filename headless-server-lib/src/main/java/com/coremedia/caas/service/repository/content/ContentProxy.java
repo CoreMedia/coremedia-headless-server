@@ -36,4 +36,6 @@ public interface ContentProxy {
   MarkupProxy getMarkup(String propertyName);
 
   String getString(String propertyName);
+
+  StructProxy getStruct(String propertyName);
 }

@@ -8,6 +8,7 @@ import com.coremedia.caas.service.cache.CacheInstances;
 import com.coremedia.caas.service.cache.Weighted;
 import com.coremedia.caas.service.expression.ExpressionEvaluator;
 import com.coremedia.caas.service.repository.content.ContentProxyPropertyAccessor;
+import com.coremedia.caas.service.repository.content.StructProxyPropertyAccessor;
 import com.coremedia.caas.service.request.RequestContext;
 
 import com.github.benmanes.caffeine.cache.Cache;
@@ -66,9 +67,10 @@ public class ServiceConfig {
 
   @Bean("spelEvaluator")
   @Scope(value = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.INTERFACES)
-  public ExpressionEvaluator createSpelExpressionEvaluator(ContentProxyPropertyAccessor contentPropertyAccessor, @Qualifier("queryContentModelMethodResolver") MethodResolver contentMethodResolver) {
+  public ExpressionEvaluator createSpelExpressionEvaluator(@Qualifier("queryContentModelMethodResolver") MethodResolver contentMethodResolver) {
     List<PropertyAccessor> propertyAccessors = ImmutableList.of(
-            contentPropertyAccessor,
+            new ContentProxyPropertyAccessor(),
+            new StructProxyPropertyAccessor(),
             new MapAccessor(),
             new ReflectivePropertyAccessor());
     // customize evaluation context

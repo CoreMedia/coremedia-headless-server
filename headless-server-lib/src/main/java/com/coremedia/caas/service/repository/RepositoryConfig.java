@@ -3,6 +3,7 @@ package com.coremedia.caas.service.repository;
 import com.coremedia.blueprint.base.settings.SettingsService;
 import com.coremedia.caas.service.ServiceConfig;
 import com.coremedia.caas.service.repository.content.ContentProxyPropertyAccessor;
+import com.coremedia.caas.service.repository.content.StructProxyPropertyAccessor;
 import com.coremedia.cap.content.ContentRepository;
 
 import com.google.common.collect.ImmutableList;
@@ -37,9 +38,10 @@ public class RepositoryConfig {
 
 
   @Bean("schemaEvaluationContext")
-  public EvaluationContext schemaEvaluationContext(ContentProxyPropertyAccessor contentPropertyAccessor, @Qualifier("schemaContentModelMethodResolver") MethodResolver contentMethodResolver) {
+  public EvaluationContext schemaEvaluationContext(@Qualifier("schemaContentModelMethodResolver") MethodResolver contentMethodResolver) {
     List<PropertyAccessor> propertyAccessors = ImmutableList.of(
-            contentPropertyAccessor,
+            new ContentProxyPropertyAccessor(),
+            new StructProxyPropertyAccessor(),
             new MapAccessor(),
             new ReflectivePropertyAccessor());
     // customize evaluation context

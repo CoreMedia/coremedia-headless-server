@@ -1,9 +1,13 @@
 package com.coremedia.caas.service.repository;
 
 import com.coremedia.caas.service.repository.content.BlobProxy;
+import com.coremedia.caas.service.repository.content.BlobProxyImpl;
 import com.coremedia.caas.service.repository.content.ContentProxy;
 import com.coremedia.caas.service.repository.content.ContentProxyImpl;
 import com.coremedia.caas.service.repository.content.MarkupProxy;
+import com.coremedia.caas.service.repository.content.MarkupProxyImpl;
+import com.coremedia.caas.service.repository.content.StructProxy;
+import com.coremedia.caas.service.repository.content.StructProxyImpl;
 import com.coremedia.cap.common.Blob;
 import com.coremedia.cap.content.Content;
 import com.coremedia.cap.content.ContentRepository;
@@ -13,7 +17,6 @@ import com.coremedia.xml.Markup;
 import com.google.common.collect.Maps;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -59,7 +62,7 @@ public class ProxyFactoryImpl implements ProxyFactory {
       return makeContentProxy((Content) source);
     }
     if (source instanceof Struct) {
-      return makeStruct((Struct) source);
+      return makeStructProxy((Struct) source);
     }
     if (source instanceof SortedMap) {
       return makeSortedMap((SortedMap<?, ?>) source);
@@ -81,13 +84,18 @@ public class ProxyFactoryImpl implements ProxyFactory {
 
 
   @Override
-  public BlobProxy makeBlobProxy(Blob source) {
-    return new BlobProxy(source);
+  public BlobProxy makeBlobProxy(@NotNull Blob source) {
+    return new BlobProxyImpl(source);
   }
 
   @Override
-  public MarkupProxy makeMarkupProxy(Markup source) {
-    return new MarkupProxy(source);
+  public MarkupProxy makeMarkupProxy(@NotNull Markup source) {
+    return new MarkupProxyImpl(source);
+  }
+
+  @Override
+  public StructProxy makeStructProxy(@NotNull Struct source) {
+    return new StructProxyImpl(source, this);
   }
 
 
@@ -139,12 +147,5 @@ public class ProxyFactoryImpl implements ProxyFactory {
 
   private SortedMap<?, ?> makeSortedMap(SortedMap<?, ?> source) {
     return Maps.transformValues(source, this::makeProxy);
-  }
-
-  private Map<String, Object> makeStruct(Struct source) {
-    if (source != null) {
-      return Maps.transformValues(source.toNestedMaps(), this::makeProxy);
-    }
-    return Collections.emptyMap();
   }
 }

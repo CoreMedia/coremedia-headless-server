@@ -3,8 +3,10 @@ package com.coremedia.caas.service.repository;
 import com.coremedia.caas.service.repository.content.BlobProxy;
 import com.coremedia.caas.service.repository.content.ContentProxy;
 import com.coremedia.caas.service.repository.content.MarkupProxy;
+import com.coremedia.caas.service.repository.content.StructProxy;
 import com.coremedia.cap.common.Blob;
 import com.coremedia.cap.content.Content;
+import com.coremedia.cap.struct.Struct;
 import com.coremedia.xml.Markup;
 
 import java.util.Collection;
@@ -22,9 +24,11 @@ public interface ProxyFactory {
   Object makeProxy(Object source);
 
 
-  BlobProxy makeBlobProxy(Blob source);
+  BlobProxy makeBlobProxy(@NotNull Blob source);
 
-  MarkupProxy makeMarkupProxy(Markup source);
+  MarkupProxy makeMarkupProxy(@NotNull Markup source);
+
+  StructProxy makeStructProxy(@NotNull Struct source);
 
 
   ContentProxy makeContentProxy(@NotNull Content source);
