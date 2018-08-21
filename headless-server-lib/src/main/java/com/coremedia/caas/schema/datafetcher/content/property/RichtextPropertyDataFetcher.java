@@ -32,7 +32,7 @@ public class RichtextPropertyDataFetcher extends AbstractPropertyDataFetcher {
   protected Object getData(ContentProxy contentProxy, Expression expression, DataFetchingEnvironment environment) {
     ExecutionContext context = getContext(environment);
     MarkupProxy markupProxy = getProperty(contentProxy, expression, MarkupProxy.class);
-    if (!markupProxy.isEmpty()) {
+    if (markupProxy != null && !markupProxy.isEmpty()) {
       String view = getArgumentWithDefault("view", "default", environment);
       // get matching transformer and convert markup
       RichtextTransformerRegistry registry = context.getProcessingDefinition().getRichtextTransformerRegistry();
