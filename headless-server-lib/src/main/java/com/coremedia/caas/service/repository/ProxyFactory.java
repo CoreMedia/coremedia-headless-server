@@ -11,6 +11,7 @@ import com.coremedia.xml.Markup;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import javax.validation.constraints.NotNull;
 
 public interface ProxyFactory {
@@ -22,6 +23,9 @@ public interface ProxyFactory {
 
 
   Object makeProxy(Object source);
+
+
+  <T> Map<T, ?> makeProxyMap(Map<T, ?> source);
 
 
   BlobProxy makeBlobProxy(@NotNull Blob source);

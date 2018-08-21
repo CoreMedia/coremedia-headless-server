@@ -84,6 +84,12 @@ public class ProxyFactoryImpl implements ProxyFactory {
 
 
   @Override
+  public <T> Map<T, ?> makeProxyMap(Map<T, ?> source) {
+    return Maps.transformValues(source, this::makeProxy);
+  }
+
+
+  @Override
   public BlobProxy makeBlobProxy(@NotNull Blob source) {
     return new BlobProxyImpl(source);
   }

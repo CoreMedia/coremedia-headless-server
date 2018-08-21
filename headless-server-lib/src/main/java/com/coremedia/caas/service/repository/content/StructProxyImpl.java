@@ -3,6 +3,7 @@ package com.coremedia.caas.service.repository.content;
 import com.coremedia.caas.service.repository.ProxyFactory;
 import com.coremedia.cap.struct.Struct;
 
+import java.util.Map;
 import java.util.Objects;
 
 public class StructProxyImpl implements StructProxy {
@@ -24,6 +25,11 @@ public class StructProxyImpl implements StructProxy {
   @Override
   public Object get(String propertyName) {
     return proxyFactory.makeProxy(delegate.get(propertyName));
+  }
+
+  @Override
+  public Map<String, ?> getProperties() {
+    return proxyFactory.makeProxyMap(delegate.getProperties());
   }
 
 
