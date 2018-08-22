@@ -7,6 +7,7 @@ import com.coremedia.caas.service.ServiceRegistry;
 import com.coremedia.caas.service.cache.CacheInstances;
 import com.coremedia.caas.service.cache.Weighted;
 import com.coremedia.caas.service.expression.ExpressionEvaluator;
+import com.coremedia.caas.service.expression.spel.ReadOnlyMapAccessor;
 import com.coremedia.caas.service.repository.content.ContentProxyPropertyAccessor;
 import com.coremedia.caas.service.repository.content.StructProxyPropertyAccessor;
 import com.coremedia.caas.service.request.RequestContext;
@@ -28,7 +29,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
-import org.springframework.context.expression.MapAccessor;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.expression.MethodResolver;
 import org.springframework.expression.PropertyAccessor;
@@ -72,7 +72,7 @@ public class ServiceConfig {
     List<PropertyAccessor> propertyAccessors = ImmutableList.of(
             new ContentProxyPropertyAccessor(),
             new StructProxyPropertyAccessor(),
-            new MapAccessor(),
+            new ReadOnlyMapAccessor(),
             new ReflectivePropertyAccessor());
     // customize evaluation context
     StandardEvaluationContext context = new StandardEvaluationContext();

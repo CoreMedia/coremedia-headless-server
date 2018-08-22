@@ -13,7 +13,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
 
-import static com.coremedia.caas.service.repository.util.ContentUtil.getZonedDateTime;
+import static com.coremedia.caas.service.repository.content.util.ContentUtil.getZonedDateTime;
 
 public class ContentProxyImpl implements ContentProxy {
 

@@ -2,6 +2,7 @@ package com.coremedia.caas.service.repository;
 
 import com.coremedia.blueprint.base.settings.SettingsService;
 import com.coremedia.caas.service.ServiceConfig;
+import com.coremedia.caas.service.expression.spel.ReadOnlyMapAccessor;
 import com.coremedia.caas.service.repository.content.ContentProxyPropertyAccessor;
 import com.coremedia.caas.service.repository.content.StructProxyPropertyAccessor;
 import com.coremedia.cap.content.ContentRepository;
@@ -13,7 +14,6 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
-import org.springframework.context.expression.MapAccessor;
 import org.springframework.expression.EvaluationContext;
 import org.springframework.expression.MethodResolver;
 import org.springframework.expression.PropertyAccessor;
@@ -42,7 +42,7 @@ public class RepositoryConfig {
     List<PropertyAccessor> propertyAccessors = ImmutableList.of(
             new ContentProxyPropertyAccessor(),
             new StructProxyPropertyAccessor(),
-            new MapAccessor(),
+            new ReadOnlyMapAccessor(),
             new ReflectivePropertyAccessor());
     // customize evaluation context
     StandardEvaluationContext context = new StandardEvaluationContext();
