@@ -18,6 +18,7 @@ import com.google.common.collect.ImmutableList;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.binder.cache.CaffeineCacheMetrics;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.config.Configuration.AccessLevel;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.cache.CacheManager;
@@ -53,7 +54,7 @@ public class ServiceConfig {
     ModelMapper modelMapper = new ModelMapper();
     modelMapper.getConfiguration()
             .setFieldMatchingEnabled(true)
-            .setFieldAccessLevel(org.modelmapper.config.Configuration.AccessLevel.PRIVATE);
+            .setFieldAccessLevel(AccessLevel.PRIVATE);
     return modelMapper;
   }
 

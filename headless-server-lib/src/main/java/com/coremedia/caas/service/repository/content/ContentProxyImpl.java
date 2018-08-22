@@ -8,9 +8,12 @@ import com.coremedia.xml.Markup;
 
 import com.google.common.base.MoreObjects;
 
+import java.time.ZonedDateTime;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
+
+import static com.coremedia.caas.service.repository.util.ContentUtil.getZonedDateTime;
 
 public class ContentProxyImpl implements ContentProxy {
 
@@ -51,19 +54,24 @@ public class ContentProxyImpl implements ContentProxy {
 
 
   @Override
-  public Calendar getCreationDate() {
-    return content.getCreationDate();
+  public ZonedDateTime getCreationDate() {
+    return getZonedDateTime(content.getCreationDate());
   }
 
   @Override
-  public Calendar getModificationDate() {
-    return content.getModificationDate();
+  public ZonedDateTime getModificationDate() {
+    return getZonedDateTime(content.getModificationDate());
   }
 
 
   @Override
   public Object get(String propertyName) {
-    return proxyFactory.makeProxy(content.get(propertyName));
+    Object value = proxyFactory.makeProxy(content.get(propertyName));
+    // special conversion needed
+    if (value instanceof Calendar) {
+      return getZonedDateTime((Calendar) value);
+    }
+    return value;
   }
 
 
@@ -79,6 +87,11 @@ public class ContentProxyImpl implements ContentProxy {
   @Override
   public Boolean getBoolean(String propertyName) {
     return content.getBoolean(propertyName);
+  }
+
+  @Override
+  public ZonedDateTime getDate(String propertyName) {
+    return getZonedDateTime(content, propertyName);
   }
 
   @Override

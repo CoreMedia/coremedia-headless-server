@@ -30,6 +30,10 @@ public class ContentProxyPropertyAccessor implements PropertyAccessor {
         return new TypedValue(contentProxy.getName());
       case "_type":
         return new TypedValue(contentProxy.getType());
+      case "_creationDate":
+        return new TypedValue(contentProxy.getCreationDate());
+      case "_modificationDate":
+        return new TypedValue(contentProxy.getModificationDate());
       case "this":
         return new TypedValue(contentProxy);
       default:
