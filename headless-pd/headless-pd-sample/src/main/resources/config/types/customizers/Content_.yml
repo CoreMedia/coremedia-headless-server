@@ -28,3 +28,15 @@ customFields:
     targetType: String
     nonNull: true
     dataFetcher: Property
+  - !CustomField
+    name: _creationDate
+    sourceName: "_creationDate"
+    targetType: String
+    nonNull: true
+    dataFetcher: Property
+  - !CustomField
+    name: _modificationDate
+    sourceName: "_modificationDate"
+    targetType: String
+    nonNull: true
+    dataFetcher: Property

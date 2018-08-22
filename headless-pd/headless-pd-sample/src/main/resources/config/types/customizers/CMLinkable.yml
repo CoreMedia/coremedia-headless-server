@@ -8,8 +8,6 @@ excludedProperties:
   - locationTaxonomy
   - resourceBundles2
   - subjectTaxonomy
-  - validFrom
-  - validTo
 customFields:
   - !CustomField
     name: link
