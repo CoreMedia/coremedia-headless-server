@@ -3,11 +3,12 @@ package com.coremedia.caas.generator.config;
 import com.coremedia.cap.common.CapType;
 import com.coremedia.cap.content.ContentRepository;
 import com.coremedia.cap.content.ContentType;
+
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -20,10 +21,10 @@ public class SchemaConfig {
   private List<String> includedTypes;
   private List<String> excludedTypes;
 
-  private Map<String, TypeCustomization> typeCustomizations = ImmutableMap.of();
+  private Map<String, TypeCustomization> typeCustomizations = Collections.emptyMap();
 
-  private Map<String, InterfaceTypeDefinition> interfaceTypeDefinitions = Maps.newHashMap();
-  private Map<String, ObjectTypeDefinition> objectTypeDefinitions = Maps.newHashMap();
+  private Map<String, InterfaceTypeDefinition> interfaceTypeDefinitions = new HashMap<>();
+  private Map<String, ObjectTypeDefinition> objectTypeDefinitions = new HashMap<>();
 
 
   void setContentRepository(ContentRepository contentRepository) {

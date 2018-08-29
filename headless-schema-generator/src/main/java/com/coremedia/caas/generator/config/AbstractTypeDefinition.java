@@ -50,4 +50,7 @@ public abstract class AbstractTypeDefinition implements TypeDefinition {
   protected TypeCustomization getTypeCustomization() {
     return getSchemaConfig().findTypeCustomization(this);
   }
+
+
+  protected abstract TypeDefinition getParent();
 }

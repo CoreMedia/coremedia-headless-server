@@ -6,7 +6,7 @@ field(fieldDefinition) ::= <<
 fallbackSources(fallbackSourceNames) ::= <<
 <if(fallbackSourceNames)>
 fallbackSourceNames:
-  <fallbackSourceNames:{v | - "<v>"};separator="\n"><endif>
+  <fallbackSourceNames:{source | - "<source>"};separator="\n"><endif>
 >>
 
 
@@ -15,7 +15,7 @@ directive(directiveDefinition) ::= <<
   name: <directiveDefinition.name>
   <if(directiveDefinition.arguments)>
   arguments:
-    <directiveDefinition.arguments.keys:{k | <k>: "<directiveDefinition.arguments.(k)>"};separator="\n"><endif>
+    <directiveDefinition.arguments.keys:{key | <key>: "<directiveDefinition.arguments.(key)>"};separator="\n"><endif>
 >>
 
 directives(directiveDefinitions) ::= <<
