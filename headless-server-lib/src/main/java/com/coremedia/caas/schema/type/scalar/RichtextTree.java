@@ -9,10 +9,10 @@ import graphql.schema.GraphQLScalarType;
 
 public class RichtextTree {
 
-  public static final GraphQLScalarType RICHTEXT_TREE = new GraphQLScalarType("RichtextTree", "Built-in richtext object tree", new CoercingRichtextTree<String, Object>());
+  public static final GraphQLScalarType RICHTEXT_TREE = new GraphQLScalarType("RichtextTree", "Built-in richtext object tree", new CoercingRichtextTree());
 
 
-  private static class CoercingRichtextTree<S, T> implements Coercing<S, Object> {
+  private static class CoercingRichtextTree implements Coercing<Object, Object> {
 
     @Override
     public Object serialize(Object dataFetcherResult) throws CoercingSerializeException {
@@ -20,12 +20,12 @@ public class RichtextTree {
     }
 
     @Override
-    public S parseValue(Object input) throws CoercingParseValueException {
+    public Object parseValue(Object input) throws CoercingParseValueException {
       throw new CoercingParseValueException("Parsing unsupported");
     }
 
     @Override
-    public S parseLiteral(Object input) throws CoercingParseLiteralException {
+    public Object parseLiteral(Object input) throws CoercingParseLiteralException {
       return null;
     }
   }

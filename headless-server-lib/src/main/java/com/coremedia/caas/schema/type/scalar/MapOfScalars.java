@@ -24,12 +24,12 @@ public class MapOfScalars {
 
   private static final Map<String, GraphQLScalarType> typeMap;
 
-  private static final GraphQLScalarType MAP_OF_BOOLEAN = graphQLObjectScalar("MapOfBoolean", new CoercingMap<String, Boolean>(Boolean.class));
-  private static final GraphQLScalarType MAP_OF_FLOAT = graphQLObjectScalar("MapOfFloat", new CoercingMap<String, Float>(Float.class));
-  private static final GraphQLScalarType MAP_OF_INT = graphQLObjectScalar("MapOfInt", new CoercingMap<String, Integer>(Integer.class));
-  private static final GraphQLScalarType MAP_OF_LONG = graphQLObjectScalar("MapOfLong", new CoercingMap<String, Long>(Long.class));
-  private static final GraphQLScalarType MAP_OF_SHORT = graphQLObjectScalar("MapOfShort", new CoercingMap<String, Short>(Short.class));
-  private static final GraphQLScalarType MAP_OF_STRING = graphQLObjectScalar("MapOfString", new CoercingMap<String, String>(String.class));
+  private static final GraphQLScalarType MAP_OF_BOOLEAN = graphQLObjectScalar("MapOfBoolean", new CoercingMap<>(Boolean.class));
+  private static final GraphQLScalarType MAP_OF_FLOAT = graphQLObjectScalar("MapOfFloat", new CoercingMap<>(Float.class));
+  private static final GraphQLScalarType MAP_OF_INT = graphQLObjectScalar("MapOfInt", new CoercingMap<>(Integer.class));
+  private static final GraphQLScalarType MAP_OF_LONG = graphQLObjectScalar("MapOfLong", new CoercingMap<>(Long.class));
+  private static final GraphQLScalarType MAP_OF_SHORT = graphQLObjectScalar("MapOfShort", new CoercingMap<>(Short.class));
+  private static final GraphQLScalarType MAP_OF_STRING = graphQLObjectScalar("MapOfString", new CoercingMap<>(String.class));
 
   static {
     ImmutableMap.Builder<String, GraphQLScalarType> builder = ImmutableMap.builder();
@@ -43,7 +43,7 @@ public class MapOfScalars {
   }
 
 
-  private static GraphQLScalarType graphQLObjectScalar(String name, CoercingMap<?, ?> coercing) {
+  private static GraphQLScalarType graphQLObjectScalar(String name, CoercingMap<?> coercing) {
     return new GraphQLScalarType(name, "Built-in map of scalar type", coercing);
   }
 
@@ -62,7 +62,7 @@ public class MapOfScalars {
   }
 
 
-  private static class CoercingMap<S, T> implements Coercing<S, Map<String, T>> {
+  private static class CoercingMap<T> implements Coercing<Object, Map<String, T>> {
 
     private Class<T> targetClass;
 
@@ -98,12 +98,12 @@ public class MapOfScalars {
     }
 
     @Override
-    public S parseValue(Object input) {
+    public Object parseValue(Object input) {
       throw new CoercingParseValueException("Parsing unsupported");
     }
 
     @Override
-    public S parseLiteral(Object input) {
+    public Object parseLiteral(Object input) {
       return null;
     }
   }
