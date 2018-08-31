@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.coremedia.caas.service.repository.content.util.ContentUtil.getZonedDateTime;
+import static com.coremedia.caas.service.repository.content.util.ContentUtil.toZonedDateTime;
 
 public class ContentProxyImpl implements ContentProxy {
 
@@ -55,12 +56,12 @@ public class ContentProxyImpl implements ContentProxy {
 
   @Override
   public ZonedDateTime getCreationDate() {
-    return getZonedDateTime(content.getCreationDate());
+    return toZonedDateTime(content.getCreationDate());
   }
 
   @Override
   public ZonedDateTime getModificationDate() {
-    return getZonedDateTime(content.getModificationDate());
+    return toZonedDateTime(content.getModificationDate());
   }
 
 
@@ -69,7 +70,7 @@ public class ContentProxyImpl implements ContentProxy {
     Object value = proxyFactory.makeProxy(content.get(propertyName));
     // special conversion needed
     if (value instanceof Calendar) {
-      return getZonedDateTime((Calendar) value);
+      return toZonedDateTime((Calendar) value);
     }
     return value;
   }

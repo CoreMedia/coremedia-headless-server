@@ -19,10 +19,10 @@ public class ContentUtil {
 
 
   public static ZonedDateTime getZonedDateTime(Content target, String propertyName) {
-    return getZonedDateTime(target.getDate(propertyName));
+    return toZonedDateTime(target.getDate(propertyName));
   }
 
-  public static ZonedDateTime getZonedDateTime(Calendar calendar) {
+  public static ZonedDateTime toZonedDateTime(Calendar calendar) {
     if (calendar instanceof GregorianCalendar) {
       return ((GregorianCalendar) calendar).toZonedDateTime();
     }
