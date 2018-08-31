@@ -1,6 +1,6 @@
 package com.coremedia.caas.service.repository.content;
 
-import java.util.Calendar;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 public interface ContentProxy {
@@ -15,9 +15,9 @@ public interface ContentProxy {
   String getType();
 
 
-  Calendar getCreationDate();
+  ZonedDateTime getCreationDate();
 
-  Calendar getModificationDate();
+  ZonedDateTime getModificationDate();
 
 
   Object get(String propertyName);
@@ -26,6 +26,8 @@ public interface ContentProxy {
   BlobProxy getBlob(String propertyName);
 
   Boolean getBoolean(String propertyName);
+
+  ZonedDateTime getDate(String propertyName);
 
   Integer getInteger(String propertyName);
 
@@ -36,4 +38,6 @@ public interface ContentProxy {
   MarkupProxy getMarkup(String propertyName);
 
   String getString(String propertyName);
+
+  StructProxy getStruct(String propertyName);
 }

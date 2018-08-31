@@ -4,8 +4,8 @@ import com.coremedia.caas.schema.SchemaService;
 import com.coremedia.caas.service.repository.content.ContentProxy;
 
 import graphql.schema.DataFetchingEnvironment;
+import org.springframework.expression.Expression;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.List;
 
@@ -21,9 +21,9 @@ public class LinkPropertyDataFetcher extends AbstractPropertyDataFetcher {
 
 
   @Override
-  protected Object getData(ContentProxy contentProxy, String sourceName, DataFetchingEnvironment environment) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+  protected Object getData(ContentProxy contentProxy, Expression expression, DataFetchingEnvironment environment) {
     SchemaService schema = getContext(environment).getProcessingDefinition().getSchemaService();
-    Object property = getProperty(contentProxy, sourceName);
+    Object property = getProperty(contentProxy, expression, Object.class);
     if (property instanceof Collection) {
       return ((Collection<?>) property).stream().filter(e -> schema.isInstanceOf(e, baseTypeName)).findFirst().orElse(null);
     }

@@ -1,11 +1,10 @@
 package com.coremedia.caas.schema.datafetcher.content.property;
 
 import com.coremedia.caas.service.repository.content.ContentProxy;
-import com.coremedia.xml.Markup;
+import com.coremedia.caas.service.repository.content.MarkupProxy;
 
 import graphql.schema.DataFetchingEnvironment;
-
-import java.lang.reflect.InvocationTargetException;
+import org.springframework.expression.Expression;
 
 public class MarkupPropertyDataFetcher extends AbstractPropertyDataFetcher {
 
@@ -15,8 +14,8 @@ public class MarkupPropertyDataFetcher extends AbstractPropertyDataFetcher {
 
 
   @Override
-  protected Object getData(ContentProxy contentProxy, String sourceName, DataFetchingEnvironment environment) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
-    Markup markup = getProperty(contentProxy, sourceName);
+  protected Object getData(ContentProxy contentProxy, Expression expression, DataFetchingEnvironment environment) {
+    MarkupProxy markup = getProperty(contentProxy, expression, MarkupProxy.class);
     if (markup != null) {
       return markup.toString();
     }

@@ -6,7 +6,7 @@ field(fieldDefinition) ::= <<
 fallbackSources(fallbackSourceNames) ::= <<
 <if(fallbackSourceNames)>
 fallbackSourceNames:
-  - <fallbackSourceNames;separator="\n  - "><endif>
+  <fallbackSourceNames:{source | - "<source>"};separator="\n"><endif>
 >>
 
 
@@ -15,7 +15,7 @@ directive(directiveDefinition) ::= <<
   name: <directiveDefinition.name>
   <if(directiveDefinition.arguments)>
   arguments:
-    <directiveDefinition.arguments.keys:{k | <k>: <directiveDefinition.arguments.(k)>};separator="\n"><endif>
+    <directiveDefinition.arguments.keys:{key | <key>: "<directiveDefinition.arguments.(key)>"};separator="\n"><endif>
 >>
 
 directives(directiveDefinitions) ::= <<
@@ -29,7 +29,7 @@ property(fieldDefinition) ::= <<
   - !Property
     name: <fieldDefinition.name>
     <if(fieldDefinition.sourceName)>
-    sourceName: <fieldDefinition.sourceName>
+    sourceName: "<fieldDefinition.sourceName>"
     <endif>
     typeName: <fieldDefinition.targetType>
     <if(fieldDefinition.nonNull)>nonNull: true<endif>
@@ -40,7 +40,7 @@ property(fieldDefinition) ::= <<
 contentproperty(fieldDefinition) ::= <<
   - !ContentProperty
     name: <fieldDefinition.name>
-    sourceName: <fieldDefinition.sourceName>
+    sourceName: "<fieldDefinition.sourceName>"
     <fallbackSources(fieldDefinition.fallbackSourceNames)>
     typeName: <fieldDefinition.targetType>
     <if(fieldDefinition.nonNull)>nonNull: true<endif>
@@ -63,7 +63,7 @@ string(fieldDefinition) ::= <<
 link(fieldDefinition) ::= <<
   - !Link
     name: <fieldDefinition.name>
-    sourceName: <fieldDefinition.sourceName>
+    sourceName: "<fieldDefinition.sourceName>"
     <fallbackSources(fieldDefinition.fallbackSourceNames)>
     typeName: <fieldDefinition.targetType>
     <if(fieldDefinition.nonNull)>nonNull: true<endif>
@@ -74,7 +74,7 @@ link(fieldDefinition) ::= <<
 linklist(fieldDefinition) ::= <<
   - !Linklist
     name: <fieldDefinition.name>
-    sourceName: <fieldDefinition.sourceName>
+    sourceName: "<fieldDefinition.sourceName>"
     <fallbackSources(fieldDefinition.fallbackSourceNames)>
     typeName: List:<fieldDefinition.targetType>
     <if(fieldDefinition.nonNull)>nonNull: true<endif>
@@ -85,7 +85,7 @@ linklist(fieldDefinition) ::= <<
 struct(fieldDefinition) ::= <<
   - !Struct
     name: <fieldDefinition.name>
-    sourceName: <fieldDefinition.sourceName>
+    sourceName: "<fieldDefinition.sourceName>"
     typeName: <fieldDefinition.targetType>
     <if(fieldDefinition.nonNull)>nonNull: true<endif>
     <directives(fieldDefinition.directives)>
@@ -95,7 +95,7 @@ struct(fieldDefinition) ::= <<
 richtext(fieldDefinition) ::= <<
   - !Richtext
     name: <fieldDefinition.name>
-    sourceName: <fieldDefinition.sourceName>
+    sourceName: "<fieldDefinition.sourceName>"
     <fallbackSources(fieldDefinition.fallbackSourceNames)>
     typeName: String
     <if(fieldDefinition.nonNull)>nonNull: true<endif>
@@ -106,7 +106,7 @@ richtext(fieldDefinition) ::= <<
 markup(fieldDefinition) ::= <<
   - !Markup
     name: <fieldDefinition.name>
-    sourceName: <fieldDefinition.sourceName>
+    sourceName: "<fieldDefinition.sourceName>"
     typeName: String
     <if(fieldDefinition.nonNull)>nonNull: true<endif>
     <directives(fieldDefinition.directives)>
@@ -116,7 +116,7 @@ markup(fieldDefinition) ::= <<
 blob(fieldDefinition) ::= <<
   - !Blob
     name: <fieldDefinition.name>
-    sourceName: <fieldDefinition.sourceName>
+    sourceName: "<fieldDefinition.sourceName>"
     <fallbackSources(fieldDefinition.fallbackSourceNames)>
     <if(fieldDefinition.nonNull)>nonNull: true<endif>
     <directives(fieldDefinition.directives)>
@@ -126,7 +126,7 @@ blob(fieldDefinition) ::= <<
 uri(fieldDefinition) ::= <<
   - !Uri
     name: <fieldDefinition.name>
-    sourceName: <fieldDefinition.sourceName>
+    sourceName: "<fieldDefinition.sourceName>"
     typeName: String
     <if(fieldDefinition.nonNull)>nonNull: true<endif>
     <directives(fieldDefinition.directives)>
@@ -150,41 +150,10 @@ constant(fieldDefinition) ::= <<
 
 >>
 
-navigation(fieldDefinition) ::= <<
-  - !Navigation
-    name: <fieldDefinition.name>
-    sourceName: <fieldDefinition.sourceName>
-    typeName: <fieldDefinition.targetType>
-    <if(fieldDefinition.nonNull)>nonNull: true<endif>
-    <directives(fieldDefinition.directives)>
-
->>
-
-pagegrid(fieldDefinition) ::= <<
-  - !PageGrid
-    name: <fieldDefinition.name>
-    sourceName: <fieldDefinition.sourceName>
-    typeName: <fieldDefinition.targetType>
-    <if(fieldDefinition.nonNull)>nonNull: true<endif>
-    <directives(fieldDefinition.directives)>
-
->>
-
-setting(fieldDefinition) ::= <<
-  - !Setting
-    name: <fieldDefinition.name>
-    sourceName: <fieldDefinition.sourceName>
-    typeName: <fieldDefinition.targetType>
-    <if(fieldDefinition.defaultValue)>defaultValue: <fieldDefinition.defaultValue><endif>
-    <if(fieldDefinition.nonNull)>nonNull: true<endif>
-    <directives(fieldDefinition.directives)>
-
->>
-
 bean(fieldDefinition) ::= <<
   - !Bean
     name: <fieldDefinition.name>
-    sourceName: <fieldDefinition.sourceName>
+    sourceName: "<fieldDefinition.sourceName>"
     <fallbackSources(fieldDefinition.fallbackSourceNames)>
     typeName: <fieldDefinition.targetType>
     <if(fieldDefinition.nonNull)>nonNull: true<endif>

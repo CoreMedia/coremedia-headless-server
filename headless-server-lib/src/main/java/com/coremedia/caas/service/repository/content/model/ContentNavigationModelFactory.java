@@ -23,7 +23,7 @@ public class ContentNavigationModelFactory implements ContentModelFactory<Naviga
 
 
   @Override
-  public boolean isExpressionModel() {
+  public boolean isQueryModel() {
     return true;
   }
 
@@ -33,7 +33,7 @@ public class ContentNavigationModelFactory implements ContentModelFactory<Naviga
   }
 
   @Override
-  public NavigationAdapter createModel(Content content, String propertyPath, RootContext rootContext) {
+  public NavigationAdapter createModel(RootContext rootContext, Content content, Object... arguments) {
     return new NavigationAdapter(content, getContextStrategy(content), getTreeRelation(content), rootContext);
   }
 

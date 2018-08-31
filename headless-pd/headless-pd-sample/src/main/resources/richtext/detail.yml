@@ -1,6 +1,6 @@
-#!import file=include/elements.yml
-#!import file=include/classes.yml
-#!import file=include/attributes.yml
+#!import file=includes/elements.yml
+#!import file=includes/classes.yml
+#!import file=includes/attributes.yml
 
 name: detail
 

@@ -7,13 +7,11 @@ public interface TypeDefinition {
 
   String getName();
 
-  TypeDefinition getParent();
+  List<String> getInterfaces();
+
+  List<FieldDefinition> getFields() throws InvalidTypeDefinition;
 
   Map<String, String> getOptions();
-
-  List<FieldDefinition> getFieldDefinitions() throws InvalidTypeDefinition;
-
-  List<InterfaceTypeDefinition> getInterfaceDefinitions();
 
 
   void validate() throws InvalidTypeDefinition;

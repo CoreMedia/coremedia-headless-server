@@ -23,7 +23,11 @@ public class SettingsAdapter {
   }
 
 
-  public Object getSetting(String sourceName, Object defaultValue) {
+  public Object get(String sourceName) {
+    return get(sourceName, null);
+  }
+
+  public Object get(String sourceName, Object defaultValue) {
     Object value = settingsService.nestedSetting(PATH_SPLITTER.splitToList(sourceName), Object.class, content);
     return rootContext.getProxyFactory().makeProxy(value != null ? value : defaultValue);
   }

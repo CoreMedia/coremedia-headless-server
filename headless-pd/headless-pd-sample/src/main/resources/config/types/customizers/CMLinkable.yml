@@ -8,26 +8,24 @@ excludedProperties:
   - locationTaxonomy
   - resourceBundles2
   - subjectTaxonomy
-  - validFrom
-  - validTo
 customFields:
   - !CustomField
     name: link
-    sourceName: this
+    sourceName: "this"
     targetType: String
     dataFetcher: Uri
   - !CustomField
     name: viewtype
-    sourceName: (viewtype)[0].(layout)
+    sourceName: "getLink('viewtype')?.layout"
     targetType: String
     dataFetcher: ContentProperty
   - !CustomField
     name: context
-    sourceName: context
+    sourceName: "$navigation().context"
     targetType: CMNavigation
-    dataFetcher: Navigation
+    dataFetcher: ContentProperty
   - !CustomField
     name: navigationPath
-    sourceName: pathToRoot
+    sourceName: "$navigation().pathToRoot"
     targetType: List:CMNavigation
-    dataFetcher: Navigation
+    dataFetcher: ContentProperty

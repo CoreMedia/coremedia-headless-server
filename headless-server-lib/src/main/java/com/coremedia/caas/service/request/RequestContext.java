@@ -1,14 +1,15 @@
 package com.coremedia.caas.service.request;
 
-import javax.validation.constraints.NotNull;
 import java.time.ZonedDateTime;
 import java.util.function.UnaryOperator;
+import javax.validation.constraints.NotNull;
 
 public interface RequestContext {
 
   boolean isPreview();
 
   ZonedDateTime getRequestTime();
+
   void setRequestTime(ZonedDateTime time);
 
   <E> E getProperty(@NotNull String propertyName, @NotNull Class<E> targetClass);

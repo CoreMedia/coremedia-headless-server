@@ -2,6 +2,6 @@ name: CMProduct
 customFields:
   - !CustomField
     name: price
-    sourceName: /price
+    sourceName: "localSettings?.price"
     targetType: Float
-    dataFetcher: Setting
+    dataFetcher: ContentProperty

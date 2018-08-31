@@ -7,6 +7,6 @@ public class IntegerToBooleanConverter implements DataFetcherConverter<Integer, 
 
   @Override
   public Boolean convert(Integer source) {
-    return source != null && source != 0;
+    return source != 0;
   }
 }

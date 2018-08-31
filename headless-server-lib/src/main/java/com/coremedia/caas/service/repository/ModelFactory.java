@@ -7,5 +7,5 @@ public interface ModelFactory {
   String SETTINGS_MODEL = "settings";
 
 
-  <T> T createModel(String modelName, String sourceName, Object target);
+  <T> T createModel(String modelName, Object target, Object... arguments);
 }

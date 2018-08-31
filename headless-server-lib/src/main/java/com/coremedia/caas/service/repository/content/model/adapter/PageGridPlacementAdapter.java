@@ -7,6 +7,7 @@ import com.coremedia.caas.service.repository.content.ContentProxy;
 import com.coremedia.cap.common.CapStructHelper;
 import com.coremedia.cap.content.Content;
 import com.coremedia.cap.struct.Struct;
+
 import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 
@@ -14,9 +15,15 @@ import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.coremedia.caas.schema.util.ContentUtil.toZonedDateTime;
+import static com.coremedia.caas.service.repository.content.util.ContentUtil.toZonedDateTime;
 
 public class PageGridPlacementAdapter {
+
+  private static boolean isVisible(AnnotatedLinkWrapper linkWrapper, ZonedDateTime time) {
+    return (linkWrapper.getVisibleFrom() == null || !linkWrapper.getVisibleFrom().isAfter(time)) &&
+           (linkWrapper.getVisibleTo() == null || linkWrapper.getVisibleTo().isAfter(time));
+  }
+
 
   private String name;
   private ContentBackedPageGridPlacement pageGridPlacement;
@@ -29,6 +36,7 @@ public class PageGridPlacementAdapter {
     this.pageGridPlacement = pageGridPlacement;
     this.rootContext = rootContext;
   }
+
 
   public String getName() {
     return name;
@@ -43,8 +51,7 @@ public class PageGridPlacementAdapter {
   @SuppressWarnings("unused")
   public List<ContentProxy> getItems() {
     ZonedDateTime requestDate = rootContext.getRequestContext().getRequestTime();
-    List<Struct> extendedItems = pageGridPlacement.getExtendedItems();
-    List<Content> items = extendedItems.stream()
+    List<Content> items = pageGridPlacement.getExtendedItems().stream()
             .map(AnnotatedLinkWrapper::new)
             .filter(al -> al.getTarget() != null)
             .filter(al -> al.getTarget().isInProduction())
@@ -54,10 +61,6 @@ public class PageGridPlacementAdapter {
     return rootContext.getProxyFactory().makeContentProxyList(items);
   }
 
-  private static boolean isVisible(AnnotatedLinkWrapper al, ZonedDateTime time) {
-    return (al.getVisibleFrom() == null || !al.getVisibleFrom().isAfter(time)) &&
-            (al.getVisibleTo() == null || al.getVisibleTo().isAfter(time));
-  }
 
   private class AnnotatedLinkWrapper {
 

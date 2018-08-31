@@ -42,8 +42,13 @@ public class ContentModelConfig {
   }
 
 
-  @Bean
-  public ContentProxyModelAccessor contentProxyModelAccessor(ContentProxyModelFactory contentProxyModelFactory) {
-    return new ContentProxyModelAccessor(contentProxyModelFactory);
+  @Bean("queryContentModelMethodResolver")
+  public ContentProxyModelResolver queryContentModelMethodResolver(ContentProxyModelFactory contentProxyModelFactory) {
+    return new ContentProxyModelResolver(contentProxyModelFactory, true);
+  }
+
+  @Bean("schemaContentModelMethodResolver")
+  public ContentProxyModelResolver schemaContentModelMethodResolver(ContentProxyModelFactory contentProxyModelFactory) {
+    return new ContentProxyModelResolver(contentProxyModelFactory, false);
   }
 }

@@ -1,15 +1,26 @@
 package com.coremedia.caas.service.repository.content;
 
 import com.coremedia.caas.service.repository.ProxyFactory;
+import com.coremedia.cap.common.Blob;
 import com.coremedia.cap.content.Content;
+import com.coremedia.cap.struct.Struct;
+import com.coremedia.xml.Markup;
 
 import com.google.common.base.MoreObjects;
 
+import java.time.ZonedDateTime;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
 
+import static com.coremedia.caas.service.repository.content.util.ContentUtil.getZonedDateTime;
+import static com.coremedia.caas.service.repository.content.util.ContentUtil.toZonedDateTime;
+
 public class ContentProxyImpl implements ContentProxy {
+
+  public static final Class<ContentProxyImpl> TARGET_CLASS = ContentProxyImpl.class;
+  public static final Class[] TARGET_CLASSES = new Class[]{TARGET_CLASS};
+
 
   private final Content content;
   private final ProxyFactory proxyFactory;
@@ -44,30 +55,44 @@ public class ContentProxyImpl implements ContentProxy {
 
 
   @Override
-  public Calendar getCreationDate() {
-    return content.getCreationDate();
+  public ZonedDateTime getCreationDate() {
+    return toZonedDateTime(content.getCreationDate());
   }
 
   @Override
-  public Calendar getModificationDate() {
-    return content.getModificationDate();
+  public ZonedDateTime getModificationDate() {
+    return toZonedDateTime(content.getModificationDate());
   }
 
 
   @Override
   public Object get(String propertyName) {
-    return proxyFactory.makeProxy(content.get(propertyName));
+    Object value = proxyFactory.makeProxy(content.get(propertyName));
+    // special conversion needed
+    if (value instanceof Calendar) {
+      return toZonedDateTime((Calendar) value);
+    }
+    return value;
   }
 
 
   @Override
   public BlobProxy getBlob(String propertyName) {
-    return proxyFactory.makeBlobProxy(content.getBlob(propertyName));
+    Blob source = content.getBlob(propertyName);
+    if (source != null) {
+      return proxyFactory.makeBlobProxy(source);
+    }
+    return null;
   }
 
   @Override
   public Boolean getBoolean(String propertyName) {
     return content.getBoolean(propertyName);
+  }
+
+  @Override
+  public ZonedDateTime getDate(String propertyName) {
+    return getZonedDateTime(content, propertyName);
   }
 
   @Override
@@ -91,12 +116,25 @@ public class ContentProxyImpl implements ContentProxy {
 
   @Override
   public MarkupProxy getMarkup(String propertyName) {
-    return proxyFactory.makeMarkupProxy(content.getMarkup(propertyName));
+    Markup source = content.getMarkup(propertyName);
+    if (source != null) {
+      return proxyFactory.makeMarkupProxy(source);
+    }
+    return null;
   }
 
   @Override
   public String getString(String propertyName) {
     return content.getString(propertyName);
+  }
+
+  @Override
+  public StructProxy getStruct(String propertyName) {
+    Struct source = content.getStruct(propertyName);
+    if (source != null) {
+      return proxyFactory.makeStructProxy(source);
+    }
+    return null;
   }
 
 
@@ -133,7 +171,7 @@ public class ContentProxyImpl implements ContentProxy {
     return content;
   }
 
-  Object getModel(String modelName) {
-    return proxyFactory.getRootContext().getModelFactory().createModel(modelName, null, this);
+  Object getModel(String modelName, Object... arguments) {
+    return proxyFactory.getRootContext().getModelFactory().createModel(modelName, this, arguments);
   }
 }

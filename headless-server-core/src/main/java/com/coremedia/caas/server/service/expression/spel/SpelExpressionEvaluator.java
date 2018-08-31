@@ -4,11 +4,9 @@ import com.coremedia.caas.service.expression.ExpressionEvaluator;
 
 import org.springframework.expression.Expression;
 import org.springframework.expression.ExpressionParser;
-import org.springframework.expression.PropertyAccessor;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -20,19 +18,16 @@ public class SpelExpressionEvaluator implements ExpressionEvaluator {
 
 
   private StandardEvaluationContext context;
-  private List<PropertyAccessor> propertyAccessors;
 
 
-  public SpelExpressionEvaluator(List<PropertyAccessor> propertyAccessors) {
-    this.propertyAccessors = propertyAccessors;
+  public SpelExpressionEvaluator(StandardEvaluationContext context) {
+    this.context = context;
   }
 
 
   @Override
   public void init(Map<String, Object> variables) {
-    context = new StandardEvaluationContext();
     context.setVariables(variables);
-    context.setPropertyAccessors(propertyAccessors);
   }
 
 

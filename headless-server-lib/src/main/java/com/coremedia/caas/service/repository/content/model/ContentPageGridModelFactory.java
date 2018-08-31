@@ -19,7 +19,7 @@ public class ContentPageGridModelFactory implements ContentModelFactory<PageGrid
 
 
   @Override
-  public boolean isExpressionModel() {
+  public boolean isQueryModel() {
     return false;
   }
 
@@ -29,8 +29,11 @@ public class ContentPageGridModelFactory implements ContentModelFactory<PageGrid
   }
 
   @Override
-  public PageGridAdapter createModel(Content content, String propertyPath, RootContext rootContext) {
-    ContentBackedPageGrid pageGrid = contentBackedPageGridService.getContentBackedPageGrid(content, propertyPath);
+  public PageGridAdapter createModel(RootContext rootContext, Content content, Object... arguments) {
+    // resolve arguments
+    String sourceProperyName = (String) arguments[0];
+    // instantiate model adapter
+    ContentBackedPageGrid pageGrid = contentBackedPageGridService.getContentBackedPageGrid(content, sourceProperyName);
     return new PageGridAdapter(pageGrid, rootContext);
   }
 }

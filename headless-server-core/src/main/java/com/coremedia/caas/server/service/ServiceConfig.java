@@ -7,6 +7,9 @@ import com.coremedia.caas.service.ServiceRegistry;
 import com.coremedia.caas.service.cache.CacheInstances;
 import com.coremedia.caas.service.cache.Weighted;
 import com.coremedia.caas.service.expression.ExpressionEvaluator;
+import com.coremedia.caas.service.expression.spel.ReadOnlyMapAccessor;
+import com.coremedia.caas.service.repository.content.ContentProxyPropertyAccessor;
+import com.coremedia.caas.service.repository.content.StructProxyPropertyAccessor;
 import com.coremedia.caas.service.request.RequestContext;
 
 import com.github.benmanes.caffeine.cache.Cache;
@@ -16,6 +19,7 @@ import com.google.common.collect.ImmutableList;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.binder.cache.CaffeineCacheMetrics;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.config.Configuration.AccessLevel;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.cache.CacheManager;
@@ -27,7 +31,10 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.expression.MethodResolver;
 import org.springframework.expression.PropertyAccessor;
+import org.springframework.expression.spel.support.ReflectivePropertyAccessor;
+import org.springframework.expression.spel.support.StandardEvaluationContext;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.util.List;
@@ -48,7 +55,7 @@ public class ServiceConfig {
     ModelMapper modelMapper = new ModelMapper();
     modelMapper.getConfiguration()
             .setFieldMatchingEnabled(true)
-            .setFieldAccessLevel(org.modelmapper.config.Configuration.AccessLevel.PRIVATE);
+            .setFieldAccessLevel(AccessLevel.PRIVATE);
     return modelMapper;
   }
 
@@ -67,10 +74,20 @@ public class ServiceConfig {
     return new DefaultRequestContext(false);
   }
 
+
   @Bean("spelEvaluator")
   @Scope(value = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.INTERFACES)
-  public ExpressionEvaluator createSpelExpressionEvaluator(@Qualifier("spelPropertyAccessors") List<PropertyAccessor> propertyAccessors) {
-    return new SpelExpressionEvaluator(propertyAccessors);
+  public ExpressionEvaluator createSpelExpressionEvaluator(@Qualifier("queryContentModelMethodResolver") MethodResolver contentMethodResolver) {
+    List<PropertyAccessor> propertyAccessors = ImmutableList.of(
+            new ContentProxyPropertyAccessor(),
+            new StructProxyPropertyAccessor(),
+            new ReadOnlyMapAccessor(),
+            new ReflectivePropertyAccessor());
+    // customize evaluation context
+    StandardEvaluationContext context = new StandardEvaluationContext();
+    context.setPropertyAccessors(propertyAccessors);
+    context.addMethodResolver(contentMethodResolver);
+    return new SpelExpressionEvaluator(context);
   }
 
 

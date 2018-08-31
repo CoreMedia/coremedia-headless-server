@@ -2,6 +2,7 @@ package com.coremedia.caas.server.service.security;
 
 import com.coremedia.caas.server.interceptor.RequestDateInitializer;
 import com.coremedia.caas.service.request.RequestContext;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

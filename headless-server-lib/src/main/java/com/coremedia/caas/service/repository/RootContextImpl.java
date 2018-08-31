@@ -178,10 +178,10 @@ public class RootContextImpl implements RootContext {
     }
 
     @Override
-    public <T> T createModel(String modelName, String sourceName, Object target) {
+    public <T> T createModel(String modelName, Object target, Object... arguments) {
       for (ProxyModelFactory proxyModelFactory : proxyModelFactories) {
-        if (proxyModelFactory.appliesTo(modelName, sourceName, target, rootContext)) {
-          return proxyModelFactory.createModel(modelName, sourceName, target, rootContext);
+        if (proxyModelFactory.appliesTo(rootContext, modelName, target)) {
+          return proxyModelFactory.createModel(rootContext, modelName, target, arguments);
         }
       }
       return null;

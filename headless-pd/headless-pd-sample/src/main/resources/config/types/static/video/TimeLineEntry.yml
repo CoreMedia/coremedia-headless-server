@@ -3,13 +3,13 @@ name: TimeLineEntry
 fields:
   - !Property
     name: position
-    sourceName: (position)
+    sourceName: "position"
     typeName: Int
   - !Property
     name: startTimeMillis
-    sourceName: (startTimeMillis)
+    sourceName: "startTimeMillis"
     typeName: Int
   - !Property
     name: target
-    sourceName: (link)
+    sourceName: "link"
     typeName: CMTeasable

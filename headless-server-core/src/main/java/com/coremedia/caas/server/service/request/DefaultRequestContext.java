@@ -2,11 +2,11 @@ package com.coremedia.caas.server.service.request;
 
 import com.coremedia.caas.service.request.RequestContext;
 
-import javax.validation.constraints.NotNull;
 import java.time.ZonedDateTime;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.UnaryOperator;
+import javax.validation.constraints.NotNull;
 
 public class DefaultRequestContext implements RequestContext {
 
@@ -14,14 +14,17 @@ public class DefaultRequestContext implements RequestContext {
   private ZonedDateTime requestTime;
   private final Map<String, Object> properties = new ConcurrentHashMap<>();
 
+
   public DefaultRequestContext(boolean isPreview) {
     this.isPreview = isPreview;
   }
+
 
   @Override
   public boolean isPreview() {
     return isPreview;
   }
+
 
   @Override
   public ZonedDateTime getRequestTime() {
@@ -35,6 +38,7 @@ public class DefaultRequestContext implements RequestContext {
     }
     this.requestTime = time;
   }
+
 
   @Override
   public <T> T getProperty(@NotNull String propertyName, @NotNull Class<T> targetClass) {

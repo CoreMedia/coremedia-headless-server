@@ -19,7 +19,7 @@ public class ContentMediaResourceModelFactory implements ContentModelFactory<Con
 
 
   @Override
-  public boolean isExpressionModel() {
+  public boolean isQueryModel() {
     return false;
   }
 
@@ -29,7 +29,10 @@ public class ContentMediaResourceModelFactory implements ContentModelFactory<Con
   }
 
   @Override
-  public ContentMediaResourceModel createModel(Content content, String propertyPath, RootContext rootContext) {
-    return new ContentMediaResourceModel(content, propertyPath, mediaTransformer, transformImageService);
+  public ContentMediaResourceModel createModel(RootContext rootContext, Content content, Object... arguments) {
+    // resolve arguments
+    String propertyName = (String) arguments[0];
+    // instantiate model
+    return new ContentMediaResourceModel(content, propertyName, mediaTransformer, transformImageService);
   }
 }

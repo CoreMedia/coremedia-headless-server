@@ -7,7 +7,7 @@ import com.coremedia.cap.content.Content;
 
 import java.time.ZonedDateTime;
 
-import static com.coremedia.caas.schema.util.ContentUtil.getZonedDateTime;
+import static com.coremedia.caas.service.repository.content.util.ContentUtil.getZonedDateTime;
 
 public class ValidityDateValidator implements AccessValidator<Content> {
 
@@ -32,5 +32,4 @@ public class ValidityDateValidator implements AccessValidator<Content> {
     }
     return true;
   }
-
 }

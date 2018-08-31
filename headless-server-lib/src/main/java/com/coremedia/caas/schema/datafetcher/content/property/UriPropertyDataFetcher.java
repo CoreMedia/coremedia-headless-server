@@ -4,8 +4,7 @@ import com.coremedia.caas.link.LinkBuilder;
 import com.coremedia.caas.service.repository.content.ContentProxy;
 
 import graphql.schema.DataFetchingEnvironment;
-
-import java.lang.reflect.InvocationTargetException;
+import org.springframework.expression.Expression;
 
 public class UriPropertyDataFetcher extends AbstractPropertyDataFetcher {
 
@@ -15,8 +14,8 @@ public class UriPropertyDataFetcher extends AbstractPropertyDataFetcher {
 
 
   @Override
-  protected Object getData(ContentProxy contentProxy, String sourceName, DataFetchingEnvironment environment) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
-    Object target = getProperty(contentProxy, sourceName);
+  protected Object getData(ContentProxy contentProxy, Expression expression, DataFetchingEnvironment environment) {
+    Object target = getProperty(contentProxy, expression, Object.class);
     LinkBuilder linkBuilder = getContext(environment).getProcessingDefinition().getLinkBuilder();
     return linkBuilder.createLink(target);
   }
