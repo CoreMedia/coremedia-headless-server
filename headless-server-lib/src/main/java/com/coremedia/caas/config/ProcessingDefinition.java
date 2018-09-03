@@ -1,13 +1,11 @@
 package com.coremedia.caas.config;
 
 import com.coremedia.caas.link.LinkBuilder;
-import com.coremedia.caas.query.QueryDefinition;
 import com.coremedia.caas.query.QueryRegistry;
 import com.coremedia.caas.richtext.RichtextTransformerRegistry;
 import com.coremedia.caas.schema.SchemaService;
 
 import com.google.common.base.MoreObjects;
-import graphql.schema.GraphQLSchema;
 
 import java.util.Map;
 
@@ -79,27 +77,6 @@ public class ProcessingDefinition {
 
   public void setSchemaService(SchemaService schemaService) {
     this.schemaService = schemaService;
-  }
-
-
-  public boolean hasQueryDefinition(String queryName, String viewName) {
-    return queryRegistry.hasDefinition(queryName, viewName);
-  }
-
-  public String getQuery(String queryName, String viewName) {
-    QueryDefinition definition = queryRegistry.getDefinition(queryName, viewName);
-    if (definition != null) {
-      return definition.getQuery();
-    }
-    return null;
-  }
-
-  public GraphQLSchema getQuerySchema(Object target, String queryName, String viewName) {
-    QueryDefinition definition = queryRegistry.getDefinition(queryName, viewName);
-    if (definition != null) {
-      return definition.getQuerySchema(target);
-    }
-    return null;
   }
 
 

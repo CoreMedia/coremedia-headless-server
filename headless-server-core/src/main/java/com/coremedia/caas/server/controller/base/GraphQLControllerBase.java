@@ -4,6 +4,8 @@ import com.coremedia.blueprint.base.settings.SettingsService;
 import com.coremedia.caas.config.ProcessingDefinition;
 import com.coremedia.caas.config.ProcessingDefinitionCacheKey;
 import com.coremedia.caas.execution.ExecutionContext;
+import com.coremedia.caas.query.QueryDefinition;
+import com.coremedia.caas.server.service.postprocessor.JsonPostprocessor;
 import com.coremedia.caas.server.service.request.ClientIdentification;
 import com.coremedia.caas.server.service.request.GlobalParameters;
 import com.coremedia.caas.service.ServiceRegistry;
@@ -23,6 +25,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.context.request.ServletWebRequest;
 
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import javax.validation.constraints.NotNull;
@@ -48,6 +51,9 @@ public abstract class GraphQLControllerBase extends ControllerBase {
   @Qualifier("staticProcessingDefinitions")
   private Map<String, ProcessingDefinition> staticProcessingDefinitions;
 
+  @Autowired(required = false)
+  private List<JsonPostprocessor> postProcessors;
+
 
   public GraphQLControllerBase(String timerName) {
     super(timerName);
@@ -69,26 +75,31 @@ public abstract class GraphQLControllerBase extends ControllerBase {
     String definitionName = clientIdentification.getDefinitionName();
     // repository defined runtime definition
     ProcessingDefinitionCacheKey processingDefinitionCacheKey = new ProcessingDefinitionCacheKey(rootContext.getSite().getSiteIndicator(), settingsService, applicationContext);
-    ProcessingDefinition resolvedDefinition = cache.get(processingDefinitionCacheKey).get(definitionName);
-    // fallback executable static definition
-    if (resolvedDefinition == null || !resolvedDefinition.hasQueryDefinition(queryName, viewName)) {
-      resolvedDefinition = staticProcessingDefinitions.get(definitionName);
+    ProcessingDefinition processingDefinition = cache.get(processingDefinitionCacheKey).get(definitionName);
+    // fallback to static definition
+    if (processingDefinition == null) {
+      processingDefinition = staticProcessingDefinitions.get(definitionName);
     }
-    if (resolvedDefinition == null || !resolvedDefinition.hasQueryDefinition(queryName, viewName)) {
-      LOG.error("No processing definition found for name '{}' and query '{}#{}'", definitionName, queryName, viewName);
+    if (processingDefinition == null) {
+      LOG.error("No processing definition found for name '{}'", definitionName);
       throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
-    ProcessingDefinition processingDefinition = resolvedDefinition;
+    // check for query existence
+    QueryDefinition queryDefinition = processingDefinition.getQueryRegistry().getDefinition(queryName, viewName);
+    if (queryDefinition == null) {
+      LOG.error("No query '{}#{}' found in processing definition '{}'", queryName, viewName, definitionName);
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    }
     // create new runtime context for capturing all required runtime services and state
     ExecutionContext context = new ExecutionContext(processingDefinition, serviceRegistry, rootContext);
     // run query
     ExecutionInput executionInput = ExecutionInput.newExecutionInput()
-            .query(processingDefinition.getQuery(queryName, viewName))
+            .query(queryDefinition.getQuery())
             .root(rootContext.getTarget())
             .context(context)
             .variables(queryArgs)
             .build();
-    ExecutionResult result = GraphQL.newGraphQL(processingDefinition.getQuerySchema(rootContext.getTarget(), queryName, viewName))
+    ExecutionResult result = GraphQL.newGraphQL(queryDefinition.getQuerySchema(rootContext.getTarget()))
             .preparsedDocumentProvider(processingDefinition.getQueryRegistry())
             .build()
             .execute(executionInput);
@@ -97,7 +108,16 @@ public abstract class GraphQLControllerBase extends ControllerBase {
         LOG.error("GraphQL execution error: {}", error.toString());
       }
     }
-    return result.getData();
+    Map<String, Object> jsonMap = result.getData();
+    if (postProcessors != null) {
+      for (JsonPostprocessor postProcessor : postProcessors) {
+        Object transformedResult = postProcessor.transform(jsonMap, processingDefinition, queryName, viewName);
+        if (transformedResult != null) {
+          return transformedResult;
+        }
+      }
+    }
+    return jsonMap;
   }
 
 
