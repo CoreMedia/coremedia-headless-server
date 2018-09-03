@@ -1,7 +1,7 @@
 package com.coremedia.caas.schema.datafetcher.content;
 
 import com.coremedia.caas.schema.datafetcher.common.AbstractDataFetcher;
-import com.coremedia.caas.schema.util.FieldExpressionEvaluator;
+import com.coremedia.caas.service.expression.spel.schema.FieldExpressionEvaluator;
 import com.coremedia.caas.service.repository.content.ContentProxy;
 
 import graphql.schema.DataFetchingEnvironment;

@@ -1,6 +1,6 @@
 package com.coremedia.caas.schema.datafetcher.common;
 
-import com.coremedia.caas.schema.util.FieldExpressionEvaluator;
+import com.coremedia.caas.service.expression.spel.schema.FieldExpressionEvaluator;
 
 import graphql.schema.DataFetchingEnvironment;
 import org.slf4j.Logger;

@@ -1,16 +1,13 @@
-package com.coremedia.caas.schema.util;
+package com.coremedia.caas.service.expression.spel.schema;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.expression.EvaluationContext;
 import org.springframework.expression.Expression;
 import org.springframework.expression.spel.SpelCompilerMode;
 import org.springframework.expression.spel.SpelParserConfiguration;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
-import org.springframework.stereotype.Component;
 
-@Component
 public class FieldExpressionEvaluator {
 
   private static final Logger LOG = LoggerFactory.getLogger(FieldExpressionEvaluator.class);
@@ -41,7 +38,7 @@ public class FieldExpressionEvaluator {
   }
 
 
-  public FieldExpressionEvaluator(@Qualifier("schemaEvaluationContext") EvaluationContext evaluationContext) {
+  public FieldExpressionEvaluator(EvaluationContext evaluationContext) {
     EVALUATION_CONTEXT = evaluationContext;
   }
 }
