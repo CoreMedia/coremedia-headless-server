@@ -30,6 +30,14 @@
       <artifactId>headless-server-doc</artifactId>
       <version>${project.version}</version>
     </dependency>
+    <!-- extensions -->
+    <dependency>
+      <groupId>com.coremedia.labs</groupId>
+      <artifactId>extensions-bom</artifactId>
+      <version>${project.version}</version>
+      <type>pom</type>
+      <scope>runtime</scope>
+    </dependency>
     <!-- third-party libs -->
     <dependency>
       <groupId>org.springframework.boot</groupId>

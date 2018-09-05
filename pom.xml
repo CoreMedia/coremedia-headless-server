@@ -54,6 +54,7 @@
     <module>headless-server-app</module>
     <module>headless-server-webapp</module>
     <module>headless-performance-test</module>
+    <module>extensions</module>
   </modules>
 
   <dependencyManagement>
