@@ -18,6 +18,8 @@ public abstract class AbstractTypeDefinition implements TypeDefinition {
   }
 
 
+  public abstract TypeDefinition getParent();
+
   @Override
   public Map<String, String> getOptions() {
     TypeCustomization customization = getTypeCustomization();
@@ -25,15 +27,6 @@ public abstract class AbstractTypeDefinition implements TypeDefinition {
       return customization.getOptions();
     }
     return null;
-  }
-
-
-  protected ContentType getContentType() {
-    return contentType;
-  }
-
-  protected SchemaConfig getSchemaConfig() {
-    return schemaConfig;
   }
 
 
@@ -46,11 +39,15 @@ public abstract class AbstractTypeDefinition implements TypeDefinition {
     return builder.toString();
   }
 
-
   protected TypeCustomization getTypeCustomization() {
     return getSchemaConfig().findTypeCustomization(this);
   }
 
+  protected ContentType getContentType() {
+    return contentType;
+  }
 
-  protected abstract TypeDefinition getParent();
+  protected SchemaConfig getSchemaConfig() {
+    return schemaConfig;
+  }
 }
