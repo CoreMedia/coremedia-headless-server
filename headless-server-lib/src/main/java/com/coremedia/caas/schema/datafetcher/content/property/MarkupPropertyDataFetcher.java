@@ -15,9 +15,9 @@ public class MarkupPropertyDataFetcher extends AbstractPropertyDataFetcher {
 
   @Override
   protected Object getData(ContentProxy contentProxy, Expression expression, DataFetchingEnvironment environment) {
-    MarkupProxy markup = getProperty(contentProxy, expression, MarkupProxy.class);
-    if (markup != null) {
-      return markup.toString();
+    MarkupProxy markupProxy = getProperty(contentProxy, expression, MarkupProxy.class);
+    if (markupProxy != null) {
+      return markupProxy.toString();
     }
     return null;
   }
