@@ -19,6 +19,7 @@
     <!-- extension aggregator -->
     <module>extensions-bom</module>
     <!-- extension modules -->
+    <module>jslt-postprocessor</module>
   </modules>
 
 </project>

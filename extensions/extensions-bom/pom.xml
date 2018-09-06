@@ -17,6 +17,12 @@
 
   <dependencies>
     <!-- enabled extension dependencies go here -->
+    <!--dependency>
+      <groupId>com.coremedia.labs</groupId>
+      <artifactId>jslt-postprocessor</artifactId>
+      <version>${project.version}</version>
+      <scope>runtime</scope>
+    </dependency-->
   </dependencies>
 
 </project>
