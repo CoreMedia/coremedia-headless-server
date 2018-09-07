@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>com.coremedia.labs</groupId>
+    <artifactId>headless-server</artifactId>
+    <version>1-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>extensions-bom</artifactId>
+  <packaging>pom</packaging>
+
+  <description>Headless Server Extension/Example Module Bill of Material</description>
+
+  <dependencies>
+    <!-- enabled extension dependencies go here -->
+    <!--dependency>
+      <groupId>com.coremedia.labs</groupId>
+      <artifactId>jslt-postprocessor</artifactId>
+      <version>${project.version}</version>
+      <scope>runtime</scope>
+    </dependency-->
+  </dependencies>
+
+</project>

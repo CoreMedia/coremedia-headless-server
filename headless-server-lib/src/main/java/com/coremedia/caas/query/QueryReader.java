@@ -6,6 +6,7 @@ import com.coremedia.caas.config.reader.CommandCallbackHandler;
 import com.coremedia.caas.config.reader.ConfigResource;
 import com.coremedia.caas.schema.InvalidQueryDefinition;
 import com.coremedia.caas.schema.SchemaService;
+
 import com.google.common.collect.ImmutableList;
 
 import java.io.IOException;
@@ -30,6 +31,7 @@ public class QueryReader extends AbstractConfigReader {
             queryDefinition.setQueryName(args.get("name"));
             queryDefinition.setTypeName(args.get("type"));
             queryDefinition.setViewName(args.get("view"));
+            queryDefinition.setArgs(args);
           }
         }
       }));
