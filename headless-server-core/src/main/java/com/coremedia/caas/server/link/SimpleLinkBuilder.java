@@ -1,4 +1,4 @@
-package com.coremedia.caas.link.builder;
+package com.coremedia.caas.server.link;
 
 import com.coremedia.caas.link.LinkBuilder;
 import com.coremedia.caas.service.repository.content.BlobProxy;
