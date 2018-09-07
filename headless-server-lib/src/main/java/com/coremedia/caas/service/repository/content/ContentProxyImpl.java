@@ -9,7 +9,6 @@ import com.coremedia.xml.Markup;
 import com.google.common.base.MoreObjects;
 
 import java.time.ZonedDateTime;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
 
@@ -67,12 +66,7 @@ public class ContentProxyImpl implements ContentProxy {
 
   @Override
   public Object get(String propertyName) {
-    Object value = proxyFactory.makeProxy(content.get(propertyName));
-    // special conversion needed
-    if (value instanceof Calendar) {
-      return toZonedDateTime((Calendar) value);
-    }
-    return value;
+    return proxyFactory.makeProxy(content.get(propertyName));
   }
 
 

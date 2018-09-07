@@ -16,6 +16,7 @@ import com.coremedia.xml.Markup;
 
 import com.google.common.collect.Maps;
 
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +24,8 @@ import java.util.Objects;
 import java.util.SortedMap;
 import java.util.stream.Collectors;
 import javax.validation.constraints.NotNull;
+
+import static com.coremedia.caas.service.repository.content.util.ContentUtil.toZonedDateTime;
 
 public class ProxyFactoryImpl implements ProxyFactory {
 
@@ -78,6 +81,9 @@ public class ProxyFactoryImpl implements ProxyFactory {
     }
     if (source instanceof Markup) {
       return makeMarkupProxy((Markup) source);
+    }
+    if (source instanceof Calendar) {
+      return toZonedDateTime((Calendar) source);
     }
     return source;
   }

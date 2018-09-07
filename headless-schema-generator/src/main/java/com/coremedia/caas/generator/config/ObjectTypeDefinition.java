@@ -19,10 +19,9 @@ public class ObjectTypeDefinition extends AbstractTypeDefinition {
 
 
   @Override
-  protected ObjectTypeDefinition getParent() {
+  public ObjectTypeDefinition getParent() {
     return getSchemaConfig().findParent(this);
   }
-
 
   @Override
   public String getName() {

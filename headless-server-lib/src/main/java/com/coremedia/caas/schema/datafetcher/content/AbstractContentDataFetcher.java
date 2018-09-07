@@ -1,24 +1,23 @@
 package com.coremedia.caas.schema.datafetcher.content;
 
 import com.coremedia.caas.schema.datafetcher.common.AbstractDataFetcher;
-import com.coremedia.caas.service.expression.spel.schema.FieldExpressionEvaluator;
+import com.coremedia.caas.service.expression.FieldExpression;
 import com.coremedia.caas.service.repository.content.ContentProxy;
 
 import graphql.schema.DataFetchingEnvironment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.expression.Expression;
 
 public abstract class AbstractContentDataFetcher extends AbstractDataFetcher {
 
   private static final Logger LOG = LoggerFactory.getLogger(AbstractContentDataFetcher.class);
 
 
-  private Expression expression;
+  private FieldExpression<?> expression;
 
 
-  public AbstractContentDataFetcher(String sourceName) {
-    this.expression = FieldExpressionEvaluator.compile(sourceName);
+  public AbstractContentDataFetcher(FieldExpression<?> expression) {
+    this.expression = expression;
   }
 
 
@@ -38,5 +37,5 @@ public abstract class AbstractContentDataFetcher extends AbstractDataFetcher {
   }
 
 
-  protected abstract Object getData(ContentProxy contentProxy, Expression expression, DataFetchingEnvironment environment);
+  protected abstract Object getData(ContentProxy contentProxy, FieldExpression<?> expression, DataFetchingEnvironment environment);
 }

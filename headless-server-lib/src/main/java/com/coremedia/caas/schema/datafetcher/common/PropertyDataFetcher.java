@@ -1,29 +1,28 @@
 package com.coremedia.caas.schema.datafetcher.common;
 
-import com.coremedia.caas.service.expression.spel.schema.FieldExpressionEvaluator;
+import com.coremedia.caas.service.expression.FieldExpression;
 
 import graphql.schema.DataFetchingEnvironment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.expression.Expression;
 
 public class PropertyDataFetcher extends AbstractDataFetcher {
 
   private static final Logger LOG = LoggerFactory.getLogger(PropertyDataFetcher.class);
 
 
-  private Expression expression;
+  private FieldExpression<?> expression;
 
 
-  public PropertyDataFetcher(String sourceName) {
-    this.expression = FieldExpressionEvaluator.compile(sourceName);
+  public PropertyDataFetcher(FieldExpression<?> expression) {
+    this.expression = expression;
   }
 
 
   @Override
   public Object get(DataFetchingEnvironment environment) {
     try {
-      return FieldExpressionEvaluator.fetch(expression, environment.getSource());
+      return expression.fetch(environment.getSource());
     } catch (Exception e) {
       LOG.error("DataFetcher access failed:", e);
     }

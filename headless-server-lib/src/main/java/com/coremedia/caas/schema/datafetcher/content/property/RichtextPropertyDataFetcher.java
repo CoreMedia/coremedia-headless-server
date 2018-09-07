@@ -6,6 +6,7 @@ import com.coremedia.caas.richtext.RichtextTransformerRegistry;
 import com.coremedia.caas.richtext.output.StringOutputFactory;
 import com.coremedia.caas.richtext.output.TreeOutputFactory;
 import com.coremedia.caas.schema.type.scalar.RichtextTree;
+import com.coremedia.caas.service.expression.FieldExpression;
 import com.coremedia.caas.service.repository.content.ContentProxy;
 import com.coremedia.caas.service.repository.content.MarkupProxy;
 
@@ -14,7 +15,6 @@ import graphql.schema.DataFetchingEnvironment;
 import graphql.schema.GraphQLOutputType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.expression.Expression;
 
 import java.util.List;
 
@@ -23,13 +23,13 @@ public class RichtextPropertyDataFetcher extends AbstractPropertyDataFetcher {
   private static final Logger LOG = LoggerFactory.getLogger(RichtextPropertyDataFetcher.class);
 
 
-  public RichtextPropertyDataFetcher(String sourceName, List<String> fallbackSourceNames) {
-    super(sourceName, fallbackSourceNames);
+  public RichtextPropertyDataFetcher(FieldExpression<?> expression, List<FieldExpression<?>> fallbackExpressions) {
+    super(expression, fallbackExpressions);
   }
 
 
   @Override
-  protected Object getData(ContentProxy contentProxy, Expression expression, DataFetchingEnvironment environment) {
+  protected Object getData(ContentProxy contentProxy, FieldExpression<?> expression, DataFetchingEnvironment environment) {
     ExecutionContext context = getContext(environment);
     MarkupProxy markupProxy = getProperty(contentProxy, expression, MarkupProxy.class);
     if (markupProxy != null && !markupProxy.isEmpty()) {

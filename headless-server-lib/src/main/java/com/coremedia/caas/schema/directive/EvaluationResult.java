@@ -1,21 +1,26 @@
 package com.coremedia.caas.schema.directive;
 
-public interface EvaluationResult {
+public class EvaluationResult {
 
-  EvaluationResult NOOP = new EvaluationResult() {
-    @Override
-    public Action getAction() {
-      return Action.NOOP;
-    }
-
-    @Override
-    public Object getValue() {
-      return null;
-    }
-  };
+  public static EvaluationResult NOOP = new EvaluationResult(Action.NOOP, null);
+  public static EvaluationResult RETNULL = new EvaluationResult(Action.RETURN, null);
 
 
-  Action getAction();
+  private Action action;
+  private Object value;
 
-  Object getValue();
+
+  public EvaluationResult(Action action, Object value) {
+    this.action = action;
+    this.value = value;
+  }
+
+
+  public Action getAction() {
+    return action;
+  }
+
+  public Object getValue() {
+    return value;
+  }
 }

@@ -24,7 +24,7 @@ public class LinkPropertyField extends AbstractField {
     return ImmutableList.of(newFieldDefinition()
             .name(getName())
             .type(Types.getType(getTypeName(), isNonNull()))
-            .dataFetcherFactory(decorate(new LinkPropertyDataFetcher(getSourceName(), getFallbackSourceNames(), Types.getBaseTypeName(getTypeName()))))
+            .dataFetcherFactory(decorate(new LinkPropertyDataFetcher(getSourceExpression(schemaService), getFallbackExpressions(schemaService), Types.getBaseTypeName(getTypeName()))))
             .build());
   }
 }

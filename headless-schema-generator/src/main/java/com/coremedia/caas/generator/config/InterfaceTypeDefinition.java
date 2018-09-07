@@ -20,10 +20,9 @@ public class InterfaceTypeDefinition extends AbstractTypeDefinition {
 
 
   @Override
-  protected InterfaceTypeDefinition getParent() {
+  public InterfaceTypeDefinition getParent() {
     return getSchemaConfig().findParent(this);
   }
-
 
   @Override
   public String getName() {

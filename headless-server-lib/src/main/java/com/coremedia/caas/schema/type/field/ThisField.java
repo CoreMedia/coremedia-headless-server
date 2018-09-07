@@ -5,6 +5,7 @@ import com.coremedia.caas.schema.SchemaService;
 import com.coremedia.caas.schema.Types;
 import com.coremedia.caas.schema.datafetcher.StaticDataFetcherFactory;
 import com.coremedia.caas.schema.datafetcher.common.PropertyDataFetcher;
+import com.coremedia.caas.schema.field.common.SchemaServiceBase;
 
 import com.google.common.collect.ImmutableList;
 import graphql.schema.GraphQLFieldDefinition;
@@ -13,7 +14,7 @@ import java.util.Collection;
 
 import static graphql.schema.GraphQLFieldDefinition.newFieldDefinition;
 
-public class ThisField implements FieldBuilder {
+public class ThisField extends SchemaServiceBase implements FieldBuilder {
 
   public static final String NAME = "this";
 
@@ -37,7 +38,7 @@ public class ThisField implements FieldBuilder {
     return ImmutableList.of(newFieldDefinition()
             .name(NAME)
             .type(Types.getType(targetType, true))
-            .dataFetcherFactory(new StaticDataFetcherFactory(new PropertyDataFetcher(NAME)))
+            .dataFetcherFactory(new StaticDataFetcherFactory(new PropertyDataFetcher(getExpression(NAME, schemaService))))
             .build());
   }
 }

@@ -3,9 +3,11 @@ package com.coremedia.caas.schema.field.common;
 import com.coremedia.caas.schema.DirectiveDefinition;
 import com.coremedia.caas.schema.FieldBuilder;
 import com.coremedia.caas.schema.FieldDefinition;
+import com.coremedia.caas.schema.SchemaService;
 import com.coremedia.caas.schema.datafetcher.StaticDataFetcherFactory;
 import com.coremedia.caas.schema.datafetcher.converter.ConvertingDataFetcher;
 import com.coremedia.caas.schema.datafetcher.directive.DirectiveEvaluatingDataFetcher;
+import com.coremedia.caas.service.expression.FieldExpression;
 
 import com.google.common.base.MoreObjects;
 import graphql.schema.DataFetcher;
@@ -13,7 +15,7 @@ import graphql.schema.DataFetcherFactory;
 
 import java.util.List;
 
-public abstract class AbstractField implements FieldDefinition, FieldBuilder {
+public abstract class AbstractField extends SchemaServiceBase implements FieldDefinition, FieldBuilder {
 
   private boolean convertible;
   private boolean withDirectives;
@@ -34,10 +36,12 @@ public abstract class AbstractField implements FieldDefinition, FieldBuilder {
   }
 
 
+  @SuppressWarnings("WeakerAccess")
   protected boolean isConvertible() {
     return convertible;
   }
 
+  @SuppressWarnings("WeakerAccess")
   protected boolean isWithDirectives() {
     return withDirectives;
   }
@@ -54,11 +58,21 @@ public abstract class AbstractField implements FieldDefinition, FieldBuilder {
   }
 
 
+  protected FieldExpression<?> getSourceExpression(SchemaService schemaService) {
+    return getExpression(getSourceName(), schemaService);
+  }
+
+  protected List<FieldExpression<?>> getFallbackExpressions(SchemaService schemaService) {
+    return getExpressions(getFallbackSourceNames(), schemaService);
+  }
+
+
   @Override
   public boolean isNonNull() {
     return nonNull;
   }
 
+  @SuppressWarnings("unused")
   public void setNonNull(boolean nonNull) {
     this.nonNull = nonNull;
   }
@@ -68,6 +82,7 @@ public abstract class AbstractField implements FieldDefinition, FieldBuilder {
     return name;
   }
 
+  @SuppressWarnings("unused")
   public void setName(String name) {
     this.name = name;
   }
@@ -77,6 +92,7 @@ public abstract class AbstractField implements FieldDefinition, FieldBuilder {
     return sourceName == null ? name : sourceName;
   }
 
+  @SuppressWarnings("unused")
   public void setSourceName(String sourceName) {
     this.sourceName = sourceName;
   }
@@ -86,6 +102,7 @@ public abstract class AbstractField implements FieldDefinition, FieldBuilder {
     return fallbackSourceNames;
   }
 
+  @SuppressWarnings("unused")
   public void setFallbackSourceNames(List<String> fallbackSourceNames) {
     this.fallbackSourceNames = fallbackSourceNames;
   }
@@ -95,6 +112,7 @@ public abstract class AbstractField implements FieldDefinition, FieldBuilder {
     return directives;
   }
 
+  @SuppressWarnings("unused")
   public void setDirectives(List<DirectiveDefinition> directives) {
     this.directives = directives;
   }
@@ -104,6 +122,7 @@ public abstract class AbstractField implements FieldDefinition, FieldBuilder {
     return typeName;
   }
 
+  @SuppressWarnings("unused")
   public void setTypeName(String typeName) {
     this.typeName = typeName;
   }
@@ -113,6 +132,7 @@ public abstract class AbstractField implements FieldDefinition, FieldBuilder {
     return defaultValue;
   }
 
+  @SuppressWarnings("unused")
   public void setDefaultValue(Object defaultValue) {
     this.defaultValue = defaultValue;
   }
