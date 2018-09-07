@@ -24,7 +24,7 @@ public class ContentPropertyField extends AbstractField {
     return ImmutableList.of(newFieldDefinition()
             .name(getName())
             .type(Types.getType(getTypeName(), isNonNull()))
-            .dataFetcherFactory(decorate(new ContentPropertyDataFetcher(getSourceName(), getFallbackSourceNames())))
+            .dataFetcherFactory(decorate(new ContentPropertyDataFetcher(getSourceExpression(schemaService), getFallbackExpressions(schemaService))))
             .build());
   }
 }

@@ -25,7 +25,7 @@ public class BlobPropertyField extends AbstractField {
     return ImmutableList.of(newFieldDefinition()
             .name(getName())
             .type(Types.getType(ContentBlob.TYPENAME, isNonNull()))
-            .dataFetcherFactory(decorate(new BlobPropertyDataFetcher(getSourceName(), getFallbackSourceNames())))
+            .dataFetcherFactory(decorate(new BlobPropertyDataFetcher(getSourceExpression(schemaService), getFallbackExpressions(schemaService))))
             .build());
   }
 }

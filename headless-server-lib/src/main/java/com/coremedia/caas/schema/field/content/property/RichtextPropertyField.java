@@ -27,7 +27,7 @@ public class RichtextPropertyField extends AbstractField {
             .name(getName())
             .type(Types.getType(getTypeName(), isNonNull()))
             .argument(new GraphQLArgument("view", Scalars.GraphQLString))
-            .dataFetcherFactory(decorate(new RichtextPropertyDataFetcher(getSourceName(), getFallbackSourceNames())))
+            .dataFetcherFactory(decorate(new RichtextPropertyDataFetcher(getSourceExpression(schemaService), getFallbackExpressions(schemaService))))
             .build());
   }
 }

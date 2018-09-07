@@ -1,5 +1,6 @@
 package com.coremedia.caas.service.expression.spel.schema;
 
+import com.coremedia.caas.service.expression.FieldExpressionCompiler;
 import com.coremedia.caas.service.expression.spel.ReadOnlyMapAccessor;
 import com.coremedia.caas.service.repository.content.ContentProxyPropertyAccessor;
 import com.coremedia.caas.service.repository.content.StructProxyPropertyAccessor;
@@ -17,7 +18,7 @@ import org.springframework.expression.spel.support.StandardEvaluationContext;
 import java.util.List;
 
 @Configuration
-public class FieldExpressionConfig {
+public class SpelFieldExpressionConfig {
 
   @Bean("schemaEvaluationContext")
   public EvaluationContext schemaEvaluationContext(@Qualifier("schemaContentModelMethodResolver") MethodResolver contentMethodResolver) {
@@ -33,8 +34,8 @@ public class FieldExpressionConfig {
     return context;
   }
 
-  @Bean("schemaFieldExpressionEvaluator")
-  public FieldExpressionEvaluator fieldExpressionEvaluator(@Qualifier("schemaEvaluationContext") EvaluationContext evaluationContext) {
-    return new FieldExpressionEvaluator(evaluationContext);
+  @Bean("schemaFieldExpressionCompiler")
+  public FieldExpressionCompiler fieldExpressionCompiler(@Qualifier("schemaEvaluationContext") EvaluationContext evaluationContext) {
+    return new SpelFieldExpressionService(evaluationContext);
   }
 }

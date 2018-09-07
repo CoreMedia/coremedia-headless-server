@@ -1,5 +1,7 @@
 package com.coremedia.caas.service.repository.content;
 
+import com.coremedia.caas.schema.type.field.ThisField;
+
 import org.springframework.expression.AccessException;
 import org.springframework.expression.EvaluationContext;
 import org.springframework.expression.PropertyAccessor;
@@ -34,7 +36,7 @@ public class ContentProxyPropertyAccessor implements PropertyAccessor {
         return new TypedValue(contentProxy.getCreationDate());
       case "_modificationDate":
         return new TypedValue(contentProxy.getModificationDate());
-      case "this":
+      case ThisField.NAME:
         return new TypedValue(contentProxy);
       default:
         return new TypedValue(contentProxy.get(name));

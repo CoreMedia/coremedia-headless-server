@@ -24,7 +24,7 @@ public class UriPropertyField extends AbstractField {
     return ImmutableList.of(newFieldDefinition()
             .name(getName())
             .type(Types.getType(getTypeName(), isNonNull()))
-            .dataFetcherFactory(decorate(new UriPropertyDataFetcher(getSourceName())))
+            .dataFetcherFactory(decorate(new UriPropertyDataFetcher(getSourceExpression(schemaService))))
             .build());
   }
 }
