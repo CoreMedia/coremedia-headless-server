@@ -1,6 +1,7 @@
 package com.coremedia.caas.server.link;
 
 import com.coremedia.caas.link.LinkBuilder;
+import com.coremedia.caas.service.repository.RootContext;
 import com.coremedia.caas.service.repository.content.BlobProxy;
 import com.coremedia.caas.service.repository.content.ContentProxy;
 import com.coremedia.cap.common.IdHelper;
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Component;
 public class SimpleLinkBuilder implements LinkBuilder {
 
   @Override
-  public String createLink(Object target) {
+  public String createLink(Object target, RootContext rootContext) {
     if (target instanceof ContentProxy) {
       ContentProxy content = (ContentProxy) target;
       if (content.isSubtypeOf("CMImage")) {

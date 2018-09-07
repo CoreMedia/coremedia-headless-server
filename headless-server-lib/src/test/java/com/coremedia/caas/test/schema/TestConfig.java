@@ -15,12 +15,12 @@ public class TestConfig {
 
   @Bean
   public FieldExpressionCompiler fieldExpressionCompiler() {
-    return pathExpression -> null;
+    return (pathExpression) -> null;
   }
 
 
   @Bean("testLinkBuilder")
   public LinkBuilder testLinkBuilder() {
-    return target -> "";
+    return (target, rootContext) -> "";
   }
 }
