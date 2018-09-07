@@ -34,6 +34,12 @@ import java.util.concurrent.TimeUnit;
 @Api(value = "/caas/v1/{tenantId}/sites/{siteId}/media", tags = "Media", description = "Operations for media objects")
 public class MediaController extends ControllerBase {
 
+  @SuppressWarnings("WeakerAccess")
+  public static final String HANDLER_NAME_MEDIA_DATA = "mediaData";
+  @SuppressWarnings("WeakerAccess")
+  public static final String HANDLER_NAME_IMAGE_VARIANTS = "imageVariants";
+
+
   private ImageVariantsResolver imageVariantsResolver;
 
 
@@ -44,7 +50,7 @@ public class MediaController extends ControllerBase {
 
 
   @ResponseBody
-  @RequestMapping(value = "/{mediaId}/{propertyName}", method = RequestMethod.GET)
+  @RequestMapping(name = HANDLER_NAME_MEDIA_DATA, value = "/{mediaId}/{propertyName}", method = RequestMethod.GET)
   @ApiOperation(
           value = "Media.Blob",
           notes = "Return the binary data of a media object.\n" +
@@ -61,8 +67,8 @@ public class MediaController extends ControllerBase {
                                  @ApiParam(value = "The media object's numeric ID or alias", required = true) @PathVariable String mediaId,
                                  @ApiParam(value = "The blob property name", required = true) @PathVariable String propertyName,
                                  @ApiParam(value = "The required ratio if requesting an image") @RequestParam(required = false) String ratio,
-                                 @ApiParam(value = "The required minimum width if requesting an image") @RequestParam(required = false, defaultValue = "-1") int minWidth,
-                                 @ApiParam(value = "The required minimum height if requesting an image") @RequestParam(required = false, defaultValue = "-1") int minHeight,
+                                 @ApiParam(value = "The required minimum width if requesting an image") @RequestParam(required = false, defaultValue = "-1") Integer minWidth,
+                                 @ApiParam(value = "The required minimum height if requesting an image") @RequestParam(required = false, defaultValue = "-1") Integer minHeight,
                                  ServletWebRequest request) {
     try {
       RootContext rootContext = resolveRootContext(tenantId, siteId, mediaId, request);
@@ -95,7 +101,7 @@ public class MediaController extends ControllerBase {
 
 
   @ResponseBody
-  @RequestMapping(value = "/image/variants", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+  @RequestMapping(name = HANDLER_NAME_IMAGE_VARIANTS, value = "/image/variants", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
   @ApiOperation(
           value = "Media.ImageVariants",
           notes = "Return the delivery variants of an image.\n" +
