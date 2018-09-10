@@ -13,7 +13,7 @@
 
   <artifactId>jslt-postprocessor</artifactId>
 
-  <description>JSLT query result example postprocessor</description>
+  <description>JSLT Query Result Example Postprocessor</description>
 
   <properties>
     <jslt.version>0.1.3</jslt.version>
