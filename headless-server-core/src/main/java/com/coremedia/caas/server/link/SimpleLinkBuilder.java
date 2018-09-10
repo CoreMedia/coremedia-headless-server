@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @Component("simpleLinkBuilder")
 public class SimpleLinkBuilder implements LinkBuilder {
 
-  private static final String EMPTY_LINK = "";
+  public static final String EMPTY_LINK = "";
 
 
   @Override
@@ -52,7 +52,7 @@ public class SimpleLinkBuilder implements LinkBuilder {
 
 
   private String createBinaryLink(ContentProxy content, String typeName, String propertyName) {
-    BlobProxy blob = content.getBlob("data");
+    BlobProxy blob = content.getBlob(propertyName);
     if (blob != null && blob.getSize() > 0) {
       return "coremedia:///" + typeName + "/" + IdHelper.parseContentId(content.getId()) + "/" + propertyName;
     }
