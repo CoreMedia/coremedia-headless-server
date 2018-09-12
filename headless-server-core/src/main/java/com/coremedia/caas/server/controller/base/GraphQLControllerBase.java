@@ -5,7 +5,7 @@ import com.coremedia.caas.config.ProcessingDefinition;
 import com.coremedia.caas.config.ProcessingDefinitionCacheKey;
 import com.coremedia.caas.execution.ExecutionContext;
 import com.coremedia.caas.query.QueryDefinition;
-import com.coremedia.caas.server.service.postprocessor.JsonPostprocessor;
+import com.coremedia.caas.server.controller.interceptor.QueryExecutionInterceptor;
 import com.coremedia.caas.server.service.request.ClientIdentification;
 import com.coremedia.caas.server.service.request.GlobalParameters;
 import com.coremedia.caas.service.ServiceRegistry;
@@ -13,6 +13,7 @@ import com.coremedia.caas.service.repository.RootContext;
 import com.coremedia.caas.service.security.AccessControlViolation;
 import com.coremedia.cache.Cache;
 
+import com.google.common.collect.Lists;
 import graphql.ExecutionInput;
 import graphql.ExecutionResult;
 import graphql.GraphQL;
@@ -45,6 +46,7 @@ public abstract class GraphQLControllerBase extends ControllerBase {
   private ServiceRegistry serviceRegistry;
 
   @Autowired
+  @Qualifier("settingsService")
   private SettingsService settingsService;
 
   @Autowired
@@ -52,7 +54,7 @@ public abstract class GraphQLControllerBase extends ControllerBase {
   private Map<String, ProcessingDefinition> staticProcessingDefinitions;
 
   @Autowired(required = false)
-  private List<JsonPostprocessor> postProcessors;
+  private List<QueryExecutionInterceptor> queryInterceptors;
 
 
   public GraphQLControllerBase(String timerName) {
@@ -71,7 +73,7 @@ public abstract class GraphQLControllerBase extends ControllerBase {
   }
 
 
-  private Object runQuery(@NotNull RootContext rootContext, @NotNull ClientIdentification clientIdentification, @NotNull String queryName, @NotNull String viewName, Map<String, Object> queryArgs, ServletWebRequest request) {
+  private Object runQuery(@NotNull String tenantId, @NotNull String siteId, @NotNull RootContext rootContext, @NotNull ClientIdentification clientIdentification, @NotNull String queryName, @NotNull String viewName, Map<String, Object> queryArgs, ServletWebRequest request) {
     String definitionName = clientIdentification.getDefinitionName();
     // repository defined runtime definition
     ProcessingDefinitionCacheKey processingDefinitionCacheKey = new ProcessingDefinitionCacheKey(rootContext.getSite().getSiteIndicator(), settingsService, applicationContext);
@@ -89,6 +91,14 @@ public abstract class GraphQLControllerBase extends ControllerBase {
     if (queryDefinition == null) {
       LOG.error("No query '{}#{}' found in processing definition '{}'", queryName, viewName, definitionName);
       throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    }
+    // run pre query interceptors
+    if (queryInterceptors != null) {
+      for (QueryExecutionInterceptor executionInterceptor : queryInterceptors) {
+        if (!executionInterceptor.preQuery(tenantId, siteId, clientIdentification, rootContext, processingDefinition, queryDefinition, queryArgs, request)) {
+          return null;
+        }
+      }
     }
     // create new runtime context for capturing all required runtime services and state
     ExecutionContext context = new ExecutionContext(processingDefinition, serviceRegistry, rootContext);
@@ -108,16 +118,17 @@ public abstract class GraphQLControllerBase extends ControllerBase {
         LOG.error("GraphQL execution error: {}", error.toString());
       }
     }
-    Map<String, Object> jsonMap = result.getData();
-    if (postProcessors != null) {
-      for (JsonPostprocessor postProcessor : postProcessors) {
-        Object transformedResult = postProcessor.transform(jsonMap, processingDefinition, queryName, viewName);
-        if (transformedResult != null) {
-          return transformedResult;
+    Object resultData = result.getData();
+    // run post query interceptors
+    if (queryInterceptors != null) {
+      for (QueryExecutionInterceptor executionInterceptor : Lists.reverse(queryInterceptors)) {
+        Object transformedData = executionInterceptor.postQuery(resultData, tenantId, siteId, clientIdentification, rootContext, processingDefinition, queryDefinition, queryArgs, request);
+        if (transformedData != null) {
+          resultData = transformedData;
         }
       }
     }
-    return jsonMap;
+    return resultData;
   }
 
 
@@ -139,7 +150,7 @@ public abstract class GraphQLControllerBase extends ControllerBase {
       // initialize expression evaluator
       serviceRegistry.getExpressionEvaluator().init(queryArgs);
       // run query
-      return execute(() -> runQuery(rootContext, clientIdentification, queryName, viewName, queryArgs, request), "tenant", tenantId, "site", siteId, "client", clientId, "pd", definitionName, "query", queryName, "view", viewName);
+      return execute(() -> runQuery(tenantId, siteId, rootContext, clientIdentification, queryName, viewName, queryArgs, request), "tenant", tenantId, "site", siteId, "client", clientId, "pd", definitionName, "query", queryName, "view", viewName);
     } catch (AccessControlViolation e) {
       return handleError(e, request);
     } catch (ResponseStatusException e) {

@@ -2,7 +2,7 @@ package com.coremedia.caas.richtext.stax.writer.intermediate.eval;
 
 import com.coremedia.caas.execution.ExecutionContext;
 import com.coremedia.caas.link.LinkBuilder;
-import com.coremedia.caas.service.repository.ProxyFactory;
+import com.coremedia.caas.service.repository.RootContext;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -36,12 +36,12 @@ public class EvaluationContext {
   }
 
 
-  public ProxyFactory getProxyFactory() {
-    return executionContext.getRootContext().getProxyFactory();
-  }
-
   public LinkBuilder getLinkBuilder() {
     return executionContext.getProcessingDefinition().getLinkBuilder();
+  }
+
+  public RootContext getRootContext() {
+    return executionContext.getRootContext();
   }
 
 

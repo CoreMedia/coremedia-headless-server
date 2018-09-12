@@ -33,13 +33,13 @@ public class LinkWriter extends AbstractOutputHandler {
       if (value != null) {
         if (IdHelper.isContentId(value)) {
           Evaluator evaluator = new FunctionEvaluator((context) -> {
-            ContentProxy contentProxy = context.getProxyFactory().makeContentProxyFromId(value);
+            ContentProxy contentProxy = context.getRootContext().getProxyFactory().makeContentProxyFromId(value);
             if (contentProxy == null) {
               // don't output link tag but all nested nodes
               return EvaluationAction.INCLUDE_INNER;
             }
             else {
-              String link = context.getLinkBuilder().createLink(contentProxy);
+              String link = context.getLinkBuilder().createLink(contentProxy, context.getRootContext());
               if (Strings.isNullOrEmpty(link)) {
                 // don't output link tag but all nested nodes
                 return EvaluationAction.INCLUDE_INNER;

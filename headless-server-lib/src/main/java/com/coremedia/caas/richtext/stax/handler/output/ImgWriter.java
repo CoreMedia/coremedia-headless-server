@@ -38,12 +38,12 @@ public class ImgWriter extends AbstractOutputHandler {
       String value = href.getValue();
       if (value != null && IdHelper.isBlobId(value)) {
         Evaluator evaluator = new FunctionEvaluator((context) -> {
-          ContentProxy contentProxy = context.getProxyFactory().makeContentProxyFromId(IdHelper.parseContentIdFromBlobId(value));
+          ContentProxy contentProxy = context.getRootContext().getProxyFactory().makeContentProxyFromId(IdHelper.parseContentIdFromBlobId(value));
           if (contentProxy == null) {
             return EvaluationAction.DROP;
           }
           else {
-            String link = context.getLinkBuilder().createLink(contentProxy);
+            String link = context.getLinkBuilder().createLink(contentProxy, context.getRootContext());
             if (Strings.isNullOrEmpty(link)) {
               return EvaluationAction.DROP;
             }

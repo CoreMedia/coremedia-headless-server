@@ -19,12 +19,22 @@ import org.springframework.web.context.request.ServletWebRequest;
 @Api(value = "/caas/v1/{tenantId}/sites/{siteId}", tags = "Content", description = "Operations for content objects")
 public class ContentViewController extends GraphQLControllerBase {
 
+  @SuppressWarnings("WeakerAccess")
+  public static final String HANDLER_NAME_SITE_QUERY = "siteQuery";
+  @SuppressWarnings("WeakerAccess")
+  public static final String HANDLER_NAME_SITE_QUERY_WITH_VIEW = "siteQueryWithView";
+  @SuppressWarnings("WeakerAccess")
+  public static final String HANDLER_NAME_CONTENT_QUERY = "contentQuery";
+  @SuppressWarnings("WeakerAccess")
+  public static final String HANDLER_NAME_CONTENT_QUERY_WITH_VIEW = "contentQueryWithView";
+
+
   public ContentViewController() {
     super("caas.server.content.requests");
   }
 
 
-  @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+  @RequestMapping(name = HANDLER_NAME_SITE_QUERY, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
   @ApiOperation(
           value = "Site.Query",
           notes = "Run the GraphQL query with name \"sites\" and view \"default\" on the requested site indicator.\n" +
@@ -41,7 +51,7 @@ public class ContentViewController extends GraphQLControllerBase {
     return execute(tenantId, siteId, "sites", null, "default", request);
   }
 
-  @RequestMapping(value = "/{viewName}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+  @RequestMapping(name = HANDLER_NAME_SITE_QUERY_WITH_VIEW, value = "/{viewName}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
   @ApiOperation(
           value = "Site.QueryWithView",
           notes = "Run the GraphQL query with name \"sites\" and given view on the requested site indicator.\n" +
@@ -59,7 +69,7 @@ public class ContentViewController extends GraphQLControllerBase {
     return execute(tenantId, siteId, "sites", null, viewName, request);
   }
 
-  @RequestMapping(value = "/{queryName}/{targetId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+  @RequestMapping(name = HANDLER_NAME_CONTENT_QUERY, value = "/{queryName}/{targetId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
   @ApiOperation(
           value = "Content.Query",
           notes = "Run the GraphQL query with given name and view \"default\" on the requested content object.\n" +
@@ -78,7 +88,7 @@ public class ContentViewController extends GraphQLControllerBase {
     return execute(tenantId, siteId, queryName, targetId, "default", request);
   }
 
-  @RequestMapping(value = "/{queryName}/{targetId}/{viewName}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+  @RequestMapping(name = HANDLER_NAME_CONTENT_QUERY_WITH_VIEW, value = "/{queryName}/{targetId}/{viewName}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
   @ApiOperation(
           value = "Content.QueryWithView",
           notes = "Run the GraphQL query with given name and view on the requested content object.\n" +

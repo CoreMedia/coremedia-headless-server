@@ -11,13 +11,9 @@
 
   <modelVersion>4.0.0</modelVersion>
 
-  <artifactId>jslt-postprocessor</artifactId>
+  <artifactId>enhanced-linkbuilder</artifactId>
 
-  <description>JSLT Query Result Example Postprocessor</description>
-
-  <properties>
-    <jslt.version>0.1.3</jslt.version>
-  </properties>
+  <description>Custom Link Builder Example</description>
 
   <dependencies>
     <dependency>
@@ -25,11 +21,10 @@
       <artifactId>headless-server-core</artifactId>
       <version>${project.version}</version>
     </dependency>
-    <!-- third-party libs -->
     <dependency>
-      <groupId>com.schibsted.spt.data</groupId>
-      <artifactId>jslt</artifactId>
-      <version>${jslt.version}</version>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+      <scope>provided</scope>
     </dependency>
   </dependencies>
 
