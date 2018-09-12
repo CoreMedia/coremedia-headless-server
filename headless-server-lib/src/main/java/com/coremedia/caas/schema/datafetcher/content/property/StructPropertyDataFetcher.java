@@ -13,6 +13,12 @@ public class StructPropertyDataFetcher extends AbstractPropertyDataFetcher {
 
 
   @Override
+  protected boolean isNullOrEmpty(Object value) {
+    return value == null;
+  }
+
+
+  @Override
   protected Object getData(ContentProxy contentProxy, FieldExpression<?> expression, DataFetchingEnvironment environment) {
     return getProperty(contentProxy, expression, Object.class);
   }

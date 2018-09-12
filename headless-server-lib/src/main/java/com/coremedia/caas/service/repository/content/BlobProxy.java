@@ -4,9 +4,11 @@ import javax.activation.MimeType;
 
 public interface BlobProxy {
 
-  MimeType getContentType();
+  boolean isEmpty();
 
   int getSize();
+
+  MimeType getContentType();
 
   String getETag();
 }

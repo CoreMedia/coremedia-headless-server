@@ -11,6 +11,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.coremedia.caas.service.repository.content.util.ContentUtil.isNullOrEmptyLinklist;
+
 public class LinklistPropertyDataFetcher extends AbstractPropertyDataFetcher {
 
   private String baseTypeName;
@@ -19,6 +21,12 @@ public class LinklistPropertyDataFetcher extends AbstractPropertyDataFetcher {
   public LinklistPropertyDataFetcher(FieldExpression<?> expression, List<FieldExpression<?>> fallbackExpressions, String baseTypeName) {
     super(expression, fallbackExpressions);
     this.baseTypeName = baseTypeName;
+  }
+
+
+  @Override
+  protected boolean isNullOrEmpty(Object value) {
+    return isNullOrEmptyLinklist(value);
   }
 
 

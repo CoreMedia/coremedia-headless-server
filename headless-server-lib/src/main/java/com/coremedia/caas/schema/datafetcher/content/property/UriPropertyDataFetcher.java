@@ -15,6 +15,12 @@ public class UriPropertyDataFetcher extends AbstractPropertyDataFetcher {
 
 
   @Override
+  protected boolean isNullOrEmpty(Object value) {
+    return value == null;
+  }
+
+
+  @Override
   protected Object getData(ContentProxy contentProxy, FieldExpression<?> expression, DataFetchingEnvironment environment) {
     Object target = getProperty(contentProxy, expression, Object.class);
     LinkBuilder linkBuilder = getContext(environment).getProcessingDefinition().getLinkBuilder();

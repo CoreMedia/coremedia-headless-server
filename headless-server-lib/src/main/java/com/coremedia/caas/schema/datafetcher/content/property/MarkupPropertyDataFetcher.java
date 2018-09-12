@@ -14,6 +14,12 @@ public class MarkupPropertyDataFetcher extends AbstractPropertyDataFetcher {
 
 
   @Override
+  protected boolean isNullOrEmpty(Object value) {
+    return value == null;
+  }
+
+
+  @Override
   protected Object getData(ContentProxy contentProxy, FieldExpression<?> expression, DataFetchingEnvironment environment) {
     MarkupProxy markupProxy = getProperty(contentProxy, expression, MarkupProxy.class);
     if (markupProxy != null) {

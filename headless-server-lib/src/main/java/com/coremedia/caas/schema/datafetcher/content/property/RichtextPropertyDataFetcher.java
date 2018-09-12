@@ -18,6 +18,8 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
+import static com.coremedia.caas.service.repository.content.util.ContentUtil.isNullOrEmptyRichtext;
+
 public class RichtextPropertyDataFetcher extends AbstractPropertyDataFetcher {
 
   private static final Logger LOG = LoggerFactory.getLogger(RichtextPropertyDataFetcher.class);
@@ -25,6 +27,12 @@ public class RichtextPropertyDataFetcher extends AbstractPropertyDataFetcher {
 
   public RichtextPropertyDataFetcher(FieldExpression<?> expression, List<FieldExpression<?>> fallbackExpressions) {
     super(expression, fallbackExpressions);
+  }
+
+
+  @Override
+  protected boolean isNullOrEmpty(Object value) {
+    return isNullOrEmptyRichtext(value);
   }
 
 

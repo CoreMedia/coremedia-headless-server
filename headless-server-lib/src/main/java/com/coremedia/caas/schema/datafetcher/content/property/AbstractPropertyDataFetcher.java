@@ -6,8 +6,6 @@ import com.coremedia.caas.service.repository.content.ContentProxy;
 
 import java.util.List;
 
-import static com.coremedia.caas.service.repository.content.util.ContentUtil.isNullOrEmpty;
-
 public abstract class AbstractPropertyDataFetcher extends AbstractContentDataFetcher {
 
   private List<FieldExpression<?>> fallbackExpressions;
@@ -17,6 +15,9 @@ public abstract class AbstractPropertyDataFetcher extends AbstractContentDataFet
     super(expression);
     this.fallbackExpressions = fallbackExpressions;
   }
+
+
+  protected abstract boolean isNullOrEmpty(Object value);
 
 
   protected <E> E getProperty(ContentProxy contentProxy, FieldExpression<?> expression, Class<E> targetClass) {

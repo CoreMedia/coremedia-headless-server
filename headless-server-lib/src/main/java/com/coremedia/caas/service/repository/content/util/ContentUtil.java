@@ -1,5 +1,6 @@
 package com.coremedia.caas.service.repository.content.util;
 
+import com.coremedia.caas.service.repository.content.BlobProxy;
 import com.coremedia.caas.service.repository.content.MarkupProxy;
 import com.coremedia.cap.content.Content;
 
@@ -10,11 +11,24 @@ import java.util.GregorianCalendar;
 
 public class ContentUtil {
 
-  public static boolean isNullOrEmpty(Object value) {
+  public static boolean isNullOrEmptyObject(Object value) {
     return (value == null) ||
            (value instanceof String && ((String) value).isEmpty()) ||
            (value instanceof Collection && ((Collection) value).isEmpty()) ||
+           (value instanceof BlobProxy && ((BlobProxy) value).isEmpty()) ||
            (value instanceof MarkupProxy && ((MarkupProxy) value).isEmpty());
+  }
+
+  public static boolean isNullOrEmptyBlob(Object value) {
+    return value == null || !(value instanceof BlobProxy) || ((BlobProxy) value).isEmpty();
+  }
+
+  public static boolean isNullOrEmptyLinklist(Object value) {
+    return value == null || !(value instanceof Collection) || ((Collection) value).isEmpty();
+  }
+
+  public static boolean isNullOrEmptyRichtext(Object value) {
+    return value == null || !(value instanceof MarkupProxy) || ((MarkupProxy) value).isEmpty();
   }
 
 
