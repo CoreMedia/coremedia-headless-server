@@ -7,10 +7,12 @@ import com.coremedia.caas.service.repository.content.ContentProxy;
 
 import graphql.schema.DataFetchingEnvironment;
 
+import java.util.List;
+
 public class UriPropertyDataFetcher extends AbstractPropertyDataFetcher {
 
-  public UriPropertyDataFetcher(FieldExpression<?> expression) {
-    super(expression, null);
+  public UriPropertyDataFetcher(FieldExpression<?> expression, List<FieldExpression<?>> fallbackExpressions) {
+    super(expression, fallbackExpressions);
   }
 
 

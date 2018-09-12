@@ -5,10 +5,12 @@ import com.coremedia.caas.service.repository.content.ContentProxy;
 
 import graphql.schema.DataFetchingEnvironment;
 
+import java.util.List;
+
 public class StructPropertyDataFetcher extends AbstractPropertyDataFetcher {
 
-  public StructPropertyDataFetcher(FieldExpression<?> expression) {
-    super(expression, null);
+  public StructPropertyDataFetcher(FieldExpression<?> expression, List<FieldExpression<?>> fallbackExpressions) {
+    super(expression, fallbackExpressions);
   }
 
 

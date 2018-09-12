@@ -6,10 +6,12 @@ import com.coremedia.caas.service.repository.content.MarkupProxy;
 
 import graphql.schema.DataFetchingEnvironment;
 
+import java.util.List;
+
 public class MarkupPropertyDataFetcher extends AbstractPropertyDataFetcher {
 
-  public MarkupPropertyDataFetcher(FieldExpression<?> expression) {
-    super(expression, null);
+  public MarkupPropertyDataFetcher(FieldExpression<?> expression, List<FieldExpression<?>> fallbackExpressions) {
+    super(expression, fallbackExpressions);
   }
 
 

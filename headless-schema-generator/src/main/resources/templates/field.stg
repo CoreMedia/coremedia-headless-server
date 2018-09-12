@@ -86,6 +86,7 @@ struct(fieldDefinition) ::= <<
   - !Struct
     name: <fieldDefinition.name>
     sourceName: "<fieldDefinition.sourceName>"
+    <fallbackSources(fieldDefinition.fallbackSourceNames)>
     typeName: <fieldDefinition.targetType>
     <if(fieldDefinition.nonNull)>nonNull: true<endif>
     <directives(fieldDefinition.directives)>
@@ -107,6 +108,7 @@ markup(fieldDefinition) ::= <<
   - !Markup
     name: <fieldDefinition.name>
     sourceName: "<fieldDefinition.sourceName>"
+    <fallbackSources(fieldDefinition.fallbackSourceNames)>
     typeName: String
     <if(fieldDefinition.nonNull)>nonNull: true<endif>
     <directives(fieldDefinition.directives)>
@@ -127,6 +129,7 @@ uri(fieldDefinition) ::= <<
   - !Uri
     name: <fieldDefinition.name>
     sourceName: "<fieldDefinition.sourceName>"
+    <fallbackSources(fieldDefinition.fallbackSourceNames)>
     typeName: String
     <if(fieldDefinition.nonNull)>nonNull: true<endif>
     <directives(fieldDefinition.directives)>
