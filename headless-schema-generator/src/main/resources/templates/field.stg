@@ -76,7 +76,7 @@ linklist(fieldDefinition) ::= <<
     name: <fieldDefinition.name>
     sourceName: "<fieldDefinition.sourceName>"
     <fallbackSources(fieldDefinition.fallbackSourceNames)>
-    typeName: List:<fieldDefinition.targetType>
+    typeName: <fieldDefinition.targetType>
     <if(fieldDefinition.nonNull)>nonNull: true<endif>
     <directives(fieldDefinition.directives)>
 

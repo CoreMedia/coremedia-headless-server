@@ -11,12 +11,12 @@ customFields:
   - !CustomField
     name: media
     sourceName: "pictures"
-    targetType: CMMedia
+    targetType: List:CMMedia
     dataFetcher: Linklist
   - !CustomField
     name: pictures
     sourceName: "pictures"
-    targetType: CMPicture
+    targetType: List:CMPicture
     dataFetcher: Linklist
   - !CustomField
     name: picture
