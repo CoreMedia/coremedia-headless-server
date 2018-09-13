@@ -24,21 +24,21 @@ public class MapOfScalars {
 
   private static final Map<String, GraphQLScalarType> typeMap;
 
-  private static final GraphQLScalarType MAP_OF_BOOLEAN = graphQLObjectScalar("MapOfBoolean", new CoercingMap<>(Boolean.class));
-  private static final GraphQLScalarType MAP_OF_FLOAT = graphQLObjectScalar("MapOfFloat", new CoercingMap<>(Float.class));
-  private static final GraphQLScalarType MAP_OF_INT = graphQLObjectScalar("MapOfInt", new CoercingMap<>(Integer.class));
-  private static final GraphQLScalarType MAP_OF_LONG = graphQLObjectScalar("MapOfLong", new CoercingMap<>(Long.class));
-  private static final GraphQLScalarType MAP_OF_SHORT = graphQLObjectScalar("MapOfShort", new CoercingMap<>(Short.class));
-  private static final GraphQLScalarType MAP_OF_STRING = graphQLObjectScalar("MapOfString", new CoercingMap<>(String.class));
+  private static final GraphQLScalarType CmsMapOfBoolean = graphQLObjectScalar("MapOfBoolean", new CoercingMap<>(Boolean.class));
+  private static final GraphQLScalarType CmsMapOfFloat = graphQLObjectScalar("MapOfFloat", new CoercingMap<>(Float.class));
+  private static final GraphQLScalarType CmsMapOfInt = graphQLObjectScalar("MapOfInt", new CoercingMap<>(Integer.class));
+  private static final GraphQLScalarType CmsMapOfLong = graphQLObjectScalar("MapOfLong", new CoercingMap<>(Long.class));
+  private static final GraphQLScalarType CmsMapOfShort = graphQLObjectScalar("MapOfShort", new CoercingMap<>(Short.class));
+  private static final GraphQLScalarType CmsMapOfString = graphQLObjectScalar("MapOfString", new CoercingMap<>(String.class));
 
   static {
     ImmutableMap.Builder<String, GraphQLScalarType> builder = ImmutableMap.builder();
-    builder.put(Types.BOOLEAN, MAP_OF_BOOLEAN);
-    builder.put(Types.FLOAT, MAP_OF_FLOAT);
-    builder.put(Types.INT, MAP_OF_INT);
-    builder.put(Types.LONG, MAP_OF_LONG);
-    builder.put(Types.SHORT, MAP_OF_SHORT);
-    builder.put(Types.STRING, MAP_OF_STRING);
+    builder.put(Types.BOOLEAN, CmsMapOfBoolean);
+    builder.put(Types.FLOAT, CmsMapOfFloat);
+    builder.put(Types.INT, CmsMapOfInt);
+    builder.put(Types.LONG, CmsMapOfLong);
+    builder.put(Types.SHORT, CmsMapOfShort);
+    builder.put(Types.STRING, CmsMapOfString);
     typeMap = builder.build();
   }
 

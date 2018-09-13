@@ -48,7 +48,7 @@ public class RichtextPropertyDataFetcher extends AbstractPropertyDataFetcher {
       if (transformer != null) {
         try {
           GraphQLOutputType outputType = environment.getFieldType();
-          if (RichtextTree.RICHTEXT_TREE.getName().equals(outputType.getName())) {
+          if (RichtextTree.CmsRichtextTree.getName().equals(outputType.getName())) {
             return transformer.transform(markupProxy, new TreeOutputFactory(), context);
           }
           else if (Scalars.GraphQLString.getName().equals(outputType.getName())) {

@@ -1,5 +1,7 @@
 package com.coremedia.caas.schema.type.scalar;
 
+import com.coremedia.caas.schema.Types;
+
 import graphql.schema.Coercing;
 import graphql.schema.CoercingParseLiteralException;
 import graphql.schema.CoercingParseValueException;
@@ -9,7 +11,7 @@ import graphql.schema.GraphQLScalarType;
 
 public class RichtextTree {
 
-  public static final GraphQLScalarType RICHTEXT_TREE = new GraphQLScalarType("RichtextTree", "Built-in richtext object tree", new CoercingRichtextTree());
+  public static final GraphQLScalarType CmsRichtextTree = new GraphQLScalarType(Types.RICHTEXT_TREE, "Built-in richtext object tree", new CoercingRichtextTree());
 
 
   private static class CoercingRichtextTree implements Coercing<Object, Object> {
