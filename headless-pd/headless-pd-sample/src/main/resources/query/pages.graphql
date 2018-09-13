@@ -40,14 +40,12 @@ fragment Teasable on CMTeasable {
   teaserTarget {
     ... Reference
   }
-  ... on CMTeaser {
-    teaserTargets {
-      target {
-        ... Reference
-      }
-      callToActionEnabled
-      callToActionCustomText
+  teaserTargets {
+    target {
+      ... Reference
     }
+    callToActionEnabled
+    callToActionText
   }
   picture {
     ... ContentInfo

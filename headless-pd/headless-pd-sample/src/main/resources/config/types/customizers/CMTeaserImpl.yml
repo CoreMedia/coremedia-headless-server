@@ -11,6 +11,13 @@ customFields:
     targetType: CMLinkable
     dataFetcher: Link
   - !CustomField
+    name: teaserTargets
+    sourceName: "targets?.links"
+    fallbackSourceNames:
+      - "target?.![{target: #this}]"
+    targetType: List:ExtendedTeaserTarget
+    dataFetcher: ExtendedLinklist
+  - !CustomField
     name: media
     sourceName: "pictures"
     fallbackSourceNames:

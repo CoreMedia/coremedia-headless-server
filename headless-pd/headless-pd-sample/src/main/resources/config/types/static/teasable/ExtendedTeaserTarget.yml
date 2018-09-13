@@ -10,6 +10,6 @@ fields:
     sourceName: "callToActionEnabled?:false"
     typeName: Boolean
   - !Property
-    name: callToActionCustomText
+    name: callToActionText
     sourceName: "callToActionCustomText?:''"
     typeName: String
