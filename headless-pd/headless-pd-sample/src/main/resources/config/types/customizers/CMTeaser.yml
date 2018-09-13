@@ -1,3 +1,11 @@
 name: CMTeaser
 excludedProperties:
   - target
+customFields:
+  - !CustomField
+    name: teaserTargets
+    sourceName: "targets?.links"
+    fallbackSourceNames:
+      - "target?.![{target: #this}]"
+    targetType: List:ExtendedTeaserTarget
+    dataFetcher: ExtendedLinklist

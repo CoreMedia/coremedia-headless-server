@@ -2,32 +2,32 @@ name: CMTeaserImpl
 customFields:
   - !CustomField
     name: link
-    sourceName: "target"
+    sourceName: "$extendedLinks('targets', 'target').target"
     targetType: String
     dataFetcher: Uri
   - !CustomField
-    name: segment
-    sourceName: "getLink('target')?.segment"
-    targetType: String
-    dataFetcher: ContentProperty
-  - !CustomField
     name: teaserTarget
-    sourceName: "target"
+    sourceName: "$extendedLinks('targets', 'target').target"
     targetType: CMLinkable
     dataFetcher: Link
   - !CustomField
-    name: teaserText
-    sourceName: "teaserText"
+    name: media
+    sourceName: "pictures"
     fallbackSourceNames:
-      - "getLink('target')?.teaserText"
-      - "getLink('target')?.detailText"
-    targetType: String
-    dataFetcher: Richtext
+      - "$extendedLinks('targets', 'target', 'CMTeasable').target?.pictures"
+    targetType: List:CMMedia
+    dataFetcher: Linklist
   - !CustomField
-    name: teaserTitle
-    sourceName: "teaserTitle"
+    name: pictures
+    sourceName: "pictures"
     fallbackSourceNames:
-      - "getLink('target')?.teaserTitle"
-      - "getLink('target')?.title"
-    targetType: String
-    dataFetcher: ContentProperty
+      - "$extendedLinks('targets', 'target', 'CMTeasable').target?.pictures"
+    targetType: List:CMPicture
+    dataFetcher: Linklist
+  - !CustomField
+    name: picture
+    sourceName: "pictures"
+    fallbackSourceNames:
+      - "$extendedLinks('targets', 'target', 'CMTeasable').target?.pictures"
+    targetType: CMPicture
+    dataFetcher: Link
