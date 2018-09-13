@@ -158,7 +158,7 @@ meta(fieldDefinition) ::= <<
 constant(fieldDefinition) ::= <<
   - !Constant
     name: <fieldDefinition.name>
-    <if(fieldDefinition.value)>value: <fieldDefinition.value><endif>
+    <if(fieldDefinition.value)>value: "<fieldDefinition.value>"<endif>
     typeName: <fieldDefinition.targetType>
     <if(fieldDefinition.nonNull)>nonNull: true<endif>
 

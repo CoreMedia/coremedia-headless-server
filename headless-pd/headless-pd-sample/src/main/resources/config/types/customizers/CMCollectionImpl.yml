@@ -5,4 +5,5 @@ customFields:
     targetType: CMLinkable
   - !Constant
     name: teaserTargets
+    value: "#{{}}"
     targetType: List:ExtendedTeaserTarget
