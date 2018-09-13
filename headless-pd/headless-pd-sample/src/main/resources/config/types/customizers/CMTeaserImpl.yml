@@ -14,7 +14,9 @@ customFields:
     name: teaserTargets
     sourceName: "targets?.links"
     fallbackSourceNames:
-      - "target?.![{target: #this}]"
+      - "target?.![{target: #this,
+                    callToActionEnabled: !(#root.$settings().get('callToActionDisabled', false)),
+                    callToActionCustomText: #root.$settings().get('callToActionCustomText', '')}]"
     targetType: List:ExtendedTeaserTarget
     dataFetcher: ExtendedLinklist
   - !CustomField
