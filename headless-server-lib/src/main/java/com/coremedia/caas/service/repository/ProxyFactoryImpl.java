@@ -90,7 +90,7 @@ public class ProxyFactoryImpl implements ProxyFactory {
 
 
   @Override
-  public <T> Map<T, ?> makeProxyMap(Map<T, ?> source) {
+  public <T> Map<T, ?> makeProxyMap(@NotNull Map<T, ?> source) {
     return Maps.transformValues(source, this::makeProxy);
   }
 
