@@ -41,6 +41,13 @@ fragment Teasable on CMTeasable {
     callToActionEnabled
     callToActionText
   }
+  teaserOverlaySettings {
+    style
+    enabled
+    positionX
+    positionY
+    width
+  }
   picture {
     ... ContentInfo
 

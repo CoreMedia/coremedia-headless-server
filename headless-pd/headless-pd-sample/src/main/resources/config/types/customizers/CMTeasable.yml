@@ -16,6 +16,11 @@ customFields:
     targetType: List:ExtendedTeaserTarget
     dataFetcher: ExtendedLinklist
   - !CustomField
+    name: teaserOverlaySettings
+    sourceName: "localSettings?.teaserOverlay?:{enabled: false}"
+    targetType: TeaserOverlaySettings
+    dataFetcher: ContentProperty
+  - !CustomField
     name: media
     sourceName: "pictures"
     targetType: List:CMMedia
