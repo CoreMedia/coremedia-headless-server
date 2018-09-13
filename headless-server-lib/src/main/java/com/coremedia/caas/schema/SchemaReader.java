@@ -13,6 +13,7 @@ import com.coremedia.caas.schema.field.common.PropertyField;
 import com.coremedia.caas.schema.field.content.property.AbstractPropertyField;
 import com.coremedia.caas.schema.field.content.property.BlobPropertyField;
 import com.coremedia.caas.schema.field.content.property.ContentPropertyField;
+import com.coremedia.caas.schema.field.content.property.ExtendedLinklistPropertyField;
 import com.coremedia.caas.schema.field.content.property.LinkPropertyField;
 import com.coremedia.caas.schema.field.content.property.LinklistPropertyField;
 import com.coremedia.caas.schema.field.content.property.MarkupPropertyField;
@@ -70,6 +71,7 @@ public class SchemaReader extends YamlConfigReader {
     constructor.addTypeDescription(new TypeDescription(ConstantField.class, new Tag("!Constant")));
     constructor.addTypeDescription(new TypeDescription(LinkPropertyField.class, new Tag("!Link")));
     constructor.addTypeDescription(new TypeDescription(LinklistPropertyField.class, new Tag("!Linklist")));
+    constructor.addTypeDescription(new TypeDescription(ExtendedLinklistPropertyField.class, new Tag("!ExtendedLinklist")));
     constructor.addTypeDescription(new TypeDescription(BlobPropertyField.class, new Tag("!Blob")));
     constructor.addTypeDescription(new TypeDescription(MetaPropertyField.class, new Tag("!Meta")));
     constructor.addTypeDescription(new TypeDescription(FieldDirective.class, new Tag("!Directive")));

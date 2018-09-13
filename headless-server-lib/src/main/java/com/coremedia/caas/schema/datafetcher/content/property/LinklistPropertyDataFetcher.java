@@ -4,10 +4,10 @@ import com.coremedia.caas.schema.SchemaService;
 import com.coremedia.caas.service.expression.FieldExpression;
 import com.coremedia.caas.service.repository.content.ContentProxy;
 
-import com.google.common.collect.ImmutableList;
 import graphql.schema.DataFetchingEnvironment;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,8 +38,8 @@ public class LinklistPropertyDataFetcher extends AbstractPropertyDataFetcher {
       return ((Collection<?>) property).stream().filter(e -> schema.isInstanceOf(e, baseTypeName)).collect(Collectors.toList());
     }
     else if (schema.isInstanceOf(property, baseTypeName)) {
-      return ImmutableList.of(property);
+      return Collections.singletonList(property);
     }
-    return ImmutableList.of();
+    return Collections.emptyList();
   }
 }

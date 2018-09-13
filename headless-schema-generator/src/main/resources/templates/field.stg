@@ -82,6 +82,17 @@ linklist(fieldDefinition) ::= <<
 
 >>
 
+extendedlinklist(fieldDefinition) ::= <<
+  - !ExtendedLinklist
+    name: <fieldDefinition.name>
+    sourceName: "<fieldDefinition.sourceName>"
+    <fallbackSources(fieldDefinition.fallbackSourceNames)>
+    typeName: <fieldDefinition.targetType>
+    <if(fieldDefinition.nonNull)>nonNull: true<endif>
+    <directives(fieldDefinition.directives)>
+
+>>
+
 struct(fieldDefinition) ::= <<
   - !Struct
     name: <fieldDefinition.name>
