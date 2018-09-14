@@ -19,7 +19,7 @@ customFields:
     name: teaserOverlaySettings
     sourceName: "localSettings?.teaserOverlay?:{enabled: false}"
     targetType: TeaserOverlaySettings
-    dataFetcher: ContentProperty
+    dataFetcher: Struct
   - !CustomField
     name: media
     sourceName: "pictures"
