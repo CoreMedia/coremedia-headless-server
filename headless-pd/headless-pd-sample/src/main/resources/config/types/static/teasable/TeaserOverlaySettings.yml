@@ -3,7 +3,7 @@ name: TeaserOverlaySettings
 fields:
   - !Property
     name: style
-    sourceName: "style?.settings?.style"
+    sourceName: "style?.settings?.style?:{}"
     typeName: Map:String
   - !Property
     name: enabled
@@ -11,13 +11,13 @@ fields:
     typeName: Boolean
   - !Property
     name: positionX
-    sourceName: "positionX"
+    sourceName: "positionX?:0"
     typeName: Int
   - !Property
     name: positionY
-    sourceName: "positionY"
+    sourceName: "positionY?:0"
     typeName: Int
   - !Property
     name: width
-    sourceName: "width"
+    sourceName: "width?:50"
     typeName: Int
