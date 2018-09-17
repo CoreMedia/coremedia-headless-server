@@ -2,7 +2,6 @@ package com.coremedia.caas.schema.datafetcher.content.property;
 
 import com.coremedia.caas.schema.SchemaService;
 import com.coremedia.caas.service.expression.FieldExpression;
-import com.coremedia.caas.service.repository.content.ContentProxy;
 
 import graphql.schema.DataFetchingEnvironment;
 
@@ -29,9 +28,9 @@ public class LinkPropertyDataFetcher extends AbstractPropertyDataFetcher {
 
 
   @Override
-  protected Object getData(ContentProxy contentProxy, FieldExpression<?> expression, DataFetchingEnvironment environment) {
+  protected Object getData(Object proxy, FieldExpression<?> expression, DataFetchingEnvironment environment) {
     SchemaService schema = getContext(environment).getProcessingDefinition().getSchemaService();
-    Object property = getProperty(contentProxy, expression, Object.class);
+    Object property = getProperty(proxy, expression, Object.class);
     if (property instanceof Collection) {
       return ((Collection<?>) property).stream().filter(e -> schema.isInstanceOf(e, baseTypeName)).findFirst().orElse(null);
     }

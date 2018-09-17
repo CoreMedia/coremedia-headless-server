@@ -7,7 +7,6 @@ import com.coremedia.caas.richtext.output.StringOutputFactory;
 import com.coremedia.caas.richtext.output.TreeOutputFactory;
 import com.coremedia.caas.schema.type.scalar.RichtextTree;
 import com.coremedia.caas.service.expression.FieldExpression;
-import com.coremedia.caas.service.repository.content.ContentProxy;
 import com.coremedia.caas.service.repository.content.MarkupProxy;
 
 import graphql.Scalars;
@@ -37,9 +36,9 @@ public class RichtextPropertyDataFetcher extends AbstractPropertyDataFetcher {
 
 
   @Override
-  protected Object getData(ContentProxy contentProxy, FieldExpression<?> expression, DataFetchingEnvironment environment) {
+  protected Object getData(Object proxy, FieldExpression<?> expression, DataFetchingEnvironment environment) {
     ExecutionContext context = getContext(environment);
-    MarkupProxy markupProxy = getProperty(contentProxy, expression, MarkupProxy.class);
+    MarkupProxy markupProxy = getProperty(proxy, expression, MarkupProxy.class);
     if (markupProxy != null && !markupProxy.isEmpty()) {
       String view = getArgumentWithDefault("view", "default", environment);
       // get matching transformer and convert markup
