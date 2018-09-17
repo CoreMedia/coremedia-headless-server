@@ -8,10 +8,10 @@ import graphql.schema.DataFetchingEnvironment;
 
 import java.util.List;
 
-public class UriPropertyDataFetcher extends AbstractPropertyDataFetcher {
+public class UriPropertyDataFetcher extends AbstractPropertyDataFetcher<Object> {
 
   public UriPropertyDataFetcher(FieldExpression<?> expression, List<FieldExpression<?>> fallbackExpressions) {
-    super(expression, fallbackExpressions);
+    super(expression, fallbackExpressions, Object.class);
   }
 
 
@@ -20,12 +20,10 @@ public class UriPropertyDataFetcher extends AbstractPropertyDataFetcher {
     return value == null;
   }
 
-
   @Override
-  protected Object getData(Object proxy, FieldExpression<?> expression, DataFetchingEnvironment environment) {
-    Object target = getProperty(proxy, expression, Object.class);
+  protected Object processResult(Object result, DataFetchingEnvironment environment) {
     LinkBuilder linkBuilder = getContext(environment).getProcessingDefinition().getLinkBuilder();
     RootContext rootContext = getContext(environment).getRootContext();
-    return linkBuilder.createLink(target, rootContext);
+    return linkBuilder.createLink(result, rootContext);
   }
 }

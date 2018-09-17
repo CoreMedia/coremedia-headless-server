@@ -19,13 +19,13 @@ import java.util.List;
 
 import static com.coremedia.caas.service.repository.content.util.ContentUtil.isNullOrEmptyRichtext;
 
-public class RichtextPropertyDataFetcher extends AbstractPropertyDataFetcher {
+public class RichtextPropertyDataFetcher extends AbstractPropertyDataFetcher<MarkupProxy> {
 
   private static final Logger LOG = LoggerFactory.getLogger(RichtextPropertyDataFetcher.class);
 
 
   public RichtextPropertyDataFetcher(FieldExpression<?> expression, List<FieldExpression<?>> fallbackExpressions) {
-    super(expression, fallbackExpressions);
+    super(expression, fallbackExpressions, MarkupProxy.class);
   }
 
 
@@ -34,12 +34,10 @@ public class RichtextPropertyDataFetcher extends AbstractPropertyDataFetcher {
     return isNullOrEmptyRichtext(value);
   }
 
-
   @Override
-  protected Object getData(Object proxy, FieldExpression<?> expression, DataFetchingEnvironment environment) {
+  protected Object processResult(MarkupProxy result, DataFetchingEnvironment environment) {
     ExecutionContext context = getContext(environment);
-    MarkupProxy markupProxy = getProperty(proxy, expression, MarkupProxy.class);
-    if (markupProxy != null && !markupProxy.isEmpty()) {
+    if (result != null && !result.isEmpty()) {
       String view = getArgumentWithDefault("view", "default", environment);
       // get matching transformer and convert markup
       RichtextTransformerRegistry registry = context.getProcessingDefinition().getRichtextTransformerRegistry();
@@ -48,10 +46,10 @@ public class RichtextPropertyDataFetcher extends AbstractPropertyDataFetcher {
         try {
           GraphQLOutputType outputType = environment.getFieldType();
           if (RichtextTree.CmsRichtextTree.getName().equals(outputType.getName())) {
-            return transformer.transform(markupProxy, new TreeOutputFactory(), context);
+            return transformer.transform(result, new TreeOutputFactory(), context);
           }
           else if (Scalars.GraphQLString.getName().equals(outputType.getName())) {
-            return transformer.transform(markupProxy, new StringOutputFactory(), context);
+            return transformer.transform(result, new StringOutputFactory(), context);
           }
           else {
             LOG.error("Unsupported richtext field type: {}", outputType.getName());

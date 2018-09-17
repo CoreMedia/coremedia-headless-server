@@ -6,10 +6,10 @@ import graphql.schema.DataFetchingEnvironment;
 
 import java.util.List;
 
-public class StructPropertyDataFetcher extends AbstractPropertyDataFetcher {
+public class StructPropertyDataFetcher extends AbstractPropertyDataFetcher<Object> {
 
   public StructPropertyDataFetcher(FieldExpression<?> expression, List<FieldExpression<?>> fallbackExpressions) {
-    super(expression, fallbackExpressions);
+    super(expression, fallbackExpressions, Object.class);
   }
 
 
@@ -18,9 +18,8 @@ public class StructPropertyDataFetcher extends AbstractPropertyDataFetcher {
     return value == null;
   }
 
-
   @Override
-  protected Object getData(Object proxy, FieldExpression<?> expression, DataFetchingEnvironment environment) {
-    return getProperty(proxy, expression, Object.class);
+  protected Object processResult(Object result, DataFetchingEnvironment environment) {
+    return result;
   }
 }

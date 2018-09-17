@@ -12,13 +12,13 @@ import java.util.stream.Collectors;
 
 import static com.coremedia.caas.service.repository.content.util.ContentUtil.isNullOrEmptyLinklist;
 
-public class LinklistPropertyDataFetcher extends AbstractPropertyDataFetcher {
+public class LinklistPropertyDataFetcher extends AbstractPropertyDataFetcher<Object> {
 
   private String baseTypeName;
 
 
   public LinklistPropertyDataFetcher(FieldExpression<?> expression, List<FieldExpression<?>> fallbackExpressions, String baseTypeName) {
-    super(expression, fallbackExpressions);
+    super(expression, fallbackExpressions, Object.class);
     this.baseTypeName = baseTypeName;
   }
 
@@ -28,16 +28,14 @@ public class LinklistPropertyDataFetcher extends AbstractPropertyDataFetcher {
     return isNullOrEmptyLinklist(value);
   }
 
-
   @Override
-  protected Object getData(Object proxy, FieldExpression<?> expression, DataFetchingEnvironment environment) {
+  protected Object processResult(Object result, DataFetchingEnvironment environment) {
     SchemaService schema = getContext(environment).getProcessingDefinition().getSchemaService();
-    Object property = getProperty(proxy, expression, Object.class);
-    if (property instanceof Collection) {
-      return ((Collection<?>) property).stream().filter(e -> schema.isInstanceOf(e, baseTypeName)).collect(Collectors.toList());
+    if (result instanceof Collection) {
+      return ((Collection<?>) result).stream().filter(e -> schema.isInstanceOf(e, baseTypeName)).collect(Collectors.toList());
     }
-    else if (schema.isInstanceOf(property, baseTypeName)) {
-      return Collections.singletonList(property);
+    else if (schema.isInstanceOf(result, baseTypeName)) {
+      return Collections.singletonList(result);
     }
     return Collections.emptyList();
   }

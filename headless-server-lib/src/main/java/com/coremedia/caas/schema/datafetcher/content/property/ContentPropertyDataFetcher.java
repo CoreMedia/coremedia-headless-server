@@ -8,10 +8,10 @@ import java.util.List;
 
 import static com.coremedia.caas.service.repository.content.util.ContentUtil.isNullOrEmptyObject;
 
-public class ContentPropertyDataFetcher extends AbstractPropertyDataFetcher {
+public class ContentPropertyDataFetcher extends AbstractPropertyDataFetcher<Object> {
 
   public ContentPropertyDataFetcher(FieldExpression<?> expression, List<FieldExpression<?>> fallbackExpressions) {
-    super(expression, fallbackExpressions);
+    super(expression, fallbackExpressions, Object.class);
   }
 
 
@@ -20,9 +20,8 @@ public class ContentPropertyDataFetcher extends AbstractPropertyDataFetcher {
     return isNullOrEmptyObject(value);
   }
 
-
   @Override
-  protected Object getData(Object proxy, FieldExpression<?> expression, DataFetchingEnvironment environment) {
-    return getProperty(proxy, expression, Object.class);
+  protected Object processResult(Object result, DataFetchingEnvironment environment) {
+    return result;
   }
 }

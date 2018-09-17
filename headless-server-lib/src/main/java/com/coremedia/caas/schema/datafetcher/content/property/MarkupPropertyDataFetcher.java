@@ -7,10 +7,10 @@ import graphql.schema.DataFetchingEnvironment;
 
 import java.util.List;
 
-public class MarkupPropertyDataFetcher extends AbstractPropertyDataFetcher {
+public class MarkupPropertyDataFetcher extends AbstractPropertyDataFetcher<MarkupProxy> {
 
   public MarkupPropertyDataFetcher(FieldExpression<?> expression, List<FieldExpression<?>> fallbackExpressions) {
-    super(expression, fallbackExpressions);
+    super(expression, fallbackExpressions, MarkupProxy.class);
   }
 
 
@@ -19,12 +19,10 @@ public class MarkupPropertyDataFetcher extends AbstractPropertyDataFetcher {
     return value == null;
   }
 
-
   @Override
-  protected Object getData(Object proxy, FieldExpression<?> expression, DataFetchingEnvironment environment) {
-    MarkupProxy markupProxy = getProperty(proxy, expression, MarkupProxy.class);
-    if (markupProxy != null) {
-      return markupProxy.toString();
+  protected Object processResult(MarkupProxy result, DataFetchingEnvironment environment) {
+    if (result != null) {
+      return result.toString();
     }
     return null;
   }
