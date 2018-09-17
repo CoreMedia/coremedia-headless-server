@@ -5,6 +5,7 @@ import com.coremedia.blueprint.base.pagegrid.ContentBackedPageGridPlacement;
 import com.coremedia.blueprint.base.pagegrid.ContentBackedStyle;
 import com.coremedia.blueprint.base.pagegrid.ContentBackedStyleGrid;
 import com.coremedia.caas.service.repository.RootContext;
+import com.coremedia.caas.service.repository.content.ProxyObject;
 import com.coremedia.cap.content.Content;
 
 import java.util.Collection;
@@ -13,7 +14,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class PageGridAdapter {
+public class PageGridAdapter implements ProxyObject {
 
   private ContentBackedPageGrid pageGrid;
   private RootContext rootContext;

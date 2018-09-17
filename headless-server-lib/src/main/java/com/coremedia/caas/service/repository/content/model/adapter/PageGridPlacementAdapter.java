@@ -4,6 +4,7 @@ import com.coremedia.blueprint.base.pagegrid.ContentBackedPageGridPlacement;
 import com.coremedia.blueprint.base.pagegrid.PageGridContentKeywords;
 import com.coremedia.caas.service.repository.RootContext;
 import com.coremedia.caas.service.repository.content.ContentProxy;
+import com.coremedia.caas.service.repository.content.ProxyObject;
 import com.coremedia.cap.common.CapStructHelper;
 import com.coremedia.cap.content.Content;
 import com.coremedia.cap.struct.Struct;
@@ -17,7 +18,7 @@ import java.util.stream.Collectors;
 
 import static com.coremedia.caas.service.repository.content.util.ContentUtil.toZonedDateTime;
 
-public class PageGridPlacementAdapter {
+public class PageGridPlacementAdapter implements ProxyObject {
 
   private static boolean isVisible(AnnotatedLinkWrapper linkWrapper, ZonedDateTime time) {
     return (linkWrapper.getVisibleFrom() == null || !linkWrapper.getVisibleFrom().isAfter(time)) &&

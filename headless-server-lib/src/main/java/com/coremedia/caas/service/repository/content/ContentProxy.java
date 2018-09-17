@@ -3,7 +3,7 @@ package com.coremedia.caas.service.repository.content;
 import java.time.ZonedDateTime;
 import java.util.List;
 
-public interface ContentProxy {
+public interface ContentProxy extends ProxyObject {
 
   boolean isSubtypeOf(String typeName);
 

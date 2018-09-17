@@ -2,8 +2,7 @@ package com.coremedia.caas.schema.datafetcher.content;
 
 import com.coremedia.caas.schema.datafetcher.common.AbstractDataFetcher;
 import com.coremedia.caas.service.expression.FieldExpression;
-import com.coremedia.caas.service.repository.content.ContentProxy;
-import com.coremedia.caas.service.repository.content.StructProxy;
+import com.coremedia.caas.service.repository.content.ProxyObject;
 
 import graphql.schema.DataFetchingEnvironment;
 import org.slf4j.Logger;
@@ -27,7 +26,7 @@ public abstract class AbstractContentDataFetcher extends AbstractDataFetcher {
     try {
       Object source = environment.getSource();
       // hard validation to ensure access layer control is not accidentally violated
-      if (!(source instanceof ContentProxy || source instanceof StructProxy)) {
+      if (!(source instanceof ProxyObject)) {
         throw new IllegalArgumentException("Not a Proxy: " + source);
       }
       return getData(source, expression, environment);
