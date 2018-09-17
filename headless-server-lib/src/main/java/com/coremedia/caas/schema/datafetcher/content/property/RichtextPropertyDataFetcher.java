@@ -1,62 +1,46 @@
 package com.coremedia.caas.schema.datafetcher.content.property;
 
-import com.coremedia.caas.execution.ExecutionContext;
-import com.coremedia.caas.richtext.RichtextTransformer;
-import com.coremedia.caas.richtext.RichtextTransformerRegistry;
-import com.coremedia.caas.richtext.output.StringOutputFactory;
-import com.coremedia.caas.richtext.output.TreeOutputFactory;
-import com.coremedia.caas.schema.type.scalar.RichtextTree;
+import com.coremedia.caas.schema.datafetcher.content.util.Richtext;
 import com.coremedia.caas.service.expression.FieldExpression;
 import com.coremedia.caas.service.repository.content.MarkupProxy;
 
-import graphql.Scalars;
 import graphql.schema.DataFetchingEnvironment;
-import graphql.schema.GraphQLOutputType;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
 import static com.coremedia.caas.service.repository.content.util.ContentUtil.isNullOrEmptyRichtext;
 
-public class RichtextPropertyDataFetcher extends AbstractPropertyDataFetcher<MarkupProxy> {
-
-  private static final Logger LOG = LoggerFactory.getLogger(RichtextPropertyDataFetcher.class);
-
+public class RichtextPropertyDataFetcher extends AbstractPropertyDataFetcher<Object> {
 
   public RichtextPropertyDataFetcher(FieldExpression<?> expression, List<FieldExpression<?>> fallbackExpressions) {
-    super(expression, fallbackExpressions, MarkupProxy.class);
+    super(expression, fallbackExpressions, Object.class);
   }
 
 
   @Override
   protected boolean isNullOrEmpty(Object value) {
+    if (value instanceof Richtext) {
+      value = ((Richtext) value).getMarkupProxy();
+    }
     return isNullOrEmptyRichtext(value);
   }
 
   @Override
-  protected Object processResult(MarkupProxy result, DataFetchingEnvironment environment) {
-    ExecutionContext context = getContext(environment);
-    if (result != null && !result.isEmpty()) {
-      String view = getArgumentWithDefault("view", "default", environment);
-      // get matching transformer and convert markup
-      RichtextTransformerRegistry registry = context.getProcessingDefinition().getRichtextTransformerRegistry();
-      RichtextTransformer transformer = registry.getTransformer(view);
-      if (transformer != null) {
-        try {
-          GraphQLOutputType outputType = environment.getFieldType();
-          if (RichtextTree.CmsRichtextTree.getName().equals(outputType.getName())) {
-            return transformer.transform(result, new TreeOutputFactory(), context);
-          }
-          else if (Scalars.GraphQLString.getName().equals(outputType.getName())) {
-            return transformer.transform(result, new StringOutputFactory(), context);
-          }
-          else {
-            LOG.error("Unsupported richtext field type: {}", outputType.getName());
-          }
-        } catch (Exception e) {
-          LOG.error("Richtext transformation failed:", e);
+  protected Object processResult(Object result, DataFetchingEnvironment environment) {
+    if (result instanceof MarkupProxy) {
+      // wrap proxy with default view
+      String defaultView = getContext(environment).getProcessingDefinition().getDefaultRichtextFormat();
+      result = new Richtext((MarkupProxy) result, defaultView != null ? defaultView : "default");
+    }
+    if (result instanceof Richtext) {
+      Richtext richtext = (Richtext) result;
+      if (!isNullOrEmptyRichtext(richtext.getMarkupProxy())) {
+        // allow optional view override in queries
+        String requestedView = getArgument("view", environment);
+        if (requestedView != null) {
+          richtext.setView(requestedView);
         }
+        return richtext.transform(environment.getFieldType(), getContext(environment));
       }
     }
     return null;
