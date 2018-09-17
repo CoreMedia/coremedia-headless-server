@@ -6,7 +6,7 @@ query PageQuery {
 
   title
   teaserTitle
-  teaserText(view: "teaser")
+  teaserText
   grid {
     cssClassName
     placements {
@@ -36,7 +36,7 @@ fragment Teasable on CMTeasable {
   ... ContentInfo
 
   teaserTitle
-  teaserText(view: "teaser")
+  teaserText
   teaserTarget {
     ... Reference
   }

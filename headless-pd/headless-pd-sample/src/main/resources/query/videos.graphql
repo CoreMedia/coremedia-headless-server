@@ -30,7 +30,7 @@ fragment Teasable on CMTeasable {
   ... ContentInfo
 
   teaserTitle
-  teaserText(view: "teaser")
+  teaserText
   teaserTarget {
     ... Reference
   }

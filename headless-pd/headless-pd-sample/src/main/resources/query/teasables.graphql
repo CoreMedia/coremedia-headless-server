@@ -5,7 +5,7 @@ query TeasableQuery {
   ... ContentInfo
 
   teaserTitle
-  teaserText(view: "teaser")
+  teaserText
   teaserTarget {
     ... Reference
   }
