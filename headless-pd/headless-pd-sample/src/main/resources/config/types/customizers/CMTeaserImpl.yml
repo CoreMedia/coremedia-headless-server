@@ -14,11 +14,21 @@ customFields:
     name: teaserTargets
     sourceName: "targets?.links"
     fallbackSourceNames:
-      - "target?.![{target: #this,
-                    callToActionEnabled: !(#root.$settings().get('callToActionDisabled', false)),
-                    callToActionCustomText: #root.$settings().get('callToActionCustomText', '')}]"
+      - "target?.![new MapStruct({target: #this,
+                                  callToActionEnabled: !(#root.$settings().get('callToActionDisabled', false)),
+                                  callToActionCustomText: #root.$settings().get('callToActionCustomText', '')})]"
     targetType: List:ExtendedTeaserTarget
     dataFetcher: ExtendedLinklist
+  - !CustomField
+    name: teaserText
+    sourceName: "new Richtext(teaserText, (localSettings?.teaserOverlay?.enabled == true)? 'teaser' : 'plain')"
+    targetType: String
+    dataFetcher: Richtext
+  - !CustomField
+    name: teaserTitle
+    sourceName: "teaserTitle"
+    targetType: String
+    dataFetcher: ContentProperty
   - !CustomField
     name: media
     sourceName: "pictures"
