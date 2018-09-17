@@ -1,23 +1,23 @@
 !ObjectType
 name: TeaserOverlaySettings
 fields:
-  - !Property
+  - !ContentProperty
     name: style
     sourceName: "style?.settings?.style?:{}"
     typeName: Map:String
-  - !Property
+  - !ContentProperty
     name: enabled
     sourceName: "enabled?:false"
     typeName: Boolean
-  - !Property
+  - !ContentProperty
     name: positionX
     sourceName: "positionX?:0"
     typeName: Int
-  - !Property
+  - !ContentProperty
     name: positionY
     sourceName: "positionY?:0"
     typeName: Int
-  - !Property
+  - !ContentProperty
     name: width
     sourceName: "width?:50"
     typeName: Int

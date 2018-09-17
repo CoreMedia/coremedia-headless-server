@@ -1,15 +1,15 @@
 !ObjectType
 name: ExtendedTeaserTarget
 fields:
-  - !Property
+  - !ContentProperty
     name: target
     sourceName: "target"
     typeName: CMLinkable
-  - !Property
+  - !ContentProperty
     name: callToActionEnabled
     sourceName: "callToActionEnabled?:false"
     typeName: Boolean
-  - !Property
+  - !ContentProperty
     name: callToActionText
     sourceName: "callToActionCustomText?:''"
     typeName: String
