@@ -100,16 +100,25 @@ public abstract class GraphQLControllerBase extends ControllerBase {
         }
       }
     }
+    Object target = rootContext.getTarget();
+    // resolve specialized query string based on target type
+    String query;
+    if (target instanceof List) {
+      query = queryDefinition.getQuery();
+    }
+    else {
+      query = queryDefinition.getQuery(processingDefinition.getSchemaService().getObjectType(target).getName());
+    }
     // create new runtime context for capturing all required runtime services and state
     ExecutionContext context = new ExecutionContext(processingDefinition, serviceRegistry, rootContext);
     // run query
     ExecutionInput executionInput = ExecutionInput.newExecutionInput()
-            .query(queryDefinition.getQuery())
-            .root(rootContext.getTarget())
+            .query(query)
+            .root(target)
             .context(context)
             .variables(queryArgs)
             .build();
-    ExecutionResult result = GraphQL.newGraphQL(queryDefinition.getQuerySchema(rootContext.getTarget()))
+    ExecutionResult result = GraphQL.newGraphQL(queryDefinition.getQuerySchema(target))
             .preparsedDocumentProvider(processingDefinition.getQueryRegistry())
             .build()
             .execute(executionInput);
