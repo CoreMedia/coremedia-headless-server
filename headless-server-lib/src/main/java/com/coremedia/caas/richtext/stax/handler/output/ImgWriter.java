@@ -43,7 +43,7 @@ public class ImgWriter extends AbstractOutputHandler {
             return EvaluationAction.DROP;
           }
           else {
-            String link = context.getLinkBuilder().createLink(contentProxy, context.getRootContext());
+            String link = context.getLinkBuilder().createLink(contentProxy, context.getRootContext()).toString();
             if (Strings.isNullOrEmpty(link)) {
               return EvaluationAction.DROP;
             }

@@ -14,7 +14,7 @@ import static com.coremedia.caas.extension.link.LinkBuilderSetup.REQUEST_MEDIA_U
 import static com.coremedia.caas.server.link.SimpleLinkBuilder.EMPTY_LINK;
 
 @Component("extendedLinkBuilder")
-public class ExtendedLinkBuilder implements LinkBuilder {
+public class ExtendedLinkBuilder implements LinkBuilder<String> {
 
   private SimpleLinkBuilder delegate;
 

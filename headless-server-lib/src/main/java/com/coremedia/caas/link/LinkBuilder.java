@@ -2,7 +2,7 @@ package com.coremedia.caas.link;
 
 import com.coremedia.caas.service.repository.RootContext;
 
-public interface LinkBuilder {
+public interface LinkBuilder<E> {
 
-  String createLink(Object target, RootContext rootContext);
+  E createLink(Object target, RootContext rootContext);
 }
