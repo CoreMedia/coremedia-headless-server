@@ -9,7 +9,7 @@ import com.coremedia.cap.common.IdHelper;
 import org.springframework.stereotype.Component;
 
 @Component("simpleLinkBuilder")
-public class SimpleLinkBuilder implements LinkBuilder {
+public class SimpleLinkBuilder implements LinkBuilder<String> {
 
   public static final String EMPTY_LINK = "";
 

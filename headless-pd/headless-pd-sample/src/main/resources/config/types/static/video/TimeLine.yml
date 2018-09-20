@@ -1,11 +1,11 @@
 !ObjectType
 name: TimeLine
 fields:
-  - !Property
+  - !Link
     name: defaultTarget
     sourceName: "defaultTarget"
     typeName: CMTeasable
-  - !Property
+  - !ContentProperty
     name: sequences
     sourceName: "sequences.?[link != null]"
     typeName: List:TimeLineEntry

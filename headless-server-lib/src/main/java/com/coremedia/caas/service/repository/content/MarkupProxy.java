@@ -1,6 +1,6 @@
 package com.coremedia.caas.service.repository.content;
 
-public interface MarkupProxy {
+public interface MarkupProxy extends ProxyObject {
 
   boolean isEmpty();
 

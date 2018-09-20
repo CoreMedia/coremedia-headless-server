@@ -76,7 +76,18 @@ linklist(fieldDefinition) ::= <<
     name: <fieldDefinition.name>
     sourceName: "<fieldDefinition.sourceName>"
     <fallbackSources(fieldDefinition.fallbackSourceNames)>
-    typeName: List:<fieldDefinition.targetType>
+    typeName: <fieldDefinition.targetType>
+    <if(fieldDefinition.nonNull)>nonNull: true<endif>
+    <directives(fieldDefinition.directives)>
+
+>>
+
+extendedlinklist(fieldDefinition) ::= <<
+  - !ExtendedLinklist
+    name: <fieldDefinition.name>
+    sourceName: "<fieldDefinition.sourceName>"
+    <fallbackSources(fieldDefinition.fallbackSourceNames)>
+    typeName: <fieldDefinition.targetType>
     <if(fieldDefinition.nonNull)>nonNull: true<endif>
     <directives(fieldDefinition.directives)>
 
@@ -86,6 +97,7 @@ struct(fieldDefinition) ::= <<
   - !Struct
     name: <fieldDefinition.name>
     sourceName: "<fieldDefinition.sourceName>"
+    <fallbackSources(fieldDefinition.fallbackSourceNames)>
     typeName: <fieldDefinition.targetType>
     <if(fieldDefinition.nonNull)>nonNull: true<endif>
     <directives(fieldDefinition.directives)>
@@ -107,6 +119,7 @@ markup(fieldDefinition) ::= <<
   - !Markup
     name: <fieldDefinition.name>
     sourceName: "<fieldDefinition.sourceName>"
+    <fallbackSources(fieldDefinition.fallbackSourceNames)>
     typeName: String
     <if(fieldDefinition.nonNull)>nonNull: true<endif>
     <directives(fieldDefinition.directives)>
@@ -127,6 +140,7 @@ uri(fieldDefinition) ::= <<
   - !Uri
     name: <fieldDefinition.name>
     sourceName: "<fieldDefinition.sourceName>"
+    <fallbackSources(fieldDefinition.fallbackSourceNames)>
     typeName: String
     <if(fieldDefinition.nonNull)>nonNull: true<endif>
     <directives(fieldDefinition.directives)>
@@ -144,7 +158,7 @@ meta(fieldDefinition) ::= <<
 constant(fieldDefinition) ::= <<
   - !Constant
     name: <fieldDefinition.name>
-    <if(fieldDefinition.value)>value: <fieldDefinition.value><endif>
+    <if(fieldDefinition.value)>value: "<fieldDefinition.value>"<endif>
     typeName: <fieldDefinition.targetType>
     <if(fieldDefinition.nonNull)>nonNull: true<endif>
 

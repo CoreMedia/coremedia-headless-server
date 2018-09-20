@@ -33,7 +33,7 @@ public class SchemaConfig {
   public Set<GraphQLScalarType> builtinScalars(@Qualifier(CONVERSION_SERVICE) ConversionService conversionService) {
     ImmutableSet.Builder<GraphQLScalarType> builder = ImmutableSet.builder();
     builder.addAll(new MapOfScalars(conversionService).getTypes().values());
-    builder.add(RichtextTree.RICHTEXT_TREE);
+    builder.add(RichtextTree.CmsRichtextTree);
     return builder.build();
   }
 }

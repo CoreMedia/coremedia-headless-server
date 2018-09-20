@@ -9,14 +9,26 @@ customFields:
     targetType: CMLinkable
     dataFetcher: Link
   - !CustomField
+    name: teaserTargets
+    sourceName: "new MapStruct({target: this,
+                                callToActionEnabled: !($settings().get('callToActionDisabled', false)),
+                                callToActionCustomText: $settings().get('callToActionCustomText', '')})"
+    targetType: List:ExtendedTeaserTarget
+    dataFetcher: ExtendedLinklist
+  - !CustomField
+    name: teaserOverlaySettings
+    sourceName: "localSettings?.teaserOverlay?:new MapStruct({enabled: false})"
+    targetType: TeaserOverlaySettings
+    dataFetcher: Struct
+  - !CustomField
     name: media
     sourceName: "pictures"
-    targetType: CMMedia
+    targetType: List:CMMedia
     dataFetcher: Linklist
   - !CustomField
     name: pictures
     sourceName: "pictures"
-    targetType: CMPicture
+    targetType: List:CMPicture
     dataFetcher: Linklist
   - !CustomField
     name: picture
@@ -25,9 +37,9 @@ customFields:
     dataFetcher: Link
   - !CustomField
     name: teaserText
-    sourceName: "teaserText"
+    sourceName: "new Richtext(teaserText, 'teaser')"
     fallbackSourceNames:
-      - "detailText"
+      - "(localSettings?.teaserOverlay?.enabled == true)? null : new Richtext(detailText, 'plain')"
     targetType: String
     dataFetcher: Richtext
   - !CustomField

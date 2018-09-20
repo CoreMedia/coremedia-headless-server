@@ -14,6 +14,7 @@ public class ProcessingDefinition {
   private String name;
   private String description;
 
+  private String defaultRichtextFormat;
   private Map<String, LinkBuilder> linkBuilders;
 
   private QueryRegistry queryRegistry;
@@ -35,6 +36,15 @@ public class ProcessingDefinition {
 
   public void setDescription(String description) {
     this.description = description;
+  }
+
+
+  public String getDefaultRichtextFormat() {
+    return defaultRichtextFormat;
+  }
+
+  public void setDefaultRichtextFormat(String defaultRichtextFormat) {
+    this.defaultRichtextFormat = defaultRichtextFormat;
   }
 
 

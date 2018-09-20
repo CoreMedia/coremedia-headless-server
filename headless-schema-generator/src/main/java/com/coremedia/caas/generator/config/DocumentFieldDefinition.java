@@ -61,7 +61,12 @@ public class DocumentFieldDefinition implements FieldDefinition {
         LinkPropertyDescriptor linkPropertyDescriptor = (LinkPropertyDescriptor) propertyDescriptor;
         InterfaceTypeDefinition targetType = schema.findInterface(linkPropertyDescriptor.getLinkType());
         if (targetType != null) {
-          return targetType.getName();
+          if (linkPropertyDescriptor.getMaxCardinality() == 1) {
+            return targetType.getName();
+          }
+          else {
+            return "List:" + targetType.getName();
+          }
         }
         break;
       default:

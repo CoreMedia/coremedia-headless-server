@@ -10,6 +10,7 @@ import com.google.common.base.Strings;
 import graphql.schema.GraphQLSchema;
 
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class QueryDefinition {
 
@@ -19,6 +20,8 @@ public class QueryDefinition {
   private String typeName;
 
   private Map<String, String> args;
+
+  private Map<String, String> typedQueries = new ConcurrentHashMap<>();
 
   private SchemaService schema;
 
@@ -35,7 +38,11 @@ public class QueryDefinition {
   }
 
   public String getQuery() {
-    return query;
+    return getQuery(typeName);
+  }
+
+  public String getQuery(String targetType) {
+    return typedQueries.computeIfAbsent(targetType, (key) -> "# baseType=" + typeName + " targetType=" + key + "\n" + query);
   }
 
   void setQuery(String query) {

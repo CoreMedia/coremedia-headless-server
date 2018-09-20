@@ -2,7 +2,7 @@ package com.coremedia.caas.schema.datafetcher.content;
 
 import com.coremedia.caas.schema.datafetcher.common.AbstractDataFetcher;
 import com.coremedia.caas.service.expression.FieldExpression;
-import com.coremedia.caas.service.repository.content.ContentProxy;
+import com.coremedia.caas.service.repository.content.ProxyObject;
 
 import graphql.schema.DataFetchingEnvironment;
 import org.slf4j.Logger;
@@ -26,10 +26,10 @@ public abstract class AbstractContentDataFetcher extends AbstractDataFetcher {
     try {
       Object source = environment.getSource();
       // hard validation to ensure access layer control is not accidentally violated
-      if (!(source instanceof ContentProxy)) {
-        throw new IllegalArgumentException("Not a ContentProxy: " + source);
+      if (!(source instanceof ProxyObject)) {
+        throw new IllegalArgumentException("Not a Proxy: " + source);
       }
-      return getData((ContentProxy) source, expression, environment);
+      return getData(source, expression, environment);
     } catch (Exception e) {
       LOG.error("DataFetcher access failed:", e);
     }
@@ -37,5 +37,5 @@ public abstract class AbstractContentDataFetcher extends AbstractDataFetcher {
   }
 
 
-  protected abstract Object getData(ContentProxy contentProxy, FieldExpression<?> expression, DataFetchingEnvironment environment);
+  protected abstract Object getData(Object proxy, FieldExpression<?> expression, DataFetchingEnvironment environment);
 }

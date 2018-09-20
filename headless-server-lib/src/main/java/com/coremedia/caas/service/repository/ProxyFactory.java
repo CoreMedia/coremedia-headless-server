@@ -25,7 +25,7 @@ public interface ProxyFactory {
   Object makeProxy(Object source);
 
 
-  <T> Map<T, ?> makeProxyMap(Map<T, ?> source);
+  <T> Map<T, ?> makeProxyMap(@NotNull Map<T, ?> source);
 
 
   BlobProxy makeBlobProxy(@NotNull Blob source);

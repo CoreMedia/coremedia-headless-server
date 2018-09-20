@@ -4,6 +4,7 @@ import com.coremedia.blueprint.base.navigation.context.ContextStrategy;
 import com.coremedia.blueprint.base.pagegrid.ContentBackedPageGridService;
 import com.coremedia.blueprint.base.settings.SettingsService;
 import com.coremedia.blueprint.base.tree.TreeRelation;
+import com.coremedia.caas.service.repository.content.model.ContentExtendedLinklistModelFactory;
 import com.coremedia.caas.service.repository.content.model.ContentModelFactory;
 import com.coremedia.caas.service.repository.content.model.ContentNavigationModelFactory;
 import com.coremedia.caas.service.repository.content.model.ContentPageGridModelFactory;
@@ -25,6 +26,11 @@ public class ContentModelConfig {
     return new ContentProxyModelFactory(modelFactories);
   }
 
+
+  @Bean
+  public ContentExtendedLinklistModelFactory contentExtendedLinklistModelFactory() {
+    return new ContentExtendedLinklistModelFactory();
+  }
 
   @Bean
   public ContentNavigationModelFactory contentNavigationModelFactory(@Qualifier("contentContextStrategy") ContextStrategy<Content, Content> contextStrategy, Map<String, TreeRelation<Content>> treeRelations) {

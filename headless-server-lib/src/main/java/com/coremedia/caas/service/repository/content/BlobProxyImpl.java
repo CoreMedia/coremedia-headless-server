@@ -16,13 +16,18 @@ public class BlobProxyImpl implements BlobProxy {
 
 
   @Override
-  public MimeType getContentType() {
-    return delegate.getContentType();
+  public boolean isEmpty() {
+    return getSize() == 0;
   }
 
   @Override
   public int getSize() {
     return delegate.getSize();
+  }
+
+  @Override
+  public MimeType getContentType() {
+    return delegate.getContentType();
   }
 
   @Override

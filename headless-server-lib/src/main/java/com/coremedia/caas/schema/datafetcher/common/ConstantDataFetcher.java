@@ -1,19 +1,24 @@
 package com.coremedia.caas.schema.datafetcher.common;
 
+import com.coremedia.caas.service.expression.FieldExpression;
+
 import graphql.schema.DataFetchingEnvironment;
 
-public class ConstantDataFetcher<E> extends AbstractDataFetcher {
+public class ConstantDataFetcher extends AbstractDataFetcher {
 
-  private E value;
+  private Object value;
 
 
-  public ConstantDataFetcher(E value) {
+  public ConstantDataFetcher(Object value) {
     this.value = value;
   }
 
 
   @Override
   public Object get(DataFetchingEnvironment environment) {
+    if (value instanceof FieldExpression) {
+      return ((FieldExpression) value).fetch(environment.getSource());
+    }
     return value;
   }
 }

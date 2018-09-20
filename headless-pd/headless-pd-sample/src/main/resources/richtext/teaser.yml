@@ -4,22 +4,73 @@
 
 name: teaser
 
-contexts:
-  - !RootContext
-    name: ignoreall
+handlerSets:
+  text: &text_handlers
+    - !Handler
+      eventMatcher:  !Matcher {qname: *em}
+      outputHandler: !ElementWriter {writeElement: true, writeCharacters: true}
+    - !Handler
+      eventMatcher:  !Matcher {qname: *strong}
+      outputHandler: !ElementWriter {writeElement: true, writeCharacters: true}
 
+  inline: &inline_handlers
+    - !Handler
+      eventMatcher:  !Matcher {qname: *br}
+      outputHandler: !EmptyElementWriter {}
+
+  headline: &headline_handlers
+    - !Handler
+      eventMatcher:   !Matcher {qname: *p, classes: *headline_styles}
+      contextHandler: !Push {contextName: headline}
+      outputHandler:
+        !ElementWriter
+        writeElement: true
+        writeCharacters: true
+        elementTransformer:
+          !ElementFromClass
+          mapping:
+            *headline_1_style: h1
+            *headline_2_style: h2
+            *headline_3_style: h3
+            *headline_4_style: h4
+            *headline_5_style: h5
+            *headline_6_style: h6
+        attributeTransformers:
+          - !PassStyles {styles: *align_styles}
+
+  block: &block_handlers
+    - !Handler
+      eventMatcher:   !Matcher {qname: *p}
+      contextHandler: !Push {contextName: paragraph}
+      outputHandler:
+        !ElementWriter
+        writeElement: true
+        writeCharacters: true
+        attributeTransformers:
+          - !PassStyles {styles: *align_styles}
+
+contexts:
   - !Context
-    name: plaintext
+    name: headline
     defaultHandler:
       !Handler
       outputHandler: !ElementWriter {writeCharacters: true}
+    handlers:
+      - *text_handlers
+
+  - !Context
+    name: paragraph
+    defaultHandler:
+      !Handler
+      outputHandler: !ElementWriter {writeCharacters: true}
+    handlers:
+      - *text_handlers
+      - *inline_handlers
 
   - &root !RootContext
     name: root
     handlers:
-      - - !Handler
-          eventMatcher:   !Matcher {qname: *p}
-          contextHandler: !ReplacePush {contextName: plaintext, replacementName: ignoreall}
-          outputHandler:  !ElementWriter {writeCharacters: true}
+      - *headline_handlers
+      - *block_handlers
 
 initialContext: *root

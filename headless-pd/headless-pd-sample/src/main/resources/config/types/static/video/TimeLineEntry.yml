@@ -1,15 +1,15 @@
 !ObjectType
 name: TimeLineEntry
 fields:
-  - !Property
+  - !ContentProperty
     name: position
     sourceName: "position"
     typeName: Int
-  - !Property
+  - !ContentProperty
     name: startTimeMillis
     sourceName: "startTimeMillis"
     typeName: Int
-  - !Property
+  - !Link
     name: target
     sourceName: "link"
     typeName: CMTeasable

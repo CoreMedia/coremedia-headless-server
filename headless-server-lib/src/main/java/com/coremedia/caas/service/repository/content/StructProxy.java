@@ -2,7 +2,7 @@ package com.coremedia.caas.service.repository.content;
 
 import java.util.Map;
 
-public interface StructProxy {
+public interface StructProxy extends ProxyObject {
 
   Object get(String propertyName);
 

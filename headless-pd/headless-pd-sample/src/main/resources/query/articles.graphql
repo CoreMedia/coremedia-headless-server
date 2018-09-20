@@ -5,9 +5,9 @@ query ArticleQuery {
   ... ContentInfo
 
   title
-  detailText(view: "detail")
+  detailText
   teaserTitle
-  teaserText(view: "teaser")
+  teaserText
   pictures {
     ... ContentInfo
 

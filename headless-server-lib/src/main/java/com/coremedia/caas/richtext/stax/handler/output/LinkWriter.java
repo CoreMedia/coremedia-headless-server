@@ -39,7 +39,7 @@ public class LinkWriter extends AbstractOutputHandler {
               return EvaluationAction.INCLUDE_INNER;
             }
             else {
-              String link = context.getLinkBuilder().createLink(contentProxy, context.getRootContext());
+              String link = context.getLinkBuilder().createLink(contentProxy, context.getRootContext()).toString();
               if (Strings.isNullOrEmpty(link)) {
                 // don't output link tag but all nested nodes
                 return EvaluationAction.INCLUDE_INNER;

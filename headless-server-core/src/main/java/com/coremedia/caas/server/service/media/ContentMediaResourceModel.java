@@ -54,26 +54,32 @@ class ContentMediaResourceModel implements MediaResourceModel {
     Blob blob = content.getBlob(propertyName);
     if (blob != null) {
       if (content.getType().isSubtypeOf("CMPicture")) {
-        if (ratio != null && mediaTransformer != null) {
-          Transformation transformation = transformImageService.getTransformation(content, ratio);
-          if (transformation != null) {
-            Breakpoint bestMatch = null;
-            for (Breakpoint breakpoint : transformation.getBreakpoints()) {
-              if (bestMatch == null) {
-                bestMatch = breakpoint;
-              }
-              else if (bestMatch.getWidth() < minWidth && bestMatch.getWidth() < breakpoint.getWidth()) {
-                bestMatch = breakpoint;
-              }
-              else if (bestMatch.getHeight() < minHeight && bestMatch.getHeight() < breakpoint.getHeight()) {
-                bestMatch = breakpoint;
-              }
+        if (ratio == null) {
+          // always deliver original
+          return blob;
+        }
+        if (mediaTransformer == null) {
+          LOG.error("No media transformer configured");
+          return blob;
+        }
+        Transformation transformation = transformImageService.getTransformation(content, ratio);
+        if (transformation != null) {
+          Breakpoint bestMatch = null;
+          for (Breakpoint breakpoint : transformation.getBreakpoints()) {
+            if (bestMatch == null) {
+              bestMatch = breakpoint;
             }
-            if (bestMatch != null) {
-              TransformedBlob transformedBlob = mediaTransformer.transform(this, transformation.getName());
-              if (transformedBlob != null) {
-                return transformImageService.transformWithDimensions(content, blob, transformedBlob, transformation.getName(), "jpg", bestMatch.getWidth(), bestMatch.getHeight());
-              }
+            else if (bestMatch.getWidth() < minWidth && bestMatch.getWidth() < breakpoint.getWidth()) {
+              bestMatch = breakpoint;
+            }
+            else if (bestMatch.getHeight() < minHeight && bestMatch.getHeight() < breakpoint.getHeight()) {
+              bestMatch = breakpoint;
+            }
+          }
+          if (bestMatch != null) {
+            TransformedBlob transformedBlob = mediaTransformer.transform(this, transformation.getName());
+            if (transformedBlob != null) {
+              return transformImageService.transformWithDimensions(content, blob, transformedBlob, transformation.getName(), "jpg", bestMatch.getWidth(), bestMatch.getHeight());
             }
           }
         }
@@ -99,10 +105,12 @@ class ContentMediaResourceModel implements MediaResourceModel {
    * Transformer callbacks
    */
 
+  @SuppressWarnings("unused")
   public Blob getData() {
     return content.getBlob(propertyName);
   }
 
+  @SuppressWarnings("unused")
   public Map<String, String> getTransformMap() {
     Map<String, String> transformations;
     Struct localSettings = content.getStruct("localSettings");
