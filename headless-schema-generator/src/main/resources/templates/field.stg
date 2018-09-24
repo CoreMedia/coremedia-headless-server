@@ -109,7 +109,7 @@ richtext(fieldDefinition) ::= <<
     name: <fieldDefinition.name>
     sourceName: "<fieldDefinition.sourceName>"
     <fallbackSources(fieldDefinition.fallbackSourceNames)>
-    typeName: String
+    typeName: <fieldDefinition.targetType>
     <if(fieldDefinition.nonNull)>nonNull: true<endif>
     <directives(fieldDefinition.directives)>
 
@@ -120,7 +120,7 @@ markup(fieldDefinition) ::= <<
     name: <fieldDefinition.name>
     sourceName: "<fieldDefinition.sourceName>"
     <fallbackSources(fieldDefinition.fallbackSourceNames)>
-    typeName: String
+    typeName: <fieldDefinition.targetType>
     <if(fieldDefinition.nonNull)>nonNull: true<endif>
     <directives(fieldDefinition.directives)>
 
