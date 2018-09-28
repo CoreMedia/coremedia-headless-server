@@ -11,6 +11,9 @@ import java.util.Map;
 
 public class ProcessingDefinition {
 
+  public static ProcessingDefinition INVALID = new ProcessingDefinition();
+
+
   private String name;
   private String description;
 

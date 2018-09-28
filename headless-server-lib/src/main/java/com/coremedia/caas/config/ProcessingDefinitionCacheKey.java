@@ -62,6 +62,7 @@ public class ProcessingDefinitionCacheKey extends CacheKey<Map<String, Processin
               builder.put(name, new ProcessingDefinitionLoader(name, resourceLoader, contentRepository, applicationContext).load());
             } catch (InvalidDefinition | IOException e) {
               LOG.error("Cannot load definition '{}' from source '{}': {}", name, sourceId, e.getMessage());
+              builder.put(name, ProcessingDefinition.INVALID);
             }
           }
         }

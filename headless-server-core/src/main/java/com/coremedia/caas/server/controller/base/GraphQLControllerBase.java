@@ -82,8 +82,8 @@ public abstract class GraphQLControllerBase extends ControllerBase {
     if (processingDefinition == null) {
       processingDefinition = staticProcessingDefinitions.get(definitionName);
     }
-    if (processingDefinition == null) {
-      LOG.error("No processing definition found for name '{}'", definitionName);
+    if (processingDefinition == null || processingDefinition == ProcessingDefinition.INVALID) {
+      LOG.error("No valid processing definition found for name '{}'", definitionName);
       throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
     // check for query existence
