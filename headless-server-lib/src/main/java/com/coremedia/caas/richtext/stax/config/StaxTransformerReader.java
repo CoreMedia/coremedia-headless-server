@@ -1,6 +1,7 @@
 package com.coremedia.caas.richtext.stax.config;
 
 import com.coremedia.caas.config.loader.ConfigResourceLoader;
+import com.coremedia.caas.config.loader.LoaderError;
 import com.coremedia.caas.config.reader.ConfigResource;
 import com.coremedia.caas.config.reader.YamlConfigReader;
 import com.coremedia.caas.richtext.stax.StaxRichtextTransformer;
@@ -17,18 +18,25 @@ import com.coremedia.caas.richtext.stax.handler.output.ImgWriter;
 import com.coremedia.caas.richtext.stax.handler.output.LinkWriter;
 import com.coremedia.caas.richtext.stax.transformer.attribute.PassStyles;
 import com.coremedia.caas.richtext.stax.transformer.element.ElementFromClass;
+import com.coremedia.caas.schema.InvalidRichtextDefinition;
 
 import com.google.common.collect.ImmutableList;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.TypeDescription;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 import org.yaml.snakeyaml.nodes.Tag;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import javax.xml.namespace.QName;
 
 public class StaxTransformerReader extends YamlConfigReader {
+
+  private static final Logger LOG = LoggerFactory.getLogger(StaxTransformerReader.class);
+
 
   public StaxTransformerReader(ConfigResourceLoader resourceLoader) {
     super(resourceLoader);
@@ -54,9 +62,20 @@ public class StaxTransformerReader extends YamlConfigReader {
     Yaml yaml = new Yaml(constructor);
 
     ImmutableList.Builder<StaxRichtextTransformer> builder = ImmutableList.builder();
+    List<LoaderError> errors = new ArrayList<>();
     for (ConfigResource resource : getResources("richtext/*.yml")) {
-      StaxTransformationConfig config = yaml.loadAs(resource.asString(), StaxTransformationConfig.class).resolve();
-      builder.add(new StaxRichtextTransformer(config));
+      try {
+        StaxTransformationConfig config = yaml.loadAs(resource.asString(), StaxTransformationConfig.class).resolve();
+        builder.add(new StaxRichtextTransformer(config));
+      } catch (Exception e) {
+        errors.add(new LoaderError(resource.getName(), resource.getURI(), e.getMessage()));
+      }
+    }
+    if (!errors.isEmpty()) {
+      for (LoaderError error : errors) {
+        LOG.error(error.toString());
+      }
+      throw new InvalidRichtextDefinition("Richtext transformation rules contain errors", errors);
     }
     return builder.build();
   }

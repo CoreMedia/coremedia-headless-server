@@ -1,6 +1,7 @@
 package com.coremedia.caas.schema;
 
 import com.coremedia.caas.config.loader.ConfigResourceLoader;
+import com.coremedia.caas.config.loader.LoaderError;
 import com.coremedia.caas.config.reader.ConfigResource;
 import com.coremedia.caas.config.reader.YamlConfigReader;
 import com.coremedia.caas.schema.directive.CustomDirective;
@@ -25,6 +26,8 @@ import com.coremedia.caas.schema.type.object.ContentBlob;
 import com.coremedia.cap.content.ContentRepository;
 
 import com.google.common.collect.ImmutableSet;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.BeanFactory;
 import org.yaml.snakeyaml.TypeDescription;
 import org.yaml.snakeyaml.Yaml;
@@ -32,9 +35,14 @@ import org.yaml.snakeyaml.constructor.Constructor;
 import org.yaml.snakeyaml.nodes.Tag;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 public class SchemaReader extends YamlConfigReader {
+
+  private static final Logger LOG = LoggerFactory.getLogger(SchemaReader.class);
+
 
   public SchemaReader(ConfigResourceLoader resourceLoader) {
     super(resourceLoader);
@@ -79,8 +87,19 @@ public class SchemaReader extends YamlConfigReader {
     Yaml yaml = new Yaml(constructor);
 
     ImmutableSet.Builder<TypeDefinition> builder = ImmutableSet.builder();
+    List<LoaderError> errors = new ArrayList<>();
     for (ConfigResource resource : getResources("schema/*.yml")) {
-      builder.add((TypeDefinition) yaml.load(resource.asString()));
+      try {
+        builder.add((TypeDefinition) yaml.load(resource.asString()));
+      } catch (Exception e) {
+        errors.add(new LoaderError(resource.getName(), resource.getURI(), e.getMessage()));
+      }
+    }
+    if (!errors.isEmpty()) {
+      for (LoaderError error : errors) {
+        LOG.error(error.toString());
+      }
+      throw new InvalidTypeDefinition("Schema definition contains errors", errors);
     }
     // add builtin types
     builder.add(new ContentBlob());

@@ -18,11 +18,11 @@ public class JarConfigResourceLoader implements ConfigResourceLoader {
   private List<BufferedJarResource> resources = new ArrayList<>();
 
 
-  public JarConfigResourceLoader(JarInputStream jarInputStream) throws IOException {
+  public JarConfigResourceLoader(String sourceId, JarInputStream jarInputStream) throws IOException {
     JarEntry jarEntry;
     while ((jarEntry = jarInputStream.getNextJarEntry()) != null) {
       if (!jarEntry.isDirectory()) {
-        resources.add(new BufferedJarResource(jarEntry.getName(), ByteStreams.toByteArray(jarInputStream), this));
+        resources.add(new BufferedJarResource(sourceId, jarEntry.getName(), ByteStreams.toByteArray(jarInputStream), this));
       }
     }
   }

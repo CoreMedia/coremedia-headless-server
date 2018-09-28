@@ -6,19 +6,23 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Paths;
 
 class BufferedJarResource implements Resource {
 
+  private String sourceId;
   private String filename;
   private byte[] data;
 
   private JarConfigResourceLoader loader;
 
 
-  BufferedJarResource(String filename, byte[] data, JarConfigResourceLoader loader) {
+  BufferedJarResource(String sourceId, String filename, byte[] data, JarConfigResourceLoader loader) {
+    this.sourceId = sourceId;
     this.filename = filename;
     this.data = data;
     this.loader = loader;
@@ -41,13 +45,17 @@ class BufferedJarResource implements Resource {
   }
 
   @Override
-  public URL getURL() throws IOException {
-    throw new IOException("This is a virtual resource");
+  public URL getURL() throws MalformedURLException {
+    return new URL("file:/" + filename);
   }
 
   @Override
   public URI getURI() throws IOException {
-    throw new IOException("This is a virtual resource");
+    try {
+      return new URI("jar:" + sourceId + "!" + filename);
+    } catch (URISyntaxException e) {
+      throw new IOException(e);
+    }
   }
 
   @Override

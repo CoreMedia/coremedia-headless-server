@@ -6,6 +6,7 @@ import com.coremedia.caas.schema.InvalidDefinition;
 import com.coremedia.cache.Cache;
 import com.coremedia.cache.CacheKey;
 import com.coremedia.cap.common.Blob;
+import com.coremedia.cap.common.IdHelper;
 import com.coremedia.cap.content.Content;
 import com.coremedia.cap.content.ContentRepository;
 
@@ -55,11 +56,12 @@ public class ProcessingDefinitionCacheKey extends CacheKey<Map<String, Processin
         if (content != null && content.getProperties().containsKey(PROPERTY_DEFINITION_DATA)) {
           Blob data = content.getBlobRef(PROPERTY_DEFINITION_DATA);
           if (data != null) {
+            String sourceId = IdHelper.formatBlobId(content.getId(), PROPERTY_DEFINITION_DATA);
             try (InputStream inputStream = data.getInputStream(); JarInputStream jarInputStream = new JarInputStream(inputStream)) {
-              JarConfigResourceLoader resourceLoader = new JarConfigResourceLoader(jarInputStream);
+              JarConfigResourceLoader resourceLoader = new JarConfigResourceLoader(sourceId, jarInputStream);
               builder.put(name, new ProcessingDefinitionLoader(name, resourceLoader, contentRepository, applicationContext).load());
             } catch (InvalidDefinition | IOException e) {
-              LOG.error("Cannot load definition '{}'", name, e);
+              LOG.error("Cannot load definition '{}' from source '{}': {}", name, sourceId, e.getMessage());
             }
           }
         }
