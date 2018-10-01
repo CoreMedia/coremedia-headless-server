@@ -1,6 +1,7 @@
 package com.coremedia.caas.server;
 
 import com.coremedia.caas.schema.InvalidDefinition;
+import com.coremedia.util.Hooks;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +29,7 @@ public class CaasServletInitializer extends SpringBootServletInitializer {
 
   public static void main(String[] args) {
     try {
+      Hooks.enable();
       SpringApplication.run(CaasServletInitializer.class, args);
     } catch (BeanCreationException e) {
       if (BeanCreationException.class.isAssignableFrom(e.getClass())) {
@@ -38,6 +40,8 @@ public class CaasServletInitializer extends SpringBootServletInitializer {
         }
       }
       LOG.error("Application startup failed, cause: {}", e.getMessage());
+    } finally {
+      Hooks.disable();
     }
   }
 }
