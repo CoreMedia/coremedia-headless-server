@@ -1,5 +1,6 @@
 package com.coremedia.caas.server.controller.media;
 
+import com.coremedia.caas.server.CaasServiceConfig;
 import com.coremedia.caas.server.controller.base.ControllerBase;
 import com.coremedia.caas.server.controller.base.ResponseStatusException;
 import com.coremedia.caas.server.service.media.ImageVariantsDescriptor;
@@ -15,6 +16,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -40,12 +42,15 @@ public class MediaController extends ControllerBase {
   public static final String HANDLER_NAME_IMAGE_VARIANTS = "imageVariants";
 
 
+  @Autowired
+  private CaasServiceConfig serviceConfig;
+
+  @Autowired
   private ImageVariantsResolver imageVariantsResolver;
 
 
-  public MediaController(ImageVariantsResolver imageVariantsResolver) {
+  public MediaController() {
     super("caas.server.media.requests");
-    this.imageVariantsResolver = imageVariantsResolver;
   }
 
 
@@ -80,8 +85,17 @@ public class MediaController extends ControllerBase {
         return execute(() -> {
           MediaResource resource = resourceModel.getMediaResource(ratio, minWidth, minHeight);
           if (resource != null) {
+            // send response with appropriate cache headers
+            CacheControl cacheControl;
+            if (serviceConfig.isPreview()) {
+              cacheControl = CacheControl.noCache();
+            }
+            else {
+              long maxAge = getMaxAge(serviceConfig.getMediaCacheTime(resource.getMediaType()));
+              cacheControl = CacheControl.maxAge(maxAge, TimeUnit.SECONDS).mustRevalidate();
+            }
             return ResponseEntity.ok()
-                    .cacheControl(CacheControl.maxAge(300, TimeUnit.SECONDS).noTransform())
+                    .cacheControl(cacheControl)
                     .contentType(resource.getMediaType())
                     .eTag(resource.getETag())
                     .body(resource);

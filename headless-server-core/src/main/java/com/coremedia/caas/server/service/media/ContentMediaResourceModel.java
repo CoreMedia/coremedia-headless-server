@@ -79,7 +79,7 @@ class ContentMediaResourceModel implements MediaResourceModel {
           if (bestMatch != null) {
             TransformedBlob transformedBlob = mediaTransformer.transform(this, transformation.getName());
             if (transformedBlob != null) {
-              return transformImageService.transformWithDimensions(content, blob, transformedBlob, transformation.getName(), "jpg", bestMatch.getWidth(), bestMatch.getHeight());
+              return transformImageService.transformWithDimensions(content, blob, transformedBlob, transformation.getName(), null, bestMatch.getWidth(), bestMatch.getHeight());
             }
           }
         }

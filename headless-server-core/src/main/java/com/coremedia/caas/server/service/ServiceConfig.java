@@ -2,7 +2,6 @@ package com.coremedia.caas.server.service;
 
 import com.coremedia.caas.server.CaasServiceConfig;
 import com.coremedia.caas.server.service.expression.spel.SpelExpressionEvaluator;
-import com.coremedia.caas.server.service.request.DefaultRequestContext;
 import com.coremedia.caas.service.ServiceRegistry;
 import com.coremedia.caas.service.cache.CacheInstances;
 import com.coremedia.caas.service.cache.Weighted;
@@ -10,7 +9,6 @@ import com.coremedia.caas.service.expression.ExpressionEvaluator;
 import com.coremedia.caas.service.expression.spel.ReadOnlyMapAccessor;
 import com.coremedia.caas.service.repository.content.ContentProxyPropertyAccessor;
 import com.coremedia.caas.service.repository.content.StructProxyPropertyAccessor;
-import com.coremedia.caas.service.request.RequestContext;
 
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
@@ -27,7 +25,6 @@ import org.springframework.cache.caffeine.CaffeineCache;
 import org.springframework.cache.support.SimpleCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.core.convert.ConversionService;
@@ -57,21 +54,6 @@ public class ServiceConfig {
             .setFieldMatchingEnabled(true)
             .setFieldAccessLevel(AccessLevel.PRIVATE);
     return modelMapper;
-  }
-
-
-  @Profile("preview")
-  @Bean("requestContext")
-  @Scope(value = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.INTERFACES)
-  public RequestContext createPreviewRequestContext() {
-    return new DefaultRequestContext(true);
-  }
-
-  @Profile("!preview")
-  @Bean("requestContext")
-  @Scope(value = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.INTERFACES)
-  public RequestContext createLiveRequestContext() {
-    return new DefaultRequestContext(false);
   }
 
 

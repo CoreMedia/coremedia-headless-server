@@ -5,6 +5,7 @@ import com.coremedia.caas.config.ProcessingDefinition;
 import com.coremedia.caas.config.ProcessingDefinitionCacheKey;
 import com.coremedia.caas.execution.ExecutionContext;
 import com.coremedia.caas.query.QueryDefinition;
+import com.coremedia.caas.server.CaasServiceConfig;
 import com.coremedia.caas.server.controller.interceptor.QueryExecutionInterceptor;
 import com.coremedia.caas.server.service.request.ClientIdentification;
 import com.coremedia.caas.server.service.request.GlobalParameters;
@@ -23,11 +24,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
+import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.context.request.ServletWebRequest;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import javax.validation.constraints.NotNull;
 
@@ -41,6 +46,9 @@ public abstract class GraphQLControllerBase extends ControllerBase {
 
   @Autowired
   private Cache cache;
+
+  @Autowired
+  private CaasServiceConfig serviceConfig;
 
   @Autowired
   private ServiceRegistry serviceRegistry;
@@ -137,7 +145,30 @@ public abstract class GraphQLControllerBase extends ControllerBase {
         }
       }
     }
-    return resultData;
+    // send response with appropriate cache headers
+    CacheControl cacheControl;
+    if (serviceConfig.isPreview()) {
+      cacheControl = CacheControl.noCache();
+    }
+    else {
+      long cacheFor = serviceConfig.getCacheTime();
+      // allow individual query override
+      String queryCacheFor = queryDefinition.getOption("cacheFor");
+      if (queryCacheFor != null) {
+        try {
+          cacheFor = Long.parseLong(queryCacheFor);
+        } catch (NumberFormatException e) {
+          // just log a warning and use default
+          LOG.warn("Invalid query cache time specified: {}", queryCacheFor);
+        }
+      }
+      long maxAge = getMaxAge(cacheFor);
+      cacheControl = CacheControl.maxAge(maxAge, TimeUnit.SECONDS).mustRevalidate();
+    }
+    return ResponseEntity.ok()
+            .cacheControl(cacheControl)
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(resultData);
   }
 
 

@@ -20,6 +20,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.context.request.ServletWebRequest;
 
+import java.time.Duration;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -142,5 +144,17 @@ public abstract class ControllerBase {
   protected <T> ResponseEntity<T> handleError(ResponseStatusException error, ServletWebRequest request) {
     LOG.debug("Request failed: {}", error.getMessage());
     return new ResponseEntity<T>(error.getStatus());
+  }
+
+
+  protected long getMaxAge(long cacheFor) {
+    ZonedDateTime nextInvalidation = requestContext.getNextDateTimeChange();
+    if (nextInvalidation != null) {
+      ZonedDateTime now = requestContext.getRequestTime();
+      // return either the configured cache time or the number of seconds until validity/visibility
+      // settings change the result
+      return Math.min(cacheFor, Duration.between(now, nextInvalidation).getSeconds());
+    }
+    return cacheFor;
   }
 }
