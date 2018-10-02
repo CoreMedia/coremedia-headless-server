@@ -17,7 +17,7 @@ public class ResponseHeaderInitializer extends HandlerInterceptorAdapter {
 
   @Override
   public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
-    response.setHeader("Vary", VARIANT_HEADER_VALUE);
+    response.addHeader("Vary", VARIANT_HEADER_VALUE);
     return true;
   }
 }
