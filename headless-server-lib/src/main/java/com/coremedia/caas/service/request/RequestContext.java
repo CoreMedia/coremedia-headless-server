@@ -12,6 +12,10 @@ public interface RequestContext {
 
   void setRequestTime(ZonedDateTime time);
 
+  ZonedDateTime getNextDateTimeChange();
+
+  void updateNextDateTimeChange(ZonedDateTime time);
+
   <E> E getProperty(@NotNull String propertyName, @NotNull Class<E> targetClass);
 
   void setProperty(@NotNull String propertyName, @NotNull Object value);

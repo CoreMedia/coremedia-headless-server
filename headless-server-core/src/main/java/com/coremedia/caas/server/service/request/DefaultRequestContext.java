@@ -12,6 +12,8 @@ public class DefaultRequestContext implements RequestContext {
 
   private final boolean isPreview;
   private ZonedDateTime requestTime;
+  private ZonedDateTime nextDateTimeChange;
+  private final Object nextDateTimeChangeLock = new Object();
   private final Map<String, Object> properties = new ConcurrentHashMap<>();
 
 
@@ -37,6 +39,20 @@ public class DefaultRequestContext implements RequestContext {
       throw new IllegalStateException("request time already set");
     }
     this.requestTime = time;
+  }
+
+  @Override
+  public ZonedDateTime getNextDateTimeChange() {
+    return nextDateTimeChange;
+  }
+
+  @Override
+  public void updateNextDateTimeChange(ZonedDateTime time) {
+    synchronized (nextDateTimeChangeLock) {
+      if (nextDateTimeChange == null || time.isBefore(nextDateTimeChange)) {
+        nextDateTimeChange = time;
+      }
+    }
   }
 
 
