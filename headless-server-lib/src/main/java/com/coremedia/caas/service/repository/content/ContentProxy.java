@@ -1,9 +1,8 @@
 package com.coremedia.caas.service.repository.content;
 
 import java.time.ZonedDateTime;
-import java.util.List;
 
-public interface ContentProxy extends ProxyObject {
+public interface ContentProxy extends StructProxy {
 
   boolean isSubtypeOf(String typeName);
 
@@ -20,24 +19,7 @@ public interface ContentProxy extends ProxyObject {
   ZonedDateTime getModificationDate();
 
 
-  Object get(String propertyName);
-
-
   BlobProxy getBlob(String propertyName);
 
-  Boolean getBoolean(String propertyName);
-
-  ZonedDateTime getDate(String propertyName);
-
-  Integer getInteger(String propertyName);
-
-  ContentProxy getLink(String propertyName);
-
-  List<ContentProxy> getLinks(String propertyName);
-
   MarkupProxy getMarkup(String propertyName);
-
-  String getString(String propertyName);
-
-  StructProxy getStruct(String propertyName);
 }

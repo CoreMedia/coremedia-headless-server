@@ -32,7 +32,10 @@ public interface ProxyFactory {
 
   MarkupProxy makeMarkupProxy(@NotNull Markup source);
 
+
   StructProxy makeStructProxy(@NotNull Struct source);
+
+  List<StructProxy> makeStructProxyList(@NotNull List<Struct> source);
 
 
   ContentProxy makeContentProxy(@NotNull Content source);

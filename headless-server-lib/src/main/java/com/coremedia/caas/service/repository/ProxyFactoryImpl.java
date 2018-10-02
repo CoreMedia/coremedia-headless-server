@@ -105,9 +105,15 @@ public class ProxyFactoryImpl implements ProxyFactory {
     return new MarkupProxyImpl(source);
   }
 
+
   @Override
   public StructProxy makeStructProxy(@NotNull Struct source) {
     return new StructProxyImpl(source, this);
+  }
+
+  @Override
+  public List<StructProxy> makeStructProxyList(@NotNull List<Struct> source) {
+    return source.stream().map(this::makeStructProxy).collect(Collectors.toList());
   }
 
 

@@ -2,7 +2,9 @@ package com.coremedia.caas.service.repository.content.util;
 
 import com.coremedia.caas.service.repository.content.BlobProxy;
 import com.coremedia.caas.service.repository.content.MarkupProxy;
+import com.coremedia.cap.common.CapStructHelper;
 import com.coremedia.cap.content.Content;
+import com.coremedia.cap.struct.Struct;
 
 import java.time.ZonedDateTime;
 import java.util.Calendar;
@@ -32,8 +34,12 @@ public class ContentUtil {
   }
 
 
-  public static ZonedDateTime getZonedDateTime(Content target, String propertyName) {
-    return toZonedDateTime(target.getDate(propertyName));
+  public static ZonedDateTime getZonedDateTime(Content source, String propertyName) {
+    return toZonedDateTime(source.getDate(propertyName));
+  }
+
+  public static ZonedDateTime getZonedDateTime(Struct source, String propertyName) {
+    return toZonedDateTime(CapStructHelper.getDate(source, propertyName));
   }
 
   public static ZonedDateTime toZonedDateTime(Calendar calendar) {

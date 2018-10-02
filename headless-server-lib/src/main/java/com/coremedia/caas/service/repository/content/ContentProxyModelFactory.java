@@ -29,7 +29,7 @@ public class ContentProxyModelFactory implements ProxyModelFactory {
   @Override
   @SuppressWarnings("unchecked")
   public <T> T createModel(RootContext rootContext, String modelName, Object source, Object... arguments) {
-    return (T) modelFactories.get(modelName).createModel(rootContext, TARGET_CLASS.cast(source).getContent(), arguments);
+    return (T) modelFactories.get(modelName).createModel(rootContext, TARGET_CLASS.cast(source).getDelegate(), arguments);
   }
 
 
