@@ -1,7 +1,10 @@
 package com.coremedia.caas.extension.link;
 
 import com.coremedia.caas.link.LinkBuilder;
+import com.coremedia.caas.server.CaasServiceConfig;
 import com.coremedia.caas.server.link.SimpleLinkBuilder;
+import com.coremedia.caas.server.service.media.MediaResourceModel;
+import com.coremedia.caas.server.service.media.MediaResourceModelFactory;
 import com.coremedia.caas.service.repository.RootContext;
 import com.coremedia.caas.service.repository.content.BlobProxy;
 import com.coremedia.caas.service.repository.content.ContentProxy;
@@ -17,10 +20,12 @@ import static com.coremedia.caas.server.link.SimpleLinkBuilder.EMPTY_LINK;
 public class ExtendedLinkBuilder implements LinkBuilder<String> {
 
   private SimpleLinkBuilder delegate;
+  private CaasServiceConfig serviceConfig;
 
 
-  public ExtendedLinkBuilder(SimpleLinkBuilder delegate) {
+  public ExtendedLinkBuilder(SimpleLinkBuilder delegate, CaasServiceConfig serviceConfig) {
     this.delegate = delegate;
+    this.serviceConfig = serviceConfig;
   }
 
 
@@ -51,10 +56,21 @@ public class ExtendedLinkBuilder implements LinkBuilder<String> {
 
   private String createBinaryLink(ContentProxy content, RootContext rootContext, String propertyName) {
     BlobProxy blob = content.getBlob(propertyName);
-    if (blob != null && blob.getSize() > 0) {
-      UriComponents uriComponents = rootContext.getRequestContext().getProperty(REQUEST_MEDIA_URI_COMPONENTS, UriComponents.class);
-      return uriComponents.expand(String.valueOf(IdHelper.parseContentId(content.getId())),
-                                  propertyName).encode().toUriString();
+    if (blob != null && !blob.isEmpty()) {
+      Integer mediaId = IdHelper.parseContentId(content.getId());
+      if (serviceConfig.isBinaryUriHashesEnabled()) {
+        // fetch hash from media model
+        MediaResourceModel model = rootContext.getModelFactory().createModel(MediaResourceModelFactory.MODEL_NAME, content, propertyName);
+        String mediaHash = model.getHash();
+        // use pre-instantiated URI component
+        UriComponents uriComponents = rootContext.getRequestContext().getProperty(REQUEST_MEDIA_URI_COMPONENTS, UriComponents.class);
+        return uriComponents.expand(mediaId, propertyName, mediaHash).encode().toUriString();
+      }
+      else {
+        // use pre-instantiated URI component
+        UriComponents uriComponents = rootContext.getRequestContext().getProperty(REQUEST_MEDIA_URI_COMPONENTS, UriComponents.class);
+        return uriComponents.expand(mediaId, propertyName).encode().toUriString();
+      }
     }
     return EMPTY_LINK;
   }

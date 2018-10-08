@@ -1,5 +1,6 @@
 package com.coremedia.caas.server.service.media;
 
+import com.coremedia.caas.service.repository.RootContext;
 import com.coremedia.cap.common.Blob;
 import com.coremedia.cap.content.Content;
 import com.coremedia.cap.struct.Struct;
@@ -23,21 +24,35 @@ class ContentMediaResourceModel implements MediaResourceModel {
 
   private Content content;
   private String propertyName;
+  private ImageVariantsResolver imageVariantsResolver;
   private NamedTransformBeanBlobTransformer mediaTransformer;
   private TransformImageService transformImageService;
+  private RootContext rootContext;
 
 
-  ContentMediaResourceModel(Content content, String propertyName, NamedTransformBeanBlobTransformer mediaTransformer, TransformImageService transformImageService) {
+  ContentMediaResourceModel(Content content,
+                            String propertyName,
+                            ImageVariantsResolver imageVariantsResolver,
+                            NamedTransformBeanBlobTransformer mediaTransformer,
+                            TransformImageService transformImageService,
+                            RootContext rootContext) {
     this.content = content;
     this.propertyName = propertyName;
+    this.imageVariantsResolver = imageVariantsResolver;
     this.mediaTransformer = mediaTransformer;
     this.transformImageService = transformImageService;
+    this.rootContext = rootContext;
   }
 
 
   @Override
   public String getType() {
     return content.getType().getName();
+  }
+
+  @Override
+  public String getHash() {
+    return content.getRepository().getConnection().getCache().get(new MediaResourceHashCacheKey(content, rootContext.getSite(), imageVariantsResolver, transformImageService));
   }
 
   @Override

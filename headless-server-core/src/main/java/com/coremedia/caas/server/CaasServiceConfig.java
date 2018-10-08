@@ -20,6 +20,7 @@ public class CaasServiceConfig implements ServiceConfig {
   private boolean isPreview;
   private boolean isLogRequests;
   private boolean isPrettyPrintOutput;
+  private boolean isBinaryUriHashesEnabled;
   private Map<String, String> cacheSpecs = new HashMap<>();
   private Map<String, Long> cacheCapacities = new HashMap<>();
   private AccessControlConfig accessControlConfig;
@@ -51,6 +52,14 @@ public class CaasServiceConfig implements ServiceConfig {
 
   public void setPrettyPrintOutput(boolean prettyPrintOutput) {
     isPrettyPrintOutput = prettyPrintOutput;
+  }
+
+  public boolean isBinaryUriHashesEnabled() {
+    return isBinaryUriHashesEnabled;
+  }
+
+  public void setBinaryUriHashesEnabled(boolean binaryUriHashesEnabled) {
+    isBinaryUriHashesEnabled = binaryUriHashesEnabled;
   }
 
   public Map<String, String> getCacheSpecs() {

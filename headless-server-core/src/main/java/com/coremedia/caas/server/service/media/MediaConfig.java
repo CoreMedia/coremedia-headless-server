@@ -36,7 +36,7 @@ public class MediaConfig {
 
 
   @Bean
-  public ContentMediaResourceModelFactory contentMediaModelFactory(@Qualifier("contentMediaTransformer") NamedTransformBeanBlobTransformer mediaTransformer, @Qualifier("transformImageService") TransformImageService transformImageService) {
-    return new ContentMediaResourceModelFactory(mediaTransformer, transformImageService);
+  public ContentMediaResourceModelFactory contentMediaModelFactory(@Qualifier("imageVariantsResolver") ImageVariantsResolver imageVariantsResolver, @Qualifier("contentMediaTransformer") NamedTransformBeanBlobTransformer mediaTransformer, @Qualifier("transformImageService") TransformImageService transformImageService) {
+    return new ContentMediaResourceModelFactory(imageVariantsResolver, mediaTransformer, transformImageService);
   }
 }

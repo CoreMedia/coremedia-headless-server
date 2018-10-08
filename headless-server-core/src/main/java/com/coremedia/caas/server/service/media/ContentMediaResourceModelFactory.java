@@ -8,11 +8,13 @@ import com.coremedia.transform.NamedTransformBeanBlobTransformer;
 
 public class ContentMediaResourceModelFactory implements ContentModelFactory<ContentMediaResourceModel>, MediaResourceModelFactory {
 
+  private ImageVariantsResolver imageVariantsResolver;
   private NamedTransformBeanBlobTransformer mediaTransformer;
   private TransformImageService transformImageService;
 
 
-  public ContentMediaResourceModelFactory(NamedTransformBeanBlobTransformer mediaTransformer, TransformImageService transformImageService) {
+  public ContentMediaResourceModelFactory(ImageVariantsResolver imageVariantsResolver, NamedTransformBeanBlobTransformer mediaTransformer, TransformImageService transformImageService) {
+    this.imageVariantsResolver = imageVariantsResolver;
     this.mediaTransformer = mediaTransformer;
     this.transformImageService = transformImageService;
   }
@@ -33,6 +35,6 @@ public class ContentMediaResourceModelFactory implements ContentModelFactory<Con
     // resolve arguments
     String propertyName = (String) arguments[0];
     // instantiate model
-    return new ContentMediaResourceModel(content, propertyName, mediaTransformer, transformImageService);
+    return new ContentMediaResourceModel(content, propertyName, imageVariantsResolver, mediaTransformer, transformImageService, rootContext);
   }
 }
