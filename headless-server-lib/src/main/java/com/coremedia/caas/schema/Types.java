@@ -1,6 +1,7 @@
 package com.coremedia.caas.schema;
 
 import com.coremedia.caas.schema.type.scalar.MapOfScalars;
+import com.coremedia.caas.schema.type.scalar.RichtextTree;
 
 import graphql.Scalars;
 import graphql.schema.GraphQLList;
@@ -14,6 +15,7 @@ public class Types {
   private static final String LIST_PREFIX = "List:";
   private static final String MAP_PREFIX = "Map:";
 
+  /* default scalar types*/
   public static final String BOOLEAN = "Boolean";
   public static final String BIGDECIMAL = "BigDecimal";
   public static final String BIGINTEGER = "BigInteger";
@@ -25,6 +27,9 @@ public class Types {
   public static final String LONG = "Long";
   public static final String SHORT = "Short";
   public static final String STRING = "String";
+
+  /* custom types*/
+  public static final String RICHTEXT_TREE = "RichtextTree";
 
 
   public static boolean isList(String typeName) {
@@ -39,7 +44,8 @@ public class Types {
   public static String getBaseTypeName(String typeName) {
     if (isList(typeName)) {
       return typeName.substring(LIST_PREFIX.length());
-    } else if (isMap(typeName)) {
+    }
+    else if (isMap(typeName)) {
       return typeName.substring(MAP_PREFIX.length());
     }
     return typeName;
@@ -47,14 +53,16 @@ public class Types {
 
 
   public static GraphQLOutputType getType(String typeName, boolean isNonNull) {
-    if (isMap(typeName)) {
+    if (isList(typeName)) {
+      GraphQLOutputType baseType = new GraphQLList(getBaseType(getBaseTypeName(typeName)));
+      return isNonNull ? new GraphQLNonNull(baseType) : baseType;
+    }
+    else if (isMap(typeName)) {
       GraphQLScalarType baseType = MapOfScalars.getType(getBaseTypeName(typeName));
       return isNonNull ? new GraphQLNonNull(baseType) : baseType;
-    } else {
-      GraphQLOutputType baseType = getBaseType(getBaseTypeName(typeName));
-      if (isList(typeName)) {
-        baseType = new GraphQLList(baseType);
-      }
+    }
+    else {
+      GraphQLOutputType baseType = getBaseType(typeName);
       return isNonNull ? new GraphQLNonNull(baseType) : baseType;
     }
   }
@@ -84,6 +92,8 @@ public class Types {
         return Scalars.GraphQLShort;
       case STRING:
         return Scalars.GraphQLString;
+      case RICHTEXT_TREE:
+        return RichtextTree.CmsRichtextTree;
       default:
         return new GraphQLTypeReference(baseTypeName);
     }

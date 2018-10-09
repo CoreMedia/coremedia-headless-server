@@ -23,7 +23,7 @@ public class PropertyField extends AbstractField {
     return ImmutableList.of(newFieldDefinition()
             .name(getName())
             .type(Types.getType(getTypeName(), isNonNull()))
-            .dataFetcherFactory(decorate(new PropertyDataFetcher(getSourceName())))
+            .dataFetcherFactory(decorate(new PropertyDataFetcher(getSourceExpression(schemaService))))
             .build());
   }
 }

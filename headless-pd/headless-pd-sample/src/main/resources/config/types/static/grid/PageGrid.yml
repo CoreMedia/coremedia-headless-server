@@ -1,9 +1,11 @@
 !ObjectType
 name: PageGrid
 fields:
-  - !Property
+  - !ContentProperty
     name: cssClassName
+    sourceName: "cssClassName"
     typeName: String
-  - !Property
+  - !ContentProperty
     name: placements
+    sourceName: "placements"
     typeName: List:PageGridPlacement

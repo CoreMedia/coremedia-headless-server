@@ -1,9 +1,8 @@
 package com.coremedia.caas.generator.config;
 
 import com.coremedia.cap.content.ContentType;
+
 import com.google.common.base.MoreObjects;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -20,27 +19,35 @@ public class ObjectTypeDefinition extends AbstractTypeDefinition {
 
 
   @Override
-  public String getName() {
-    return super.getName(OBJECTTYPE_SUFFIX);
-  }
-
-
-  @Override
   public ObjectTypeDefinition getParent() {
     return getSchemaConfig().findParent(this);
   }
 
-
   @Override
-  public List<InterfaceTypeDefinition> getInterfaceDefinitions() {
-    return ImmutableList.of(getSchemaConfig().findInterface(this));
+  public String getName() {
+    return super.getName(OBJECTTYPE_SUFFIX);
   }
 
+  @Override
+  public List<String> getInterfaces() {
+    ArrayList<String> result = new ArrayList<>();
+    // add document type interface
+    InterfaceTypeDefinition baseInterface = getSchemaConfig().findInterface(this);
+    if (baseInterface != null) {
+      result.add(baseInterface.getName());
+    }
+    // add custom interfaces
+    TypeCustomization typeCustomization = getTypeCustomization();
+    if (typeCustomization != null) {
+      result.addAll(typeCustomization.getCustomInterfaces());
+    }
+    return result;
+  }
 
   @Override
-  public List<FieldDefinition> getFieldDefinitions() throws InvalidTypeDefinition {
+  public List<FieldDefinition> getFields() {
+    ArrayList<FieldDefinition> result = new ArrayList<>();
     TypeCustomization typeCustomization = getTypeCustomization();
-    ArrayList<FieldDefinition> result = Lists.newArrayList();
     if (typeCustomization != null) {
       result.addAll(typeCustomization.getCustomFields());
     }

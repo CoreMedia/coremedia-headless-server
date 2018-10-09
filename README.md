@@ -1,7 +1,6 @@
 ![Status: Active](https://documentation.coremedia.com/badges/badge_status_active.png "Status: Active")
 ![For CoreMedia CMS](https://documentation.coremedia.com/badges/badge_coremedia_cms.png "For CoreMedia CMS")
-![Tested: 9.1710.1](https://documentation.coremedia.com/badges/badge_tested_coremedia_9-1710-1.png "Tested: 9.1710.1")
-![Tested: 9.1801.1](https://documentation.coremedia.com/badges/badge_tested_coremedia_9-1801-1.png "Tested: 9.1801.1")
+![Tested: 9.1807.1](https://documentation.coremedia.com/badges/badge_tested_coremedia_9-1807-1.png "Tested: 9.1807.1")
 
 ![CoreMedia Labs Logo](https://documentation.coremedia.com/badges/banner_coremedia_labs_wide.png "CoreMedia Labs Logo Title Text")
 
@@ -35,17 +34,8 @@ The workspace is comprised of the following modules:
 * **headless-schema-generator**: The Generator Application for creating a schema definition from the CoreMedia Doctype Model
 * **headless-pd**: Parent module for different processing descriptions (schema/queries etc.)
 * **headless-performance-test**: Simple local performance test using a list of URLs
-* **test-data**: Test content for sample client applications. Must be manually imported into the CoreMedia repository. 
-
-
-## Configuration
-
-### Tomcat
-
-The default configuration runs the Spring Boot application and web application with Tomcat 7, which is the default for the used CMS release.
-
-Tomcat 8 can be configured by changing the properties `tomcat.id` and `tomcat.version` in the main `pom.xml` and removing the dependency
-on `tomcat-juli` in module `headless-server-app`.
+* **test-data**: Test content for sample client applications. Must be manually imported into the CoreMedia repository.
+* **extensions**: Examples for extending/customizing the server. See the modules' `README.md` files for more details.
 
 
 ## Building and running the server

@@ -4,12 +4,23 @@ import "templates/field.stg"
 interface(type) ::= <<
 !InterfaceType
 name: <type.name>
-<if(type.parent)>
-parents:
-  - <type.parent.name>
-<endif>
-<if(type.fieldDefinitions)>
+<parents(type.interfaces)>
+<options(type.options)>
+<if(type.fields)>
 fields:
-<type.fieldDefinitions:field()>
+<type.fields:field()>
 <endif>
+>>
+
+
+parents(names) ::= <<
+<if(names)>
+parents:
+  - <names:{name | <name>};separator="\n  - "><endif>
+>>
+
+options(options) ::=<<
+<if(options)>
+options:
+  <options.keys:{key | <key>: <options.(key)>};separator="\n"><endif>
 >>

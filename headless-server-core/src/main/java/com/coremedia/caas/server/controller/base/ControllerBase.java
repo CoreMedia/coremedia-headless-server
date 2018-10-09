@@ -18,12 +18,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.context.request.ServletWebRequest;
 
+import java.time.Duration;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 public abstract class ControllerBase {
 
@@ -89,12 +90,12 @@ public abstract class ControllerBase {
   }
 
 
-  protected ClientIdentification resolveClient(RootContext rootContext, HttpServletRequest request, HttpServletResponse response) {
+  protected ClientIdentification resolveClient(RootContext rootContext, ServletWebRequest request) {
     return ClientIdentification.from(rootContext, settingsService, request);
   }
 
 
-  protected RootContext resolveRootContext(String tenantId, String siteId, HttpServletRequest request, HttpServletResponse response) throws AccessControlViolation {
+  protected RootContext resolveRootContext(String tenantId, String siteId, ServletWebRequest request) throws AccessControlViolation {
     Site site = resolveSite(tenantId, siteId);
     if (site == null) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND);
@@ -103,7 +104,7 @@ public abstract class ControllerBase {
     return rootContextFactory.createRootContext(site, null, site.getSiteIndicator(), requestContext);
   }
 
-  protected RootContext resolveRootContext(String tenantId, String siteId, String targetId, HttpServletRequest request, HttpServletResponse response) throws AccessControlViolation {
+  protected RootContext resolveRootContext(String tenantId, String siteId, String targetId, ServletWebRequest request) throws AccessControlViolation {
     Site site = resolveSite(tenantId, siteId);
     if (site == null) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND);
@@ -122,13 +123,13 @@ public abstract class ControllerBase {
   }
 
 
-  protected <T> ResponseEntity<T> handleError(Exception error, HttpServletRequest request, HttpServletResponse response) {
+  protected <T> ResponseEntity<T> handleError(Exception error, ServletWebRequest request) {
     // unexpected error, log with stacktrace
     LOG.warn("Request failed with unexpected error: {}", error.getMessage(), error);
     return new ResponseEntity<T>(HttpStatus.BAD_REQUEST);
   }
 
-  protected <T> ResponseEntity<T> handleError(AccessControlViolation error, HttpServletRequest request, HttpServletResponse response) {
+  protected <T> ResponseEntity<T> handleError(AccessControlViolation error, ServletWebRequest request) {
     LOG.debug("Access forbidden: {}", error.getMessage());
     switch (error.getErrorCode()) {
       case INVALID_OBJECT:
@@ -140,8 +141,20 @@ public abstract class ControllerBase {
     }
   }
 
-  protected <T> ResponseEntity<T> handleError(ResponseStatusException error, HttpServletRequest request, HttpServletResponse response) {
+  protected <T> ResponseEntity<T> handleError(ResponseStatusException error, ServletWebRequest request) {
     LOG.debug("Request failed: {}", error.getMessage());
     return new ResponseEntity<T>(error.getStatus());
+  }
+
+
+  protected long getMaxAge(long cacheFor) {
+    ZonedDateTime nextInvalidation = requestContext.getNextDateTimeChange();
+    if (nextInvalidation != null) {
+      ZonedDateTime now = requestContext.getRequestTime();
+      // return either the configured cache time or the number of seconds until validity/visibility
+      // settings change the result
+      return Math.min(cacheFor, Duration.between(now, nextInvalidation).getSeconds());
+    }
+    return cacheFor;
   }
 }

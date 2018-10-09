@@ -4,5 +4,7 @@ public interface MediaResourceModel {
 
   String getType();
 
+  String getHash();
+
   MediaResource getMediaResource(String ratio, int minWidth, int minHeight);
 }

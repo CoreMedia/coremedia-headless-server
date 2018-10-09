@@ -53,7 +53,7 @@ public abstract class AbstractEventHandler implements EventHandler {
 
 
   @Override
-  public void startElement(StartElement startElement, ExecutionEnvironment<?> env) throws XMLStreamException {
+  public void startElement(StartElement startElement, ExecutionEnvironment env) throws XMLStreamException {
     if (contextHandler != null) {
       contextHandler.decorate(env).startElement(startElement, env);
     }
@@ -63,7 +63,7 @@ public abstract class AbstractEventHandler implements EventHandler {
   }
 
   @Override
-  public void endElement(EndElement endElement, ExecutionEnvironment<?> env) throws XMLStreamException {
+  public void endElement(EndElement endElement, ExecutionEnvironment env) throws XMLStreamException {
     if (outputHandler != null) {
       outputHandler.decorate(env).endElement(endElement, env);
     }
@@ -73,7 +73,7 @@ public abstract class AbstractEventHandler implements EventHandler {
   }
 
   @Override
-  public void characters(Characters characters, ExecutionEnvironment<?> env) throws XMLStreamException {
+  public void characters(Characters characters, ExecutionEnvironment env) throws XMLStreamException {
     if (outputHandler != null) {
       outputHandler.decorate(env).characters(characters, env);
     }

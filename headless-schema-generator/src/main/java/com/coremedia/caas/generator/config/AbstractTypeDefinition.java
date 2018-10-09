@@ -1,7 +1,10 @@
 package com.coremedia.caas.generator.config;
 
 import com.coremedia.cap.content.ContentType;
+
 import com.google.common.base.Strings;
+
+import java.util.Map;
 
 public abstract class AbstractTypeDefinition implements TypeDefinition {
 
@@ -15,12 +18,15 @@ public abstract class AbstractTypeDefinition implements TypeDefinition {
   }
 
 
-  protected ContentType getContentType() {
-    return contentType;
-  }
+  public abstract TypeDefinition getParent();
 
-  protected SchemaConfig getSchemaConfig() {
-    return schemaConfig;
+  @Override
+  public Map<String, String> getOptions() {
+    TypeCustomization customization = getTypeCustomization();
+    if (customization != null) {
+      return customization.getOptions();
+    }
+    return null;
   }
 
 
@@ -33,8 +39,15 @@ public abstract class AbstractTypeDefinition implements TypeDefinition {
     return builder.toString();
   }
 
-
   protected TypeCustomization getTypeCustomization() {
     return getSchemaConfig().findTypeCustomization(this);
+  }
+
+  protected ContentType getContentType() {
+    return contentType;
+  }
+
+  protected SchemaConfig getSchemaConfig() {
+    return schemaConfig;
   }
 }

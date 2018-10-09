@@ -22,7 +22,7 @@ public class BeanDelegatingField extends AbstractField {
 
   @Override
   public Collection<GraphQLFieldDefinition> build(SchemaService schemaService) {
-    DataFetcherDelegateBean delegateBean = schemaService.getBeanFactory().getBean(getSourceName(), DataFetcherDelegateBean.class);
+    DataFetcherDelegateBean delegateBean = getDelegateBean(getSourceName(), schemaService);
     return ImmutableList.of(newFieldDefinition()
             .name(getName())
             .type(Types.getType(getTypeName(), isNonNull()))

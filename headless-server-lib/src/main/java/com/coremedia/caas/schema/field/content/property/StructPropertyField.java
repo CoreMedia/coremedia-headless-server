@@ -24,7 +24,7 @@ public class StructPropertyField extends AbstractField {
     return ImmutableList.of(newFieldDefinition()
             .name(getName())
             .type(Types.getType(getTypeName(), isNonNull()))
-            .dataFetcherFactory(decorate(new StructPropertyDataFetcher(getSourceName())))
+            .dataFetcherFactory(decorate(new StructPropertyDataFetcher(getSourceExpression(schemaService), getFallbackExpressions(schemaService))))
             .build());
   }
 }

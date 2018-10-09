@@ -7,16 +7,23 @@ name: <type.name>
 <if(type.parent)>
 parent: <type.parent.name>
 <endif>
-<interfaces(type.interfaceDefinitions)>
-<if(type.fieldDefinitions)>
+<interfaces(type.interfaces)>
+<options(type.options)>
+<if(type.fields)>
 fields:
-<type.fieldDefinitions:field()>
+<type.fields:field()>
 <endif>
 >>
 
 
-interfaces(interfaceDefinitions) ::= <<
-<if(interfaceDefinitions)>
+interfaces(names) ::= <<
+<if(names)>
 interfaces:
-  - <interfaceDefinitions:{type | <type.name>};separator="\n  - "><endif>
+  - <names:{name | <name>};separator="\n  - "><endif>
+>>
+
+options(options) ::=<<
+<if(options)>
+options:
+  <options.keys:{key | <key>: <options.(key)>};separator="\n"><endif>
 >>

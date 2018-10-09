@@ -1,10 +1,8 @@
 package com.coremedia.caas.service.repository.content;
 
-import com.coremedia.cap.common.Blob;
+import java.time.ZonedDateTime;
 
-import java.util.List;
-
-public interface ContentProxy {
+public interface ContentProxy extends StructProxy {
 
   boolean isSubtypeOf(String typeName);
 
@@ -16,18 +14,12 @@ public interface ContentProxy {
   String getType();
 
 
-  Object get(String propertyName);
+  ZonedDateTime getCreationDate();
+
+  ZonedDateTime getModificationDate();
 
 
-  Blob getBlob(String propertyName);
+  BlobProxy getBlob(String propertyName);
 
-  Boolean getBoolean(String propertyName);
-
-  Integer getInteger(String propertyName);
-
-  ContentProxy getLink(String propertyName);
-
-  List<ContentProxy> getLinks(String propertyName);
-
-  String getString(String propertyName);
+  MarkupProxy getMarkup(String propertyName);
 }

@@ -5,9 +5,9 @@ import com.coremedia.cap.content.Content;
 
 public interface ContentModelFactory<T> {
 
-  boolean isExpressionModel();
+  boolean isQueryModel();
 
   String getModelName();
 
-  T createModel(Content content, String propertyPath, RootContext rootContext);
+  T createModel(RootContext rootContext, Content content, Object... arguments);
 }

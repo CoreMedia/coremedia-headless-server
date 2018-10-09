@@ -4,9 +4,6 @@ import com.coremedia.cap.common.CapPropertyDescriptor;
 import com.coremedia.cap.content.ContentType;
 
 import com.google.common.base.MoreObjects;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -23,26 +20,35 @@ public class InterfaceTypeDefinition extends AbstractTypeDefinition {
 
 
   @Override
-  public String getName() {
-    return super.getName(null);
-  }
-
-
   public InterfaceTypeDefinition getParent() {
     return getSchemaConfig().findParent(this);
   }
 
-
   @Override
-  public List<InterfaceTypeDefinition> getInterfaceDefinitions() {
-    return ImmutableList.of(getParent());
+  public String getName() {
+    return super.getName(null);
   }
 
+  @Override
+  public List<String> getInterfaces() {
+    ArrayList<String> result = new ArrayList<>();
+    // add document type interface
+    InterfaceTypeDefinition parent = getSchemaConfig().findParent(this);
+    if (parent != null) {
+      result.add(parent.getName());
+    }
+    // add custom interfaces
+    TypeCustomization typeCustomization = getTypeCustomization();
+    if (typeCustomization != null) {
+      result.addAll(typeCustomization.getCustomInterfaces());
+    }
+    return result;
+  }
 
   @Override
-  public List<FieldDefinition> getFieldDefinitions() throws InvalidTypeDefinition {
+  public List<FieldDefinition> getFields() throws InvalidTypeDefinition {
+    ArrayList<FieldDefinition> result = new ArrayList<>();
     TypeCustomization typeCustomization = getTypeCustomization();
-    ArrayList<FieldDefinition> result = Lists.newArrayList();
     for (String name : getFieldNames()) {
       if (typeCustomization != null && typeCustomization.hasCustomField(name)) {
         result.add(typeCustomization.getCustomField(name));
@@ -73,7 +79,7 @@ public class InterfaceTypeDefinition extends AbstractTypeDefinition {
 
   private Set<String> getParentFieldNames() throws InvalidTypeDefinition {
     InterfaceTypeDefinition parent = getParent();
-    HashSet<String> result = Sets.newHashSet();
+    HashSet<String> result = new HashSet<>();
     while (parent != null) {
       result.addAll(parent.getFieldNames());
       parent = parent.getParent();

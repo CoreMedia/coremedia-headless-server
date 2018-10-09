@@ -24,7 +24,7 @@ public class MarkupPropertyField extends AbstractField {
     return ImmutableList.of(newFieldDefinition()
             .name(getName())
             .type(Types.getType(getTypeName(), isNonNull()))
-            .dataFetcherFactory(decorate(new MarkupPropertyDataFetcher(getSourceName())))
+            .dataFetcherFactory(decorate(new MarkupPropertyDataFetcher(getSourceExpression(schemaService), getFallbackExpressions(schemaService))))
             .build());
   }
 }

@@ -1,5 +1,7 @@
 package com.coremedia.caas.schema;
 
+import com.coremedia.caas.schema.type.field.ThisField;
+
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
@@ -75,16 +77,22 @@ public class ObjectType extends AbstractType {
   @Override
   public List<FieldBuilder> getFields(SchemaService schemaService) throws InvalidTypeDefinition {
     Map<String, FieldBuilder> builderMap = Maps.newHashMap();
+    // add fields from all implemented interfaces
     for (InterfaceType type : getInterfaces(schemaService)) {
       for (FieldBuilder builder : type.getFields(schemaService)) {
         builderMap.put(builder.getName(), builder);
       }
     }
+    // add fields from parent
     if (getParent() != null) {
       for (FieldBuilder builder : getParent(schemaService).getFields(schemaService)) {
         builderMap.put(builder.getName(), builder);
       }
     }
+    // create correctly typed 'this' field
+    FieldBuilder thisField = new ThisField(getName());
+    builderMap.put(thisField.getName(), thisField);
+    // add direct fields
     for (FieldBuilder builder : getFields()) {
       builderMap.put(builder.getName(), builder);
     }

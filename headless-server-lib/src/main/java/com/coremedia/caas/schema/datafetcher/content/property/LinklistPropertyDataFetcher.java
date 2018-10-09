@@ -1,37 +1,42 @@
 package com.coremedia.caas.schema.datafetcher.content.property;
 
 import com.coremedia.caas.schema.SchemaService;
-import com.coremedia.caas.service.repository.content.ContentProxy;
+import com.coremedia.caas.service.expression.FieldExpression;
 
-import com.google.common.collect.ImmutableList;
 import graphql.schema.DataFetchingEnvironment;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class LinklistPropertyDataFetcher extends AbstractPropertyDataFetcher {
+import static com.coremedia.caas.service.repository.content.util.ContentUtil.isNullOrEmptyLinklist;
+
+public class LinklistPropertyDataFetcher extends AbstractPropertyDataFetcher<Object> {
 
   private String baseTypeName;
 
 
-  public LinklistPropertyDataFetcher(String sourceName, List<String> fallbackSourceNames, String baseTypeName) {
-    super(sourceName, fallbackSourceNames);
+  public LinklistPropertyDataFetcher(FieldExpression<?> expression, List<FieldExpression<?>> fallbackExpressions, String baseTypeName) {
+    super(expression, fallbackExpressions, Object.class);
     this.baseTypeName = baseTypeName;
   }
 
 
   @Override
-  protected Object getData(ContentProxy contentProxy, String sourceName, DataFetchingEnvironment environment) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+  protected boolean isNullOrEmpty(Object value) {
+    return isNullOrEmptyLinklist(value);
+  }
+
+  @Override
+  protected Object processResult(Object result, DataFetchingEnvironment environment) {
     SchemaService schema = getContext(environment).getProcessingDefinition().getSchemaService();
-    Object property = getProperty(contentProxy, sourceName);
-    if (property instanceof Collection) {
-      return ((Collection<?>) property).stream().filter(e -> schema.isInstanceOf(e, baseTypeName)).collect(Collectors.toList());
+    if (result instanceof Collection) {
+      return ((Collection<?>) result).stream().filter(e -> schema.isInstanceOf(e, baseTypeName)).collect(Collectors.toList());
     }
-    else if (schema.isInstanceOf(property, baseTypeName)) {
-      return ImmutableList.of(property);
+    else if (schema.isInstanceOf(result, baseTypeName)) {
+      return Collections.singletonList(result);
     }
-    return ImmutableList.of();
+    return Collections.emptyList();
   }
 }

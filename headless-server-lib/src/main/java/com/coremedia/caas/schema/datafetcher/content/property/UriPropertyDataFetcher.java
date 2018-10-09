@@ -1,23 +1,29 @@
 package com.coremedia.caas.schema.datafetcher.content.property;
 
 import com.coremedia.caas.link.LinkBuilder;
-import com.coremedia.caas.service.repository.content.ContentProxy;
+import com.coremedia.caas.service.expression.FieldExpression;
+import com.coremedia.caas.service.repository.RootContext;
 
 import graphql.schema.DataFetchingEnvironment;
 
-import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 
-public class UriPropertyDataFetcher extends AbstractPropertyDataFetcher {
+public class UriPropertyDataFetcher extends AbstractPropertyDataFetcher<Object> {
 
-  public UriPropertyDataFetcher(String sourceName) {
-    super(sourceName, null);
+  public UriPropertyDataFetcher(FieldExpression<?> expression, List<FieldExpression<?>> fallbackExpressions) {
+    super(expression, fallbackExpressions, Object.class);
   }
 
 
   @Override
-  protected Object getData(ContentProxy contentProxy, String sourceName, DataFetchingEnvironment environment) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
-    Object target = getProperty(contentProxy, sourceName);
+  protected boolean isNullOrEmpty(Object value) {
+    return value == null;
+  }
+
+  @Override
+  protected Object processResult(Object result, DataFetchingEnvironment environment) {
     LinkBuilder linkBuilder = getContext(environment).getProcessingDefinition().getLinkBuilder();
-    return linkBuilder.createLink(target);
+    RootContext rootContext = getContext(environment).getRootContext();
+    return linkBuilder.createLink(result, rootContext);
   }
 }

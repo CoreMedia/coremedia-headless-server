@@ -12,21 +12,29 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import org.springframework.web.context.request.ServletWebRequest;
 
 @RestController
 @RequestMapping("/caas/v1/{tenantId}/sites/{siteId}")
 @Api(value = "/caas/v1/{tenantId}/sites/{siteId}", tags = "Content", description = "Operations for content objects")
 public class ContentViewController extends GraphQLControllerBase {
 
+  @SuppressWarnings("WeakerAccess")
+  public static final String HANDLER_NAME_SITE_QUERY = "siteQuery";
+  @SuppressWarnings("WeakerAccess")
+  public static final String HANDLER_NAME_SITE_QUERY_WITH_VIEW = "siteQueryWithView";
+  @SuppressWarnings("WeakerAccess")
+  public static final String HANDLER_NAME_CONTENT_QUERY = "contentQuery";
+  @SuppressWarnings("WeakerAccess")
+  public static final String HANDLER_NAME_CONTENT_QUERY_WITH_VIEW = "contentQueryWithView";
+
+
   public ContentViewController() {
     super("caas.server.content.requests");
   }
 
 
-  @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+  @RequestMapping(name = HANDLER_NAME_SITE_QUERY, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
   @ApiOperation(
           value = "Site.Query",
           notes = "Run the GraphQL query with name \"sites\" and view \"default\" on the requested site indicator.\n" +
@@ -39,12 +47,11 @@ public class ContentViewController extends GraphQLControllerBase {
   })
   public Object getContent(@ApiParam(value = "The tenant's unique ID", required = true) @PathVariable String tenantId,
                            @ApiParam(value = "The site's unique ID", required = true) @PathVariable String siteId,
-                           HttpServletRequest request,
-                           HttpServletResponse response) {
-    return execute(tenantId, siteId, "sites", null, "default", request, response);
+                           ServletWebRequest request) {
+    return execute(tenantId, siteId, "sites", null, "default", request);
   }
 
-  @RequestMapping(value = "/{viewName}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+  @RequestMapping(name = HANDLER_NAME_SITE_QUERY_WITH_VIEW, value = "/{viewName}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
   @ApiOperation(
           value = "Site.QueryWithView",
           notes = "Run the GraphQL query with name \"sites\" and given view on the requested site indicator.\n" +
@@ -58,12 +65,11 @@ public class ContentViewController extends GraphQLControllerBase {
   public Object getContent(@ApiParam(value = "The tenant's unique ID", required = true) @PathVariable String tenantId,
                            @ApiParam(value = "The site's unique ID", required = true) @PathVariable String siteId,
                            @ApiParam(value = "The requested query view", required = true) @PathVariable String viewName,
-                           HttpServletRequest request,
-                           HttpServletResponse response) {
-    return execute(tenantId, siteId, "sites", null, viewName, request, response);
+                           ServletWebRequest request) {
+    return execute(tenantId, siteId, "sites", null, viewName, request);
   }
 
-  @RequestMapping(value = "/{queryName}/{targetId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+  @RequestMapping(name = HANDLER_NAME_CONTENT_QUERY, value = "/{queryName}/{targetId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
   @ApiOperation(
           value = "Content.Query",
           notes = "Run the GraphQL query with given name and view \"default\" on the requested content object.\n" +
@@ -78,12 +84,11 @@ public class ContentViewController extends GraphQLControllerBase {
                            @ApiParam(value = "The site's unique ID", required = true) @PathVariable String siteId,
                            @ApiParam(value = "The requested query name", required = true) @PathVariable String queryName,
                            @ApiParam(value = "The content's numeric ID or alias", required = true) @PathVariable String targetId,
-                           HttpServletRequest request,
-                           HttpServletResponse response) {
-    return execute(tenantId, siteId, queryName, targetId, "default", request, response);
+                           ServletWebRequest request) {
+    return execute(tenantId, siteId, queryName, targetId, "default", request);
   }
 
-  @RequestMapping(value = "/{queryName}/{targetId}/{viewName}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+  @RequestMapping(name = HANDLER_NAME_CONTENT_QUERY_WITH_VIEW, value = "/{queryName}/{targetId}/{viewName}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
   @ApiOperation(
           value = "Content.QueryWithView",
           notes = "Run the GraphQL query with given name and view on the requested content object.\n" +
@@ -99,8 +104,7 @@ public class ContentViewController extends GraphQLControllerBase {
                            @ApiParam(value = "The requested query name", required = true) @PathVariable String queryName,
                            @ApiParam(value = "The content's numeric ID or alias", required = true) @PathVariable String targetId,
                            @ApiParam(value = "The requested query view", required = true) @PathVariable String viewName,
-                           HttpServletRequest request,
-                           HttpServletResponse response) {
-    return execute(tenantId, siteId, queryName, targetId, viewName, request, response);
+                           ServletWebRequest request) {
+    return execute(tenantId, siteId, queryName, targetId, viewName, request);
   }
 }

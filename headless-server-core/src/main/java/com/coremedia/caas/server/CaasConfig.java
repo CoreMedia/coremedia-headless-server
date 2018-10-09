@@ -74,7 +74,7 @@ public class CaasConfig extends WebMvcConfigurerAdapter {
   @Override
   public void addInterceptors(InterceptorRegistry registry) {
     registry.addInterceptor(requestDateInitializer).addPathPatterns("/caas/v1/**");
-    registry.addInterceptor(responseHeaderInitializer).addPathPatterns("/caas/v1/**");
+    registry.addInterceptor(responseHeaderInitializer).addPathPatterns("/caas/v1/**").excludePathPatterns("/caas/v1/*/sites/*/media/**");
   }
 
 

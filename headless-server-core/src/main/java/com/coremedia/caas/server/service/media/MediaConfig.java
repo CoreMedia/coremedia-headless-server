@@ -3,7 +3,6 @@ package com.coremedia.caas.server.service.media;
 import com.coremedia.blueprint.base.settings.SettingsService;
 import com.coremedia.cap.content.ContentRepository;
 import com.coremedia.cap.transform.TransformImageService;
-import com.coremedia.cap.transform.VariantsStructResolver;
 import com.coremedia.transform.BlobTransformer;
 import com.coremedia.transform.NamedTransformBeanBlobTransformer;
 import com.coremedia.transform.impl.ExpressionBasedBeanBlobTransformer;
@@ -31,13 +30,13 @@ public class MediaConfig {
 
 
   @Bean("imageVariantsResolver")
-  public VariantsStructResolver imageVariantsResolver(ContentRepository contentRepository, @Qualifier("settingsService") SettingsService settingsService, @Qualifier("modelMapper") ModelMapper modelMapper) {
+  public ImageVariantsResolver imageVariantsResolver(ContentRepository contentRepository, @Qualifier("settingsService") SettingsService settingsService, @Qualifier("modelMapper") ModelMapper modelMapper) {
     return new ImageVariantsResolver(contentRepository, settingsService, modelMapper);
   }
 
 
   @Bean
-  public ContentMediaResourceModelFactory contentMediaModelFactory(@Qualifier("contentMediaTransformer") NamedTransformBeanBlobTransformer mediaTransformer, @Qualifier("transformImageService") TransformImageService transformImageService) {
-    return new ContentMediaResourceModelFactory(mediaTransformer, transformImageService);
+  public ContentMediaResourceModelFactory contentMediaModelFactory(@Qualifier("imageVariantsResolver") ImageVariantsResolver imageVariantsResolver, @Qualifier("contentMediaTransformer") NamedTransformBeanBlobTransformer mediaTransformer, @Qualifier("transformImageService") TransformImageService transformImageService) {
+    return new ContentMediaResourceModelFactory(imageVariantsResolver, mediaTransformer, transformImageService);
   }
 }

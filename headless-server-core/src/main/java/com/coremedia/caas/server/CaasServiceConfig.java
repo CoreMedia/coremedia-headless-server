@@ -3,8 +3,13 @@ package com.coremedia.caas.server;
 import com.coremedia.caas.service.ServiceConfig;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -15,8 +20,13 @@ public class CaasServiceConfig implements ServiceConfig {
   private boolean isPreview;
   private boolean isLogRequests;
   private boolean isPrettyPrintOutput;
-  private Map<String, Long> cacheCapacities;
+  private boolean isBinaryUriHashesEnabled;
+  private Map<String, String> cacheSpecs = new HashMap<>();
+  private Map<String, Long> cacheCapacities = new HashMap<>();
   private AccessControlConfig accessControlConfig;
+  private long cacheTime;
+  private long mediaCacheTime;
+  private LinkedHashMap<MediaType, Long> mediaCacheTimes = new LinkedHashMap<>();
 
 
   @Override
@@ -44,6 +54,22 @@ public class CaasServiceConfig implements ServiceConfig {
     isPrettyPrintOutput = prettyPrintOutput;
   }
 
+  public boolean isBinaryUriHashesEnabled() {
+    return isBinaryUriHashesEnabled;
+  }
+
+  public void setBinaryUriHashesEnabled(boolean binaryUriHashesEnabled) {
+    isBinaryUriHashesEnabled = binaryUriHashesEnabled;
+  }
+
+  public Map<String, String> getCacheSpecs() {
+    return cacheSpecs;
+  }
+
+  public void setCacheSpecs(Map<String, String> cacheSpecs) {
+    this.cacheSpecs = cacheSpecs;
+  }
+
   public Map<String, Long> getCacheCapacities() {
     return cacheCapacities;
   }
@@ -60,16 +86,52 @@ public class CaasServiceConfig implements ServiceConfig {
     this.accessControlConfig = accessControlConfig;
   }
 
-
   @Override
   public List<String> getDefaultValidators() {
-    return accessControlConfig.getDefaultValidators();
+    if (accessControlConfig != null) {
+      return accessControlConfig.getDefaultValidators();
+    }
+    return Collections.emptyList();
+  }
+
+  public long getCacheTime() {
+    return cacheTime;
+  }
+
+  public void setCacheTime(long cacheTime) {
+    this.cacheTime = cacheTime;
+  }
+
+  public long getMediaCacheTime() {
+    return mediaCacheTime;
+  }
+
+  public void setMediaCacheTime(long mediaCacheTime) {
+    this.mediaCacheTime = mediaCacheTime;
+  }
+
+  public Map<MediaType, Long> getMediaCacheTimes() {
+    return mediaCacheTimes;
+  }
+
+  @SuppressWarnings("unused")
+  public void addMediaCacheTimes(MediaType mediaType, Long cacheTime) {
+    mediaCacheTimes.put(mediaType, cacheTime);
+  }
+
+  public long getMediaCacheTime(MediaType mediaType) {
+    for (Map.Entry<MediaType, Long> entry : mediaCacheTimes.entrySet()) {
+      if (entry.getKey().includes(mediaType)) {
+        return entry.getValue();
+      }
+    }
+    return mediaCacheTime;
   }
 
 
   public static class AccessControlConfig {
 
-    private List<String> defaultValidators;
+    private List<String> defaultValidators = new ArrayList<>();
 
     public List<String> getDefaultValidators() {
       return defaultValidators;

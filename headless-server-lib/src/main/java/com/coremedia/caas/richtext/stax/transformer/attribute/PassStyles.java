@@ -2,13 +2,15 @@ package com.coremedia.caas.richtext.stax.transformer.attribute;
 
 import com.coremedia.caas.richtext.common.RTAttributes;
 import com.coremedia.caas.richtext.stax.ExecutionEnvironment;
+import com.coremedia.caas.richtext.stax.StaxFactory;
+
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 
-import javax.xml.stream.events.Attribute;
-import javax.xml.stream.events.StartElement;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.xml.stream.events.Attribute;
+import javax.xml.stream.events.StartElement;
 
 public class PassStyles implements AttributeTransformer {
 
@@ -35,7 +37,7 @@ public class PassStyles implements AttributeTransformer {
     if (attribute != null) {
       List<String> validNames = CLASS_SPLITTER.splitToList(attribute.getValue()).stream().filter(styles::contains).collect(Collectors.toList());
       if (!validNames.isEmpty()) {
-        return env.getEventFactory().createAttribute(RTAttributes.CLASS.getQName(), CLASS_JOINER.join(validNames));
+        return StaxFactory.createAttribute(RTAttributes.CLASS.getQName(), CLASS_JOINER.join(validNames));
       }
     }
     return null;

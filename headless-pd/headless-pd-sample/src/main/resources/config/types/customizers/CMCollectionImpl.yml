@@ -3,3 +3,7 @@ customFields:
   - !Constant
     name: teaserTarget
     targetType: CMLinkable
+  - !Constant
+    name: teaserTargets
+    value: "#{{}}"
+    targetType: List:ExtendedTeaserTarget

@@ -1,24 +1,28 @@
 package com.coremedia.caas.schema.datafetcher.content.property;
 
-import com.coremedia.caas.service.repository.content.ContentProxy;
-import com.coremedia.xml.Markup;
+import com.coremedia.caas.service.expression.FieldExpression;
+import com.coremedia.caas.service.repository.content.MarkupProxy;
 
 import graphql.schema.DataFetchingEnvironment;
 
-import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 
-public class MarkupPropertyDataFetcher extends AbstractPropertyDataFetcher {
+public class MarkupPropertyDataFetcher extends AbstractPropertyDataFetcher<MarkupProxy> {
 
-  public MarkupPropertyDataFetcher(String sourceName) {
-    super(sourceName, null);
+  public MarkupPropertyDataFetcher(FieldExpression<?> expression, List<FieldExpression<?>> fallbackExpressions) {
+    super(expression, fallbackExpressions, MarkupProxy.class);
   }
 
 
   @Override
-  protected Object getData(ContentProxy contentProxy, String sourceName, DataFetchingEnvironment environment) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
-    Markup markup = getProperty(contentProxy, sourceName);
-    if (markup != null) {
-      return markup.toString();
+  protected boolean isNullOrEmpty(Object value) {
+    return value == null;
+  }
+
+  @Override
+  protected Object processResult(MarkupProxy result, DataFetchingEnvironment environment) {
+    if (result != null) {
+      return result.toString();
     }
     return null;
   }

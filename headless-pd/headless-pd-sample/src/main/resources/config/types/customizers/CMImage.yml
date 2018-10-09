@@ -4,6 +4,6 @@ excludedProperties:
 customFields:
   - !CustomField
     name: link
-    sourceName: this
+    sourceName: "this"
     targetType: String
     dataFetcher: Uri

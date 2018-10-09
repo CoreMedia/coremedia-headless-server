@@ -2,6 +2,6 @@ name: CMPictureImpl
 customFields:
   - !CustomField
     name: picture
-    sourceName: this
+    sourceName: "this"
     targetType: CMPicture
     dataFetcher: Link

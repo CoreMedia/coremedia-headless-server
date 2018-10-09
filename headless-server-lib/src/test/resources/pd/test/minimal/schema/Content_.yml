@@ -11,21 +11,16 @@ fields:
     nonNull: true
   - !Property
     name: _id
-    sourceName: id
+    sourceName: "_id"
     typeName: String
     nonNull: true
   - !Property
     name: _name
-    sourceName: name
+    sourceName: "_name"
     typeName: String
     nonNull: true
   - !Property
     name: _type
-    sourceName: type
+    sourceName: "_type"
     typeName: String
     nonNull: true
-  - !Property
-    name: this
-    typeName: Content_
-    nonNull: true
-

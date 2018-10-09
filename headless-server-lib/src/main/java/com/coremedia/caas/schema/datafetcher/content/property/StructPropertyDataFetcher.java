@@ -1,20 +1,25 @@
 package com.coremedia.caas.schema.datafetcher.content.property;
 
-import com.coremedia.caas.service.repository.content.ContentProxy;
+import com.coremedia.caas.service.expression.FieldExpression;
 
 import graphql.schema.DataFetchingEnvironment;
 
-import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 
-public class StructPropertyDataFetcher extends AbstractPropertyDataFetcher {
+public class StructPropertyDataFetcher extends AbstractPropertyDataFetcher<Object> {
 
-  public StructPropertyDataFetcher(String sourceName) {
-    super(sourceName, null);
+  public StructPropertyDataFetcher(FieldExpression<?> expression, List<FieldExpression<?>> fallbackExpressions) {
+    super(expression, fallbackExpressions, Object.class);
   }
 
 
   @Override
-  protected Object getData(ContentProxy contentProxy, String sourceName, DataFetchingEnvironment environment) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
-    return getProperty(contentProxy, sourceName);
+  protected boolean isNullOrEmpty(Object value) {
+    return value == null;
+  }
+
+  @Override
+  protected Object processResult(Object result, DataFetchingEnvironment environment) {
+    return result;
   }
 }

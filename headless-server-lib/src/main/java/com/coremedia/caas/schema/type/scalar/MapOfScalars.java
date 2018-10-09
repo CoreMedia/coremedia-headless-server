@@ -1,6 +1,7 @@
 package com.coremedia.caas.schema.type.scalar;
 
 import com.coremedia.caas.schema.Types;
+import com.coremedia.caas.service.repository.content.StructProxy;
 
 import com.google.common.collect.ImmutableMap;
 import graphql.schema.Coercing;
@@ -10,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.convert.ConversionService;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,28 +22,28 @@ public class MapOfScalars {
 
   private static ConversionService conversionService;
 
-  private static Map<String, GraphQLScalarType> typeMap;
+  private static final Map<String, GraphQLScalarType> typeMap;
 
-  public static GraphQLScalarType BOOLEAN = graphQLObjectScalar("MapOfBoolean", new CoercingMap<String, Boolean>(Boolean.class));
-  public static GraphQLScalarType FLOAT = graphQLObjectScalar("MapOfFloat", new CoercingMap<String, Float>(Float.class));
-  public static GraphQLScalarType INT = graphQLObjectScalar("MapOfInt", new CoercingMap<String, Integer>(Integer.class));
-  public static GraphQLScalarType LONG = graphQLObjectScalar("MapOfLong", new CoercingMap<String, Long>(Long.class));
-  public static GraphQLScalarType SHORT = graphQLObjectScalar("MapOfShort", new CoercingMap<String, Short>(Short.class));
-  public static GraphQLScalarType STRING = graphQLObjectScalar("MapOfString", new CoercingMap<String, String>(String.class));
+  private static final GraphQLScalarType CmsMapOfBoolean = graphQLObjectScalar("MapOfBoolean", new CoercingMap<>(Boolean.class));
+  private static final GraphQLScalarType CmsMapOfFloat = graphQLObjectScalar("MapOfFloat", new CoercingMap<>(Float.class));
+  private static final GraphQLScalarType CmsMapOfInt = graphQLObjectScalar("MapOfInt", new CoercingMap<>(Integer.class));
+  private static final GraphQLScalarType CmsMapOfLong = graphQLObjectScalar("MapOfLong", new CoercingMap<>(Long.class));
+  private static final GraphQLScalarType CmsMapOfShort = graphQLObjectScalar("MapOfShort", new CoercingMap<>(Short.class));
+  private static final GraphQLScalarType CmsMapOfString = graphQLObjectScalar("MapOfString", new CoercingMap<>(String.class));
 
   static {
     ImmutableMap.Builder<String, GraphQLScalarType> builder = ImmutableMap.builder();
-    builder.put(Types.BOOLEAN, BOOLEAN);
-    builder.put(Types.FLOAT, FLOAT);
-    builder.put(Types.INT, INT);
-    builder.put(Types.LONG, LONG);
-    builder.put(Types.SHORT, SHORT);
-    builder.put(Types.STRING, STRING);
+    builder.put(Types.BOOLEAN, CmsMapOfBoolean);
+    builder.put(Types.FLOAT, CmsMapOfFloat);
+    builder.put(Types.INT, CmsMapOfInt);
+    builder.put(Types.LONG, CmsMapOfLong);
+    builder.put(Types.SHORT, CmsMapOfShort);
+    builder.put(Types.STRING, CmsMapOfString);
     typeMap = builder.build();
   }
 
 
-  private static GraphQLScalarType graphQLObjectScalar(String name, CoercingMap<?, ?> coercing) {
+  private static GraphQLScalarType graphQLObjectScalar(String name, CoercingMap<?> coercing) {
     return new GraphQLScalarType(name, "Built-in map of scalar type", coercing);
   }
 
@@ -60,7 +62,7 @@ public class MapOfScalars {
   }
 
 
-  private static class CoercingMap<S, T> implements Coercing<S, Map<String, T>> {
+  private static class CoercingMap<T> implements Coercing<Object, Map<String, T>> {
 
     private Class<T> targetClass;
 
@@ -71,27 +73,37 @@ public class MapOfScalars {
     @Override
     @SuppressWarnings("unchecked")
     public Map<String, T> serialize(Object dataFetcherResult) {
-      return ((Map<String, Object>) dataFetcherResult).entrySet().stream()
-              .filter(e -> {
-                Object v = e.getValue();
-                return v != null && conversionService.canConvert(v.getClass(), targetClass);
-              })
-              .collect(HashMap<String, T>::new, (m, e) -> {
-                try {
-                  m.put(e.getKey(), conversionService.convert(e.getValue(), targetClass));
-                } catch (Exception ex) {
-                  LOG.warn("Type conversion failed for {}", e);
-                }
-              }, HashMap::putAll);
+      Map<String, ?> properties = null;
+      if (dataFetcherResult instanceof StructProxy) {
+        properties = ((StructProxy) dataFetcherResult).getProperties();
+      }
+      else if (dataFetcherResult instanceof Map) {
+        properties = (Map<String, ?>) dataFetcherResult;
+      }
+      if (properties != null) {
+        return properties.entrySet().stream()
+                .filter(e -> {
+                  Object v = e.getValue();
+                  return v != null && conversionService.canConvert(v.getClass(), targetClass);
+                })
+                .collect(HashMap<String, T>::new, (m, e) -> {
+                  try {
+                    m.put(e.getKey(), conversionService.convert(e.getValue(), targetClass));
+                  } catch (Exception ex) {
+                    LOG.warn("Type conversion failed for {}", e);
+                  }
+                }, HashMap::putAll);
+      }
+      return Collections.emptyMap();
     }
 
     @Override
-    public S parseValue(Object input) {
+    public Object parseValue(Object input) {
       throw new CoercingParseValueException("Parsing unsupported");
     }
 
     @Override
-    public S parseLiteral(Object input) {
+    public Object parseLiteral(Object input) {
       return null;
     }
   }

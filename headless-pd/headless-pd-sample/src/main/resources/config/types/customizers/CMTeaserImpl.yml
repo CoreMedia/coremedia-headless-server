@@ -2,32 +2,51 @@ name: CMTeaserImpl
 customFields:
   - !CustomField
     name: link
-    sourceName: (target)
+    sourceName: "$extendedLinks('targets', 'target').target"
     targetType: String
     dataFetcher: Uri
   - !CustomField
-    name: segment
-    sourceName: (target)[0].(segment)
-    targetType: String
-    dataFetcher: ContentProperty
-  - !CustomField
     name: teaserTarget
-    sourceName: (target)
+    sourceName: "$extendedLinks('targets', 'target').target"
     targetType: CMLinkable
     dataFetcher: Link
   - !CustomField
-    name: teaserText
-    sourceName: (teaserText)
+    name: teaserTargets
+    sourceName: "targets?.links"
     fallbackSourceNames:
-      - (target)[0].(teaserText)
-      - (target)[0].(detailText)
+      - "target?.![new MapStruct({target: #this,
+                                  callToActionEnabled: !(#root.$settings().get('callToActionDisabled', false)),
+                                  callToActionCustomText: #root.$settings().get('callToActionCustomText', '')})]"
+    targetType: List:ExtendedTeaserTarget
+    dataFetcher: ExtendedLinklist
+  - !CustomField
+    name: teaserText
+    sourceName: "new Richtext(teaserText, (localSettings?.teaserOverlay?.enabled == true)? 'teaser' : 'plain')"
     targetType: String
     dataFetcher: Richtext
   - !CustomField
     name: teaserTitle
-    sourceName: (teaserTitle)
-    fallbackSourceNames:
-      - (target)[0].(teaserTitle)
-      - (target)[0].(title)
+    sourceName: "teaserTitle"
     targetType: String
     dataFetcher: ContentProperty
+  - !CustomField
+    name: media
+    sourceName: "pictures"
+    fallbackSourceNames:
+      - "$extendedLinks('targets', 'target', 'CMTeasable').target?.pictures"
+    targetType: List:CMMedia
+    dataFetcher: Linklist
+  - !CustomField
+    name: pictures
+    sourceName: "pictures"
+    fallbackSourceNames:
+      - "$extendedLinks('targets', 'target', 'CMTeasable').target?.pictures"
+    targetType: List:CMPicture
+    dataFetcher: Linklist
+  - !CustomField
+    name: picture
+    sourceName: "pictures"
+    fallbackSourceNames:
+      - "$extendedLinks('targets', 'target', 'CMTeasable').target?.pictures"
+    targetType: CMPicture
+    dataFetcher: Link

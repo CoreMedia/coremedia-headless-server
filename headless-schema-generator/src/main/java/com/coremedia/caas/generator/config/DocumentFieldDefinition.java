@@ -36,7 +36,7 @@ public class DocumentFieldDefinition implements FieldDefinition {
 
   @Override
   public String getSourceName() {
-    return "(" + getName() + ")";
+    return getName();
   }
 
   @Override
@@ -61,9 +61,23 @@ public class DocumentFieldDefinition implements FieldDefinition {
         LinkPropertyDescriptor linkPropertyDescriptor = (LinkPropertyDescriptor) propertyDescriptor;
         InterfaceTypeDefinition targetType = schema.findInterface(linkPropertyDescriptor.getLinkType());
         if (targetType != null) {
-          return targetType.getName();
+          if (linkPropertyDescriptor.getMaxCardinality() == 1) {
+            return targetType.getName();
+          }
+          else {
+            return "List:" + targetType.getName();
+          }
         }
         break;
+      case MARKUP:
+        MarkupPropertyDescriptor markupPropertyDescriptor = (MarkupPropertyDescriptor) propertyDescriptor;
+        XmlGrammar grammar = markupPropertyDescriptor.getGrammar();
+        if (COREMEDIA_RICHTEXT.equals(grammar.getName())) {
+          return "String";
+        }
+        else {
+          return "String";
+        }
       default:
         return getTypeName().substring(0, 1).toUpperCase() + getTypeName().substring(1).toLowerCase();
     }
@@ -86,6 +100,9 @@ public class DocumentFieldDefinition implements FieldDefinition {
         XmlGrammar grammar = markupPropertyDescriptor.getGrammar();
         if (COREMEDIA_RICHTEXT.equals(grammar.getName())) {
           return "richtext";
+        }
+        else {
+          return "markup";
         }
       default:
         return propertyDescriptor.getType().toString().toLowerCase();

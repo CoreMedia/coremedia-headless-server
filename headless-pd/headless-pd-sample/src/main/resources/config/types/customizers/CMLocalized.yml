@@ -6,6 +6,6 @@ excludedProperties:
 customFields:
   - !CustomField
     name: languageId
-    sourceName: (locale)
+    sourceName: "locale"
     targetType: String
     dataFetcher: ContentProperty

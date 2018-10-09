@@ -3,19 +3,16 @@ package com.coremedia.caas.config.reader;
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.URI;
 import java.util.Map;
 
 public class ConfigResource {
-
-  private static final Logger LOG = LoggerFactory.getLogger(ConfigResource.class);
 
   private static final String COMMAND_PREFIX = "#!";
 
@@ -45,6 +42,19 @@ public class ConfigResource {
 
   ConfigResource(Resource resource) {
     this.resource = resource;
+  }
+
+
+  public String getName() {
+    return resource.getFilename();
+  }
+
+  public URI getURI() {
+    try {
+      return resource.getURI();
+    } catch (IOException e) {
+      return null;
+    }
   }
 
 
@@ -81,19 +91,24 @@ public class ConfigResource {
               if (includedResource.exists()) {
                 outputStream.write(new ConfigResource(includedResource).asBytes());
               }
+              else {
+                throw new IOException("File '" + file + "' does not exist");
+              }
             }
-          } else if (callbackHandler != null) {
+            else {
+              throw new IOException("No filename provided");
+            }
+          }
+          else if (callbackHandler != null) {
             callbackHandler.handleCommand(cmd, args);
           }
-        } else {
+        }
+        else {
           outputStream.write(line.getBytes());
           outputStream.write("\n".getBytes());
         }
       }
       return outputStream;
-    } catch (IOException e) {
-      LOG.error("Error reading resource {}: {}", resource, e);
-      throw e;
     }
   }
 }

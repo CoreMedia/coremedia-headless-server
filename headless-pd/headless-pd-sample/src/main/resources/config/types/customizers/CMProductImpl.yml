@@ -2,11 +2,11 @@ name: CMProductImpl
 customFields:
   - !CustomField
     name: title
-    sourceName: (productName)
+    sourceName: "productName"
     targetType: String
     dataFetcher: ContentProperty
   - !CustomField
     name: teaserTitle
-    sourceName: (productName)
+    sourceName: "productName"
     targetType: String
     dataFetcher: ContentProperty

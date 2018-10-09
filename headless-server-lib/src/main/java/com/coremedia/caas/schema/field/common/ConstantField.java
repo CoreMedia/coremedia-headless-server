@@ -11,9 +11,9 @@ import java.util.Collection;
 
 import static graphql.schema.GraphQLFieldDefinition.newFieldDefinition;
 
-public class ConstantField<E> extends AbstractField {
+public class ConstantField extends AbstractField {
 
-  private E value;
+  private String expression;
 
 
   public ConstantField() {
@@ -21,21 +21,32 @@ public class ConstantField<E> extends AbstractField {
   }
 
 
-  public E getValue() {
-    return value;
+  public String getValue() {
+    return expression;
   }
 
-  public void setValue(E value) {
-    this.value = value;
+  public void setValue(String expression) {
+    this.expression = expression;
   }
 
 
   @Override
   public Collection<GraphQLFieldDefinition> build(SchemaService schemaService) {
+    Object value = null;
+    if (expression != null) {
+      // '#{<expression>}' is evaluated immediately
+      if (expression.startsWith("#{") && expression.endsWith("}")) {
+        value = getExpression(this.expression.substring(2, this.expression.length() - 1), schemaService).fetch(null);
+      }
+      // '${<expression}' is evaluated at runtime
+      else if (expression.startsWith("${") && expression.endsWith("}")) {
+        value = getExpression(this.expression.substring(2, this.expression.length() - 1), schemaService);
+      }
+    }
     return ImmutableList.of(newFieldDefinition()
             .name(getName())
             .type(Types.getType(getTypeName(), isNonNull()))
-            .dataFetcherFactory(decorate(new ConstantDataFetcher<E>(getValue())))
+            .dataFetcherFactory(decorate(new ConstantDataFetcher(value)))
             .build());
   }
 }

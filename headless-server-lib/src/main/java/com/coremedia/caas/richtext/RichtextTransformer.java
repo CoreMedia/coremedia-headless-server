@@ -1,11 +1,12 @@
 package com.coremedia.caas.richtext;
 
 import com.coremedia.caas.execution.ExecutionContext;
-import com.coremedia.xml.Markup;
+import com.coremedia.caas.richtext.output.OutputFactory;
+import com.coremedia.caas.service.repository.content.MarkupProxy;
 
-public interface RichtextTransformer<E> {
+public interface RichtextTransformer {
 
   String getView();
 
-  E transform(Markup markup, ExecutionContext executionContext) throws Exception;
+  <E> E transform(MarkupProxy markupProxy, OutputFactory<E> outputFactory, ExecutionContext executionContext) throws Exception;
 }

@@ -1,35 +1,36 @@
 package com.coremedia.caas.richtext.stax;
 
-import com.coremedia.caas.richtext.stax.writer.XMLStreamWriterAdapter;
+import com.coremedia.caas.richtext.stax.writer.intermediate.IntermediateTree;
+import com.coremedia.caas.richtext.stax.writer.intermediate.IntermediateTreeWriter;
 
-import javax.xml.stream.XMLStreamException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ExecutionState<E> {
+public class ExecutionState {
 
-  private ExecutionState<E> parent;
-  private XMLStreamWriterAdapter<E> writer;
+  private ExecutionState parent;
+  private IntermediateTreeWriter writer;
 
   private Map<String, Object> attributes;
 
 
-  public ExecutionState(XMLStreamWriterAdapter<E> writer) {
+  public ExecutionState(IntermediateTreeWriter writer) {
     this.writer = writer;
     this.attributes = new HashMap<>();
   }
 
-  public ExecutionState(ExecutionState<E> parent, Map<String, Object> initialAttributes) {
+  public ExecutionState(ExecutionState parent, Map<String, Object> initialAttributes) {
     this.parent = parent;
     if (initialAttributes == null || initialAttributes.isEmpty()) {
       this.attributes = new HashMap<>();
-    } else {
+    }
+    else {
       this.attributes = new HashMap<>(initialAttributes);
     }
   }
 
 
-  public XMLStreamWriterAdapter<E> getWriter() {
+  public IntermediateTreeWriter getWriter() {
     if (writer != null) {
       return writer;
     }
@@ -40,7 +41,7 @@ public class ExecutionState<E> {
   }
 
 
-  public E getOutput() {
+  public IntermediateTree getOutput() {
     if (writer != null) {
       return writer.getOutput();
     }
@@ -51,11 +52,7 @@ public class ExecutionState<E> {
   }
 
 
-  public void closeOutput() throws XMLStreamException {
-    if (writer != null) {
-      writer.flush();
-      writer.close();
-    }
+  public void closeOutput() {
   }
 
 

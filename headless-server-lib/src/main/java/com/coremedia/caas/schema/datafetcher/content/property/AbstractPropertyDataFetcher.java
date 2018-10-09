@@ -1,36 +1,44 @@
 package com.coremedia.caas.schema.datafetcher.content.property;
 
 import com.coremedia.caas.schema.datafetcher.content.AbstractContentDataFetcher;
-import com.coremedia.caas.schema.util.PropertyUtil;
-import com.coremedia.caas.service.repository.content.ContentProxy;
+import com.coremedia.caas.service.expression.FieldExpression;
 
-import java.lang.reflect.InvocationTargetException;
+import graphql.schema.DataFetchingEnvironment;
+
 import java.util.List;
 
-public abstract class AbstractPropertyDataFetcher extends AbstractContentDataFetcher {
+public abstract class AbstractPropertyDataFetcher<E> extends AbstractContentDataFetcher {
 
-  private List<String> fallbackSourceNames;
+  private List<FieldExpression<?>> fallbackExpressions;
+  private Class<E> targetClass;
 
 
-  public AbstractPropertyDataFetcher(String sourceName, List<String> fallbackSourceNames) {
-    super(sourceName);
-    this.fallbackSourceNames = fallbackSourceNames;
+  AbstractPropertyDataFetcher(FieldExpression<?> expression, List<FieldExpression<?>> fallbackExpressions, Class<E> targetClass) {
+    super(expression);
+    this.fallbackExpressions = fallbackExpressions;
+    this.targetClass = targetClass;
   }
 
 
-  protected <E> E getProperty(ContentProxy contentProxy, String sourceName) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+  protected abstract boolean isNullOrEmpty(Object value);
+
+  protected abstract Object processResult(E result, DataFetchingEnvironment environment);
+
+
+  @Override
+  protected final Object getData(Object proxy, FieldExpression<?> expression, DataFetchingEnvironment environment) {
     // source name is a bean property/path expression
-    E result = PropertyUtil.get(contentProxy, sourceName);
+    E result = expression.fetch(proxy, targetClass);
     // check for fallback sources if result is empty
-    if (fallbackSourceNames != null && PropertyUtil.isNullOrEmpty(result)) {
+    if (fallbackExpressions != null && isNullOrEmpty(result)) {
       // iterate manually to skip possibly costly 'isNullOrEmpty' check on last element
-      for (int i = 0, c = fallbackSourceNames.size() - 1; i <= c; i++) {
-        result = PropertyUtil.get(contentProxy, fallbackSourceNames.get(i));
-        if (i == c || !PropertyUtil.isNullOrEmpty(result)) {
+      for (int i = 0, c = fallbackExpressions.size() - 1; i <= c; i++) {
+        result = fallbackExpressions.get(i).fetch(proxy, targetClass);
+        if (i == c || !isNullOrEmpty(result)) {
           break;
         }
       }
     }
-    return result;
+    return processResult(result, environment);
   }
 }
