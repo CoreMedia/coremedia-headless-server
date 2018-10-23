@@ -24,7 +24,7 @@
     <gatling-plugin.version>2.2.0</gatling-plugin.version>
     <scala.version>2.11.8</scala.version>
     <scala-maven-plugin.version>3.2.2</scala-maven-plugin.version>
-    <akka.actor.version>2.4.10</akka.actor.version>
+    <akka.actor.version>2.4.20</akka.actor.version>
     <netty.version>4.0.37.Final</netty.version>
     <scala.java8.compat.version>0.8.0-RC1</scala.java8.compat.version>
   </properties>
