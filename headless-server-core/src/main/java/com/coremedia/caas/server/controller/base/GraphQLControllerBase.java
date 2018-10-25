@@ -8,8 +8,8 @@ import com.coremedia.caas.query.QueryDefinition;
 import com.coremedia.caas.server.CaasServiceConfig;
 import com.coremedia.caas.server.controller.interceptor.QueryExecutionInterceptor;
 import com.coremedia.caas.server.service.request.ClientIdentification;
-import com.coremedia.caas.server.service.request.GlobalParameters;
 import com.coremedia.caas.service.ServiceRegistry;
+import com.coremedia.caas.service.expression.RequestParameterAccessor;
 import com.coremedia.caas.service.repository.RootContext;
 import com.coremedia.caas.service.security.AccessControlViolation;
 import com.coremedia.cache.Cache;
@@ -33,7 +33,6 @@ import org.springframework.web.context.request.ServletWebRequest;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 import javax.validation.constraints.NotNull;
 
 public abstract class GraphQLControllerBase extends ControllerBase {
@@ -61,6 +60,10 @@ public abstract class GraphQLControllerBase extends ControllerBase {
   @Qualifier("staticProcessingDefinitions")
   private Map<String, ProcessingDefinition> staticProcessingDefinitions;
 
+  @Autowired
+  @Qualifier("requestParameterAccessor")
+  private RequestParameterAccessor requestParameterAccessor;
+
   @Autowired(required = false)
   private List<QueryExecutionInterceptor> queryInterceptors;
 
@@ -70,18 +73,7 @@ public abstract class GraphQLControllerBase extends ControllerBase {
   }
 
 
-  private Map<String, Object> getQueryArgs(ServletWebRequest request) {
-    return request.getParameterMap().entrySet().stream()
-            .filter(e -> !GlobalParameters.GLOBAL_BLACKLIST.contains(e.getKey()))
-            .filter(e -> {
-              String[] v = e.getValue();
-              return v != null && v.length > 0 && v[0] != null;
-            })
-            .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue()[0]));
-  }
-
-
-  private Object runQuery(@NotNull String tenantId, @NotNull String siteId, @NotNull RootContext rootContext, @NotNull ClientIdentification clientIdentification, @NotNull String queryName, @NotNull String viewName, Map<String, Object> queryArgs, ServletWebRequest request) {
+  private Object runQuery(@NotNull String tenantId, @NotNull String siteId, @NotNull RootContext rootContext, @NotNull ClientIdentification clientIdentification, @NotNull String queryName, @NotNull String viewName, Map<String, Object> requestParameters, ServletWebRequest request) {
     String definitionName = clientIdentification.getDefinitionName();
     // repository defined runtime definition
     ProcessingDefinitionCacheKey processingDefinitionCacheKey = new ProcessingDefinitionCacheKey(rootContext.getSite().getSiteIndicator(), settingsService, applicationContext);
@@ -103,7 +95,7 @@ public abstract class GraphQLControllerBase extends ControllerBase {
     // run pre query interceptors
     if (queryInterceptors != null) {
       for (QueryExecutionInterceptor executionInterceptor : queryInterceptors) {
-        if (!executionInterceptor.preQuery(tenantId, siteId, clientIdentification, rootContext, processingDefinition, queryDefinition, queryArgs, request)) {
+        if (!executionInterceptor.preQuery(tenantId, siteId, clientIdentification, rootContext, processingDefinition, queryDefinition, requestParameters, request)) {
           return null;
         }
       }
@@ -124,7 +116,7 @@ public abstract class GraphQLControllerBase extends ControllerBase {
             .query(query)
             .root(target)
             .context(context)
-            .variables(queryArgs)
+            .variables(requestParameters)
             .build();
     ExecutionResult result = GraphQL.newGraphQL(queryDefinition.getQuerySchema(target))
             .preparsedDocumentProvider(processingDefinition.getQueryRegistry())
@@ -139,7 +131,7 @@ public abstract class GraphQLControllerBase extends ControllerBase {
     // run post query interceptors
     if (queryInterceptors != null) {
       for (QueryExecutionInterceptor executionInterceptor : Lists.reverse(queryInterceptors)) {
-        Object transformedData = executionInterceptor.postQuery(resultData, tenantId, siteId, clientIdentification, rootContext, processingDefinition, queryDefinition, queryArgs, request);
+        Object transformedData = executionInterceptor.postQuery(resultData, tenantId, siteId, clientIdentification, rootContext, processingDefinition, queryDefinition, requestParameters, request);
         if (transformedData != null) {
           resultData = transformedData;
         }
@@ -185,12 +177,10 @@ public abstract class GraphQLControllerBase extends ControllerBase {
       ClientIdentification clientIdentification = resolveClient(rootContext, request);
       String clientId = clientIdentification.getId().toString();
       String definitionName = clientIdentification.getDefinitionName();
-      // determine query arguments
-      Map<String, Object> queryArgs = getQueryArgs(request);
-      // initialize expression evaluator
-      serviceRegistry.getExpressionEvaluator().init(queryArgs);
+      // get query string parameters from accessor instance
+      Map<String, Object> requestParameters = requestParameterAccessor.getParamMap();
       // run query
-      return execute(() -> runQuery(tenantId, siteId, rootContext, clientIdentification, queryName, viewName, queryArgs, request), "tenant", tenantId, "site", siteId, "client", clientId, "pd", definitionName, "query", queryName, "view", viewName);
+      return execute(() -> runQuery(tenantId, siteId, rootContext, clientIdentification, queryName, viewName, requestParameters, request), "tenant", tenantId, "site", siteId, "client", clientId, "pd", definitionName, "query", queryName, "view", viewName);
     } catch (AccessControlViolation e) {
       return handleError(e, request);
     } catch (ResponseStatusException e) {
