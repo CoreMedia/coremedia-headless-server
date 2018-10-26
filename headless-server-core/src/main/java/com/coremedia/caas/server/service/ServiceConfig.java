@@ -1,11 +1,13 @@
 package com.coremedia.caas.server.service;
 
 import com.coremedia.caas.server.CaasServiceConfig;
+import com.coremedia.caas.server.service.expression.RequestParameterAccessorImpl;
 import com.coremedia.caas.server.service.expression.spel.SpelExpressionEvaluator;
 import com.coremedia.caas.service.ServiceRegistry;
 import com.coremedia.caas.service.cache.CacheInstances;
 import com.coremedia.caas.service.cache.Weighted;
 import com.coremedia.caas.service.expression.ExpressionEvaluator;
+import com.coremedia.caas.service.expression.RequestParameterAccessor;
 import com.coremedia.caas.service.expression.spel.ReadOnlyMapAccessor;
 import com.coremedia.caas.service.repository.content.ContentProxyPropertyAccessor;
 import com.coremedia.caas.service.repository.content.StructProxyPropertyAccessor;
@@ -33,6 +35,7 @@ import org.springframework.expression.PropertyAccessor;
 import org.springframework.expression.spel.support.ReflectivePropertyAccessor;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.request.ServletWebRequest;
 
 import java.util.List;
 
@@ -57,9 +60,17 @@ public class ServiceConfig {
   }
 
 
+  @Bean("requestParameterAccessor")
+  @Scope(value = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.INTERFACES)
+  public RequestParameterAccessor requestParameterAccessor(ServletWebRequest request) {
+    return new RequestParameterAccessorImpl(request);
+  }
+
   @Bean("spelEvaluator")
   @Scope(value = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.INTERFACES)
-  public ExpressionEvaluator createSpelExpressionEvaluator(@Qualifier("queryContentModelMethodResolver") MethodResolver contentMethodResolver) {
+  public ExpressionEvaluator createSpelExpressionEvaluator(
+          @Qualifier("queryContentModelMethodResolver") MethodResolver contentMethodResolver,
+          @Qualifier("requestParameterAccessor") RequestParameterAccessor requestParameterAccessor) {
     List<PropertyAccessor> propertyAccessors = ImmutableList.of(
             new ContentProxyPropertyAccessor(),
             new StructProxyPropertyAccessor(),
@@ -69,6 +80,8 @@ public class ServiceConfig {
     StandardEvaluationContext context = new StandardEvaluationContext();
     context.setPropertyAccessors(propertyAccessors);
     context.addMethodResolver(contentMethodResolver);
+    // set request services
+    context.setVariable("requestParameters", requestParameterAccessor);
     return new SpelExpressionEvaluator(context);
   }
 

@@ -35,7 +35,7 @@ public class LinkBuilderSetup extends QueryExecutionInterceptorAdapter {
 
 
   @Override
-  public boolean preQuery(String tenantId, String siteId, ClientIdentification clientIdentification, RootContext rootContext, ProcessingDefinition processingDefinition, QueryDefinition queryDefinition, Map<String, Object> queryArgs, ServletWebRequest request) {
+  public boolean preQuery(String tenantId, String siteId, ClientIdentification clientIdentification, RootContext rootContext, ProcessingDefinition processingDefinition, QueryDefinition queryDefinition, Map<String, Object> requestParameters, ServletWebRequest request) {
     RequestContext requestContext = rootContext.getRequestContext();
     // build prototype URI from either a configured base URI or the current request
     String baseUri = clientIdentification.getOption(requestContext.isPreview() ? "mediaBaseUri_preview" : "mediaBaseUri_live", String.class);

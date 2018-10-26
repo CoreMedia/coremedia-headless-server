@@ -3,6 +3,7 @@ package com.coremedia.caas.service.expression.spel.schema;
 import com.coremedia.caas.schema.datafetcher.content.util.MapStruct;
 import com.coremedia.caas.schema.datafetcher.content.util.Richtext;
 import com.coremedia.caas.service.expression.FieldExpressionCompiler;
+import com.coremedia.caas.service.expression.RequestParameterAccessor;
 import com.coremedia.caas.service.expression.spel.ReadOnlyMapAccessor;
 import com.coremedia.caas.service.repository.content.ContentProxyPropertyAccessor;
 import com.coremedia.caas.service.repository.content.StructProxyPropertyAccessor;
@@ -24,7 +25,9 @@ import java.util.List;
 public class SpelFieldExpressionConfig {
 
   @Bean("schemaEvaluationContext")
-  public EvaluationContext schemaEvaluationContext(@Qualifier("schemaContentModelMethodResolver") MethodResolver contentMethodResolver) {
+  public EvaluationContext schemaEvaluationContext(
+          @Qualifier("schemaContentModelMethodResolver") MethodResolver contentMethodResolver,
+          @Qualifier("requestParameterAccessor") RequestParameterAccessor requestParameterAccessor) {
     List<PropertyAccessor> propertyAccessors = ImmutableList.of(
             new ContentProxyPropertyAccessor(),
             new StructProxyPropertyAccessor(),
@@ -44,6 +47,8 @@ public class SpelFieldExpressionConfig {
       }
       throw new EvaluationException("Type " + typeName + " not allowed");
     });
+    // set request services
+    context.setVariable("requestParameters", requestParameterAccessor);
     return context;
   }
 
