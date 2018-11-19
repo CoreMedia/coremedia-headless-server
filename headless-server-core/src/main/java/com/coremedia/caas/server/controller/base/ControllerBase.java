@@ -2,6 +2,7 @@ package com.coremedia.caas.server.controller.base;
 
 import com.coremedia.blueprint.base.settings.SettingsService;
 import com.coremedia.caas.server.monitoring.CaasMetrics;
+import com.coremedia.caas.server.resolver.SiteResolver;
 import com.coremedia.caas.server.resolver.TargetResolver;
 import com.coremedia.caas.server.service.request.ClientIdentification;
 import com.coremedia.caas.service.repository.RootContext;
@@ -24,13 +25,10 @@ import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 public abstract class ControllerBase {
 
   private static final Logger LOG = LoggerFactory.getLogger(ControllerBase.class);
-
-  private static final String TENANT_ID = "tenantId";
 
 
   private String timerName;
@@ -45,11 +43,14 @@ public abstract class ControllerBase {
   protected RootContextFactory rootContextFactory;
 
   @Autowired
-  protected SitesService siteService;
+  protected SitesService sitesService;
 
   @Autowired
   @Qualifier("settingsService")
   private SettingsService settingsService;
+
+  @Autowired
+  private List<SiteResolver> siteResolvers;
 
   @Autowired
   private List<TargetResolver> targetResolvers;
@@ -60,14 +61,12 @@ public abstract class ControllerBase {
   }
 
 
-  private List<Site> resolveSites(String tenantId) {
-    return siteService.getSites().stream().filter(site -> tenantId.equals(settingsService.setting(TENANT_ID, String.class, site.getSiteIndicator()))).collect(Collectors.toList());
-  }
-
-  private Site resolveSite(String tenantId, String siteId) {
-    Site site = resolveSites(tenantId).stream().filter(item -> siteId.equals(item.getId())).findFirst().orElse(null);
-    if (site != null && site.getSiteRootDocument() != null) {
-      return site;
+  private Site resolveSite(String tenantId, String siteId, String targetId) {
+    for (SiteResolver resolver : siteResolvers) {
+      Site site = resolver.resolveSite(tenantId, siteId, targetId);
+      if (site != null && site.getSiteRootDocument() != null) {
+        return site;
+      }
     }
     return null;
   }
@@ -86,7 +85,7 @@ public abstract class ControllerBase {
   }
 
   private boolean validateTarget(Site localizedSite, Object target) {
-    return !(target instanceof Content) || siteService.isContentInSite(localizedSite, (Content) target);
+    return !(target instanceof Content) || sitesService.isContentInSite(localizedSite, (Content) target);
   }
 
 
@@ -96,7 +95,7 @@ public abstract class ControllerBase {
 
 
   protected RootContext resolveRootContext(String tenantId, String siteId, ServletWebRequest request) throws AccessControlViolation {
-    Site site = resolveSite(tenantId, siteId);
+    Site site = resolveSite(tenantId, siteId, null);
     if (site == null) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
@@ -105,7 +104,7 @@ public abstract class ControllerBase {
   }
 
   protected RootContext resolveRootContext(String tenantId, String siteId, String targetId, ServletWebRequest request) throws AccessControlViolation {
-    Site site = resolveSite(tenantId, siteId);
+    Site site = resolveSite(tenantId, siteId, targetId);
     if (site == null) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
