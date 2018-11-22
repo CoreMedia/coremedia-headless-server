@@ -10,8 +10,8 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 @Component
-@Order(10)
-public class ContentIdResolver implements TargetResolver {
+@Order()
+public class ContentByIdResolver implements TargetResolver {
 
   @Autowired
   private ContentRepository contentRepository;

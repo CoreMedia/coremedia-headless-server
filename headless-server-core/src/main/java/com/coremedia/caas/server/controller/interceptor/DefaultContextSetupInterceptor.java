@@ -18,7 +18,7 @@ import java.util.Map;
 public class DefaultContextSetupInterceptor extends QueryExecutionInterceptorAdapter {
 
   @Override
-  public boolean preQuery(String tenantId, String siteId, ClientIdentification clientIdentification, RootContext rootContext, ProcessingDefinition processingDefinition, QueryDefinition queryDefinition, Map<String, Object> queryArgs, ServletWebRequest request) {
+  public boolean preQuery(String tenantId, String siteId, ClientIdentification clientIdentification, RootContext rootContext, ProcessingDefinition processingDefinition, QueryDefinition queryDefinition, Map<String, Object> requestParameters, ServletWebRequest request) {
     RequestContext requestContext = rootContext.getRequestContext();
     // add properties which might be useful during query execution
     requestContext.setProperty(ContextProperties.REQUEST_CLIENT_IDENTIFICATON, clientIdentification);

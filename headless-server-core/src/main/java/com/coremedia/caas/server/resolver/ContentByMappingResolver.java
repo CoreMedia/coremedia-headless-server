@@ -11,8 +11,8 @@ import org.springframework.stereotype.Component;
 import java.util.Map;
 
 @Component
-@Order(100)
-public class ContentMappingResolver implements TargetResolver {
+@Order(10)
+public class ContentByMappingResolver implements TargetResolver {
 
   public static final String STATIC_MAPPING_KEY = "caasMappings";
 

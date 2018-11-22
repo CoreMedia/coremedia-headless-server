@@ -30,7 +30,7 @@ public class JsltPostprocessor extends QueryExecutionInterceptorAdapter {
 
 
   @Override
-  public Object postQuery(Object resultData, String tenantId, String siteId, ClientIdentification clientIdentification, RootContext rootContext, ProcessingDefinition processingDefinition, QueryDefinition queryDefinition, Map<String, Object> queryArgs, ServletWebRequest request) {
+  public Object postQuery(Object resultData, String tenantId, String siteId, ClientIdentification clientIdentification, RootContext rootContext, ProcessingDefinition processingDefinition, QueryDefinition queryDefinition, Map<String, Object> requestParameters, ServletWebRequest request) {
     // check for query transformation option
     String transformer = queryDefinition.getOption("jslt");
     if (transformer != null) {

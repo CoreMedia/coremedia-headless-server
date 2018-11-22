@@ -26,12 +26,6 @@ public class SpelExpressionEvaluator implements ExpressionEvaluator {
 
 
   @Override
-  public void init(Map<String, Object> variables) {
-    context.setVariables(variables);
-  }
-
-
-  @Override
   public <E> E evaluate(String expression, Object rootObject, Class<E> resultType) {
     return expressionCache.computeIfAbsent(expression, e -> parser.parseExpression(e)).getValue(context, rootObject, resultType);
   }
