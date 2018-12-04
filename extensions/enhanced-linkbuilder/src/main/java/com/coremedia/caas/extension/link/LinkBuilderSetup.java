@@ -9,6 +9,7 @@ import com.coremedia.caas.server.service.request.ClientIdentification;
 import com.coremedia.caas.service.repository.RootContext;
 import com.coremedia.caas.service.request.RequestContext;
 
+import com.google.common.base.Strings;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
@@ -39,7 +40,7 @@ public class LinkBuilderSetup extends QueryExecutionInterceptorAdapter {
     RequestContext requestContext = rootContext.getRequestContext();
     // build prototype URI from either a configured base URI or the current request
     String baseUri = clientIdentification.getOption(requestContext.isPreview() ? "mediaBaseUri_preview" : "mediaBaseUri_live", String.class);
-    UriComponentsBuilder prototype = baseUri != null ? UriComponentsBuilder.fromUriString(baseUri) : ServletUriComponentsBuilder.fromContextPath(request.getRequest());
+    UriComponentsBuilder prototype = Strings.isNullOrEmpty(baseUri) ? ServletUriComponentsBuilder.fromContextPath(request.getRequest()) : UriComponentsBuilder.fromUriString(baseUri);
     // create UriComponents with placeholders based on prototype and controller method
     UriComponents uriComponents;
     if (serviceConfig.isBinaryUriHashesEnabled()) {
