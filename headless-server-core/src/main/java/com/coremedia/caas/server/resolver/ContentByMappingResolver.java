@@ -23,7 +23,12 @@ public class ContentByMappingResolver implements TargetResolver {
 
   @Override
   public Object resolveTarget(Site site, String targetId) {
-    Map<String, Content> mappings = settingsService.settingAsMap(STATIC_MAPPING_KEY, String.class, Content.class, site.getSiteIndicator());
-    return mappings.get(targetId);
+    Map<String, Object> mappings = settingsService.settingAsMap(STATIC_MAPPING_KEY, String.class, Object.class, site.getSiteIndicator());
+    // be sure to cope with editorial errors in the struct, e.g. adding non link values
+    Object target = mappings.get(targetId);
+    if(target instanceof Content) {
+      return target;
+    }
+    return null;
   }
 }
