@@ -4,6 +4,10 @@
 
 ![CoreMedia Labs Logo](https://documentation.coremedia.com/badges/banner_coremedia_labs_wide.png "CoreMedia Labs Logo Title Text")
 
+# This repository has been moved to https://github.com/coremedia-contributions/coremedia-headless-server-app
+
+
+
 
 # CoreMedia Content as a Service (CaaS)
 
