@@ -4,7 +4,7 @@
 
 ![CoreMedia Labs Logo](https://documentation.coremedia.com/badges/banner_coremedia_labs_wide.png "CoreMedia Labs Logo Title Text")
 
-# This repository is not maintained anymore and has been moved to https://github.com/coremedia-contributions/coremedia-headless-server-app for blueprint customers only.
+# This repository is not maintained anymore. The latest version is now released to https://github.com/coremedia-contributions/coremedia-headless-server-app (for CoreMedia Blueprint customers only).
 
 
 # CoreMedia Content as a Service (CaaS)
