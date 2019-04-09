@@ -2,6 +2,7 @@ package com.coremedia.caas.server.service.media;
 
 import com.coremedia.caas.service.repository.RootContext;
 import com.coremedia.cap.common.Blob;
+import com.coremedia.cap.common.CapStructHelper;
 import com.coremedia.cap.content.Content;
 import com.coremedia.cap.struct.Struct;
 import com.coremedia.cap.transform.Breakpoint;
@@ -127,14 +128,13 @@ class ContentMediaResourceModel implements MediaResourceModel {
 
   @SuppressWarnings("unused")
   public Map<String, String> getTransformMap() {
-    Map<String, String> transformations;
+    Map<String, String> transformations = new HashMap<>();
     Struct localSettings = content.getStruct("localSettings");
     if (localSettings != null) {
-      Map<String, Object> structMap = localSettings.getStruct("transforms").getProperties();
-      transformations = structMap.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, e -> (String) e.getValue()));
-    }
-    else {
-      transformations = new HashMap<>();
+      Struct transforms = CapStructHelper.getStruct(localSettings, "transforms");
+      if (transforms != null) {
+        transformations = transforms.getProperties().entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, e -> (String) e.getValue()));
+      }
     }
     return transformImageService.getTransformationOperations(content, propertyName, transformations);
   }
